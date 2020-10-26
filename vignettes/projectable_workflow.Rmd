@@ -1,0 +1,201 @@
+---
+title: "projectable_workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{projectable_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette steps through a typical `projectable` workflow, taking us from a 
+simple dataframe via a metadata-rich table constructed using `set_table()` 
+through to a projection of that table in `gt` format.
+
+The `projectable` package was designed to gell with `gt` and the wider `tidyverse`,
+so -- although it is by no means necessary -- we will use `dplyr` verbs throughout.
+
+```{r setup}
+library(projectable)
+library(dplyr)
+library(gt)
+```
+
+## Setting the table
+
+The first step in the `projectable` workflow involves transforming an ordinary
+dataframe into a metadata-rich table-like object that is fit for projection. We 
+term this 'setting the table' and we perform it using the `set_table()` function
+along with `encol_*()` helpers.
+
+The `encol_*()` helpers are similar to `dplyr::vars()`: they are designed to
+be used only inside `projectable` verbs, and (in essence) they work by
+quoting their inputs so that they can be passed along for non-standard evaluation
+within the dataframe being operated upon. 
+
+Thus, to generate a frequency cross tabulation out of the `mtcars` dataset with
+rows corresponding to the number of cylinders and the transmission types, and 
+columns corresponding to the engine shape, we write:
+
+```{r}
+# Calculate frequency row-by-row
+crs_tab <- mtcars %>% 
+  set_table(
+    .rows = list(
+      Cylinders = cyl,
+      Transmission = am
+    ),
+    .cols = list(
+      vshaped = encol_freq(little_n = vs %in% 1, big_n = vs %in% 0:1),
+      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = vs %in% 0:1)
+    )
+  )
+
+# Notice that the rows sum to one
+knitr::kable(crs_tab)
+```
+
+Behind the scenes, `set_table()` loops over the row and column expressions it is
+provided. Each column expression in `.cols` is evaluated over `.data` filtered
+down to each row expression in `.rows`.
+
+In our example, `encol_freq(...)` is evaluated over `mtcars` filtered to each 
+unique value in `mtcars$cyl`, and then over `mtcars` filtered to each unique 
+value in `mtcars$am`. 
+
+If we wanted to calculate the base for each frequency, not row-by-row, but 
+over the whole column we would have to explicitly instruct R, when it is evaluating
+`big_n`, not to look for `vs` within the filtered version of `mtcars`, but in 
+`mtcars` overall. Thus we would write
+
+```{r}
+# Calculate frequency row-by-row
+crs_tab_col <- mtcars %>% 
+  set_table(
+    .rows = list(
+      Cylinders = cyl,
+      Transmission = am
+    ),
+    .cols = list(
+      vshaped = encol_freq(little_n = vs %in% 1, big_n = mtcars$vs %in% 1), 
+      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = mtcars$vs %in% 0)
+    )
+  )
+
+# Notice that, for each mutually exclusive and collectively exhaustive set of rows,
+# the columns sum to one
+knitr::kable(crs_tab_col)
+```
+
+
+And if we wanted to calculate the base for each frequency, not over the whole
+column, but over the whole table, then we would write:
+
+```{r}
+# Calculate frequency row-by-row
+crs_tab_overall <- mtcars %>% 
+  set_table(
+    .rows = list(
+      Cylinders = cyl,
+      Transmission = am
+    ),
+    .cols = list(
+      vshaped = encol_freq(little_n = vs %in% 1, big_n = nrow(mtcars)), 
+      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = nrow(mtcars))
+    )
+  )
+
+# Notice that, for each mutually exclusive and collectively exhaustive set of rows,
+# the cells sum to one
+knitr::kable(crs_tab_overall)
+```
+
+
+Once we have finished setting the table, what we should have is a table-like
+object with `projectable` `col_*`s. In addition to a face value, each of these 
+`col_*`s will have a set of metadata associated with it: a `col_freq`, for 
+instance, contains `little_n` and `big_n` metadata.
+
+## Casting a shadow
+When it comes to displaying this metadata-rich table-like object, we have a range
+of options. 
+
+In some circumstances, we may want to display only the face values of each 
+`col_*`, in which case we can simply print the table as we have done above.
+
+However, in many cases, we will also want to be able to display the associated 
+metadata. Thus, there might be times when we want to display not only the 
+proportions but the associated `little_n` and `big_n` too.
+
+This is where the `project_table()` function comes in: we use it to 'unfold' each
+`col_*` into whichever of its constituent elements we would like to display. 
+
+(LINK TO ANOTHER VIGNETTE WITH MORE INFO ON THE CONCEPT OF 'PROJECTING' COLUMNS).
+
+```{r}
+crs_tab <- crs_tab %>% 
+  project_table(
+    .cols = list(
+      rows = "identity",
+      row_spanner = "identity",
+      vshaped = c("proportion", "little_n", "big_n"),
+      not_vshaped = c("proportion", "little_n", "big_n")
+    )
+  )
+
+knitr::kable(crs_tab)
+``` 
+
+We thus arrive at another 'flat' dataframe: a dataframe whose columns are simple
+atomic vectors. But with one caveat, the dataframe as a whole comes associated
+with metadata which keeps track of which columns in the output (what we call
+the `projection`) belong to which columns in the input (the metadata rich
+table). 
+
+The significance of this metadata will become clear in the next section.  
+
+## Shaping with `gt`
+At this stage, the substance of what we want to display is already there. But 
+its not in a form that's fit for general consumption. 
+
+For one thing, while the columns in the `projection` give some indication of 
+their provenance by way of their names, it would be good to make the connection
+between input and output columns much more overt.
+
+And for another, we might want to fiddle with the formatting: adding colours, 
+touching up labels, annotating with footnotes. 
+
+The bad news is that `projectable` can't do really any of this. The good news is 
+that it doesn't need to. 
+
+Instead of implementing any formatting functions, `projectable` implements a 
+hand-off function, `proje_gt()`, which initialises a `gt` table object:
+
+```{r}
+crs_tab <- crs_tab %>% 
+  dplyr::group_by(row_spanner) %>% 
+  proje_gt(rowname_col = "rows")
+
+crs_tab
+```
+
+It is then possible to leverage all of the functionality of `gt` to apply 
+whatever formatting we want:
+
+```{r}
+crs_tab %>% 
+  gt::fmt_percent(ends_with("proportion")) %>%
+  gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 
+  gt::tab_stubhead(label = "Vehicle Characteristics") %>% 
+  gt::tab_options(
+    heading.background.color = "#080808",
+    row_group.background.color = "#f0f0f0"
+  )
+```
+
