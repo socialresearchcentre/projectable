@@ -67,9 +67,16 @@ testthat::test_that("project_table", {
 
 
   # Check correct operation
-  testthat::expect_s3_class(proje_gt(project_table(x)), "gt_tbl")
+  testthat::expect_s3_class(
+    proje_gt(project_table(x, list(x = c("proportion", "little_n"), y = "identity", z = "identity"))),
+    "gt_tbl"
+  )
 
-  # TODO
+  # Check failure
+  testthat::expect_error(
+    proje_gt(x),
+    "must possess a `.cols`"
+  )
 })
 
 

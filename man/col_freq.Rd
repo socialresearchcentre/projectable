@@ -2,9 +2,12 @@
 % Please edit documentation in R/col_freq.R
 \name{col_freq}
 \alias{col_freq}
+\alias{is_col_freq}
 \title{Frequency Columns}
 \usage{
 col_freq(little_n = double(), big_n = double(), proportion = NULL)
+
+is_col_freq(x)
 }
 \arguments{
 \item{little_n}{A numeric vector of frequencies}
@@ -12,12 +15,14 @@ col_freq(little_n = double(), big_n = double(), proportion = NULL)
 \item{big_n}{A numeric vector of base frequencies}
 
 \item{proportion}{A numeric vector of proportions, defaults to the quotient of \code{little_n} and \code{big_n}}
+
+\item{x}{An object to test}
 }
 \value{
 An S3 vector of class \code{projectable_col_freq}
 }
 \description{
-Frequency Columns
+Create, or test for, objects of type \code{projectable_col_freq}.
 }
 \examples{
 col_freq(1, 2, 1/2)

@@ -32,16 +32,19 @@ validate_col_freq <- function(x) {
   # Check proportion value
   ineq <- which(proportion != (little_n / big_n))
   if (length(ineq) > 0) {
+    if (length(ineq) > 5) ineq <- c(ineq[1:5], "etc.")
     warning("In element(s) ", paste(ineq, collapse = ", "), ": `proportion` != `big_n` / `little_n`", call. = FALSE)
   }
 
   non_norm <- which(proportion > 1)
   if (length(non_norm) > 0) {
+    if (length(non_norm) > 5) non_norm <- c(non_norm[1:5], "etc.")
     warning("In element(s) ", paste(non_norm, collapse = ", "), ": `proportion` > 1 ", call. = FALSE)
   }
 
   neg <- which(proportion < 0)
   if (length(neg) > 0) {
+    if (length(neg) > 5) neg <- c(neg[1:5], "etc.")
     warning("In element(s) ", paste(neg, collapse = ", "), ": `proportion` < 0 ", call. = FALSE)
   }
 
@@ -50,15 +53,20 @@ validate_col_freq <- function(x) {
 
 #' Frequency Columns
 #'
+#' Create, or test for, objects of type `projectable_col_freq`.
+#'
 #' @param little_n A numeric vector of frequencies
 #' @param big_n A numeric vector of base frequencies
 #' @param proportion A numeric vector of proportions, defaults to the quotient of `little_n` and `big_n`
+#' @param x An object to test
 #'
 #' @return An S3 vector of class `projectable_col_freq`
 #' @export
 #'
 #' @examples
 #' col_freq(1, 2, 1/2)
+#'
+#' @name col_freq
 #'
 col_freq <- function(little_n = double(), big_n = double(), proportion = NULL) {
   if (is.null(proportion)) proportion <- little_n / big_n
@@ -68,6 +76,12 @@ col_freq <- function(little_n = double(), big_n = double(), proportion = NULL) {
   validate_col_freq(
     new_col_freq(out[[1]], out[[2]], out[[3]])
   )
+}
+
+#' @export
+#' @rdname col_freq
+is_col_freq <- function(x) {
+  inherits(x, "projectable_col_freq")
 }
 
 # Define frequency column presentation -----------------------------------------
@@ -89,11 +103,13 @@ vec_ptype_full.projectable_col_freq <- function(x, ...) {
 
 # Define coercion rules --------------------------------------------------------
 
+# Self
 #' @export
 vec_ptype2.projectable_col_freq.projectable_col_freq <- function(x, y, ...) {
   new_col_freq()
 }
 
+# Doubles
 #' @export
 vec_ptype2.projectable_col_freq.double <- function(x, y, ...) {
   double()
@@ -104,14 +120,15 @@ vec_ptype2.double.projectable_col_freq <- function(x, y, ...) {
   double()
 }
 
+# Character
 #' @export
-vec_ptype2.projectable_col_freq.list <- function(x, y, ...) {
-  list()
+vec_ptype2.projectable_col_freq.character <- function(x, y, ...) {
+  character()
 }
 
 #' @export
-vec_ptype2.list.projectable_col_freq <- function(x, y, ...) {
-  list()
+vec_ptype2.character.projectable_col_freq <- function(x, y, ...) {
+  character()
 }
 
 # Define casting rules ---------------------------------------------------------
@@ -124,36 +141,20 @@ vec_cast.projectable_col_freq.projectable_col_freq <- function(x, to, ...) {
 #' @export
 vec_cast.double.projectable_col_freq <- function(x, to, ...) {
   warning(
-    "Coercing object of type `projectable_col_freq` will strip it of `little_n` and `big_n` metadata",
+    "Coercing object of type `projectable_col_freq` will strip it of metadata",
     call. = FALSE
   )
   vctrs::field(x, "proportion")
 }
 
 #' @export
-vec_cast.list.projectable_col_freq <- function(x, to, ...) {
-  vctrs::vec_data(x)
+vec_cast.character.projectable_col_freq <- function(x, to, ...) {
+  warning(
+    "Coercing object of type `projectable_col_freq` will strip it of metadata",
+    call. = FALSE
+  )
+  as.character(vctrs::field(x, "proportion"))
 }
-
-#' @export
-vec_cast.projectable_col_freq.list <- function(x, to, ...) {
-  if (!is.null(names(x))) {
-    msng_names <- setdiff(c("little_n", "big_n"), names(x))
-    if (length(msng_names) > 0) {
-      stop("Can only coerce named `list` to `projectable_col_freq` if ",
-           "`little_n` and `big_n` are among its names but `",
-           paste(msng_names, collapse = "`, `"), " missing")
-    }
-    col_freq(x$little_n, x$big_n, x$proportion)
-  } else if (length(x) == 2) {
-    col_freq(x[[1]], x[[2]])
-  } else if (length(x) == 3) {
-    col_freq(x[[1]], x[[2]], x[[3]])
-  } else {
-    stop("Cannot coerce an unamed `list` with length > 3 to `projectable_col_freq`")
-  }
-}
-
 
 # Define comparison rules ------------------------------------------------------
 
