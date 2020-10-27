@@ -279,7 +279,7 @@ testthat::test_that("NSE gotchas", {
   .rows <- 1 # .rows is defined inside set_table
 
   testthat::expect_identical(
-    set_table(mtcars, cyl, list(vshaped = encol_freq(vs %in% val_1, vs %in% 0:1))),
+    set_table(mtcars, cyl, list(vshaped = encol_freq(vs %in% .rows, vs %in% 0:1))),
     set_table(mtcars, cyl, list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
   )
 })
