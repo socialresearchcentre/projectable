@@ -1,5 +1,73 @@
+#' Binomial Column
+#'
+#' Create, or test for, objects of type `projectable_col_binomial`.
+#'
+#' Confidence intervals are calculated using the Agresti-Coull method. If the
+#' population size is not `Inf` a finite population correction will be applied.
+#'
+#' @param successes A numeric vector, the number of successes
+#' @param sample A numeric vector, the number of Bernoulli trials
+#' @param ci_error A numeric vector, the error to be used for calculating confidence intervals
+#' @param population A numeric vector, the number of individuals in the population to be used for calculating confidence intervals
+#' @param x An object to test
+#'
+#' @return  An S3 vector of class `projectable_col_binomial`
+#' @export
+#'
+#' @examples
+#'
+#' b_trials <- stats::rbinom(1000, 1, 0.5)
+#' col_binomial(sum(b_trials), length(b_trials))
+#'
+#' @name col_binomial
+#'
 
 # Validator and constructors ---------------------------------------------------
+
+col_binomial <- function(successes = integer(), sample = integer(), ci_error = 0.05, population = Inf) {
+  successes <- as.integer(successes)
+  sample <- vctrs::vec_recycle(as.integer(sample), length(successes))
+  population <- vctrs::vec_recycle(as.double(population), length(successes))
+  ci_error <- vctrs::vec_recycle(as.double(ci_error), length(successes))
+
+  # Check inputs
+  chk_stop(successes > sample, "`successes` > `sample`")
+  chk_stop(sample > population, "`sample` > `population`")
+  chk_stop(ci_error > 1, "`ci_error` > 1")
+  chk_stop(ci_error < 0, "`ci_error` < 0")
+
+  # Parameter estimation via Agresti-Coull
+  if (length(successes) > 0 ) {
+    est_params <- lapply(1:length(successes), function (i) {
+      std_quant <- qnorm(ci_error[i]/2)
+      n_hat <- sample[i] + std_quant^2
+      fin_pop_corr <- 1 - sample[i] / population[i]
+
+      est_prob <- (successes[i] + (std_quant^2)/2) / n_hat
+      est_ci <- std_quant * sqrt(fin_pop_corr * (est_prob / n_hat) * (1 - est_prob))
+
+      c(est_prob = est_prob, est_ci = est_ci)
+    })
+
+    est_prob <- vapply(est_params, function (x) x["est_prob"], FUN.VALUE = double(1))
+    est_ci <- vapply(est_params, function (x) x["est_ci"], FUN.VALUE = double(1))
+  } else {
+    est_prob <- double()
+    est_ci <- double()
+  }
+
+  validate_col_binomial(
+    new_col_binomial(
+      successes = successes,
+      sample = sample,
+      population = population,
+      ci_error = ci_error,
+      probability = est_prob,
+      ci_lower = est_prob - abs(est_ci),
+      ci_upper = est_prob + abs(est_ci)
+    )
+  )
+}
 
 new_col_binomial <- function(successes = integer(),
                              sample = integer(),
@@ -40,151 +108,26 @@ validate_col_binomial <- function(x) {
   ci_upper <- vctrs::field(x, "ci_upper")
 
   # Check consistency
-  inconsistent <- which(ci_lower > ci_upper)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    warning("In element(s) ", paste(inconsistent, collapse = ", "), ": `ci_lower` > `ci_upper`", call. = FALSE)
-  }
-
-  inconsistent <- which(probability > ci_upper)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    warning("In element(s) ", paste(inconsistent, collapse = ", "), ": `probability` > `ci_upper`", call. = FALSE)
-  }
-
-  inconsistent <- which(probability < ci_lower)
-  if (length(inconsistent) > 0) {
-    warning("In element(s) ", paste(inconsistent, collapse = ", "), ": `probability` < `ci_lower`", call. = FALSE)
-  }
-
-  inconsistent <- which(probability > 1)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    warning("In element(s) ", paste(inconsistent, collapse = ", "), ": `probability` > 1 ", call. = FALSE)
-  }
-
-  inconsistent <- which(probability < 0)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    warning("In element(s) ", paste(inconsistent, collapse = ", "), ": `probability` < 0 ", call. = FALSE)
-  }
+  chk_warn(ci_lower > ci_upper, "`ci_lower` > `ci_upper`")
+  chk_warn(probability > ci_upper, "`probability` > `ci_upper`")
+  chk_warn(probability < ci_lower, "`probability` < `ci_lower`")
+  chk_warn(probability > 1, "`probability` > 1")
+  chk_warn(probability < 0, "`probability` < 0")
 
   x
 }
 
-#' Binomial Column
-#'
-#' Create, or test for, objects of type `projectable_col_binomial`.
-#'
-#' Confidence intervals are calculated using the Agresti-Coull method. If the
-#' population size is not `Inf` a finite population correction will be applied.
-#'
-#' @param successes A numeric vector, the number of successes
-#' @param sample A numeric vector, the number of Bernoulli trials
-#' @param ci_error A numeric vector, the error to be used for calculating confidence intervals
-#' @param population A numeric vector, the number of individuals in the population to be used for calculating confidence intervals
-#' @param x An object to test
-#'
-#' @return  An S3 vector of class `projectable_col_binomial`
-#' @export
-#'
-#' @examples
-#'
-#' b_trials <- stats::rbinom(1000, 1, 0.5)
-#' col_binomial(sum(b_trials), length(b_trials))
-#'
-#' @name col_binomial
-#'
-col_binomial <- function(successes = integer(), sample = integer(), ci_error = 0.05, population = Inf) {
-  successes <- as.integer(successes)
-  sample <- vctrs::vec_recycle(as.integer(sample), length(successes))
-  population <- vctrs::vec_recycle(as.double(population), length(successes))
-  ci_error <- vctrs::vec_recycle(as.double(ci_error), length(successes))
 
-  # Check inputs
-  inconsistent <- which(successes > sample)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    stop("In element(s) ", paste(inconsistent, collapse = ", "), ": `successes` > `sample`", call. = FALSE)
-  }
-
-  inconsistent <- which(sample > population)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    stop("In element(s) ", paste(inconsistent, collapse = ", "), ": `sample` > `population`", call. = FALSE)
-  }
-
-  inconsistent <- which(ci_error > 1)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    stop("In element(s) ", paste(inconsistent, collapse = ", "), ": `ci_error` > 1", call. = FALSE)
-  }
-
-  inconsistent <- which(ci_error < 0)
-  if (length(inconsistent) > 0) {
-    if (length(inconsistent) > 5) inconsistent <- c(inconsistent[1:5], "etc.")
-    stop("In element(s) ", paste(inconsistent, collapse = ", "), ": `ci_error` < 0 ", call. = FALSE)
-  }
-
-  # Parameter estimation via Agresti-Coull
-  if (length(successes) > 0 ) {
-    est_params <- lapply(1:length(successes), function (i) {
-      std_quant <- qnorm(ci_error[i]/2)
-      n_hat <- sample[i] + std_quant^2
-      fin_pop_corr <- 1 - sample[i] / population[i]
-
-      est_prob <- (successes[i] + (std_quant^2)/2) / n_hat
-      est_ci <- std_quant * sqrt(fin_pop_corr * (est_prob / n_hat) * (1 - est_prob))
-
-      c(est_prob = est_prob, est_ci = est_ci)
-    })
-
-    est_prob <- vapply(est_params, function (x) x["est_prob"], FUN.VALUE = double(1))
-    est_ci <- vapply(est_params, function (x) x["est_ci"], FUN.VALUE = double(1))
-  } else {
-    est_prob <- double()
-    est_ci <- double()
-  }
-
-  validate_col_binomial(
-    new_col_binomial(
-      successes = successes,
-      sample = sample,
-      population = population,
-      ci_error = ci_error,
-      probability = est_prob,
-      ci_lower = est_prob - abs(est_ci),
-      ci_upper = est_prob + abs(est_ci)
-    )
-  )
-}
-
+# Helpers ----------------------------------------------------------------------
 #' @export
 #' @rdname col_binomial
 is_col_binomial <- function(x) {
   inherits(x, "projectable_col_binomial")
 }
 
-# Define frequency column presentation -----------------------------------------
-
-#' @export
-format.projectable_col_binomial <- function(x, ...) {
-  out <- signif(vctrs::field(x, "probability"), 2)
-}
-
-#' @export
-vec_ptype_abbr.projectable_col_binomial <- function(x, ...) {
-  "col_bnml"
-}
-
-#' @export
-vec_ptype_full.projectable_col_binomial <- function(x, ...) {
-  "col_binomial"
-}
-
 # Define coercion rules --------------------------------------------------------
 
-# Self
+# Self-coercion
 #' @export
 vec_ptype2.projectable_col_binomial.projectable_col_binomial <- function(x, y, ...) {
   new_col_binomial()
@@ -193,57 +136,46 @@ vec_ptype2.projectable_col_binomial.projectable_col_binomial <- function(x, y, .
 # Doubles
 #' @export
 vec_ptype2.projectable_col_binomial.double <- function(x, y, ...) {
-  double()
+  vec_ptype2.projectable_col.double(x, y, ...)
 }
 
 #' @export
 vec_ptype2.double.projectable_col_binomial <- function(x, y, ...) {
-  double()
+  vec_ptype2.double.projectable_col(x, y, ...)
 }
 
 # Character
 #' @export
 vec_ptype2.projectable_col_binomial.character <- function(x, y, ...) {
-  character()
+  vec_ptype2.projectable_col.character(x, y, ...)
 }
 
 #' @export
 vec_ptype2.character.projectable_col_binomial <- function(x, y, ...) {
-  character()
+  vec_ptype2.character.projectable_col(x, y, ...)
 }
 
 # Define casting rules ---------------------------------------------------------
 
 #' @export
 vec_cast.projectable_col_binomial.projectable_col_binomial <- function(x, to, ...) {
-  x
+  vec_cast.projectable_col.projectable_col(x, to, ...)
 }
 
 #' @export
 vec_cast.double.projectable_col_binomial <- function(x, to, ...) {
-  warning(
-    "Coercing object of type `projectable_col_binomial` will strip it of metadata",
-    call. = FALSE
-  )
-  vctrs::field(x, "probability")
+  vec_cast.double.projectable_col(x, to, ...)
+
 }
 
 #' @export
 vec_cast.character.projectable_col_binomial <- function(x, to, ...) {
-  warning(
-    "Coercing object of type `projectable_col_binomial` will strip it of metadata",
-    call. = FALSE
-  )
-  as.character(vctrs::field(x, "probability"))
+  vec_cast.character.projectable_col(x, to, ...)
 }
 
 # Define comparison rules ------------------------------------------------------
 
 #' @export
 vec_proxy_compare.projectable_col_binomial <- function(x, ...) {
-  vctrs::field(x, "probability")
+  vec_proxy_compare.projectable_col(x, ...)
 }
-
-# Define arithmetic ------------------------------------------------------------
-
-# TODO: Are there arithmetical operations that make sense for binomials?

@@ -14,7 +14,7 @@ testthat::test_that("col_freq", {
   # Check warnings
   testthat::expect_warning(col_freq(1:10, 2:11, 3:12), "!=")
   testthat::expect_warning(col_freq(2:11, 1:10), "> 1")
-  testthat::expect_warning(col_freq(-(2:11), 1:10), "< 0 ")
+  testthat::expect_warning(col_freq(-(2:11), 1:10), "< 0")
   testthat::expect_warning(vctrs::vec_cast(col_freq(), double()), "metadata")
   testthat::expect_warning(vctrs::vec_cast(col_freq(), character()), "metadata")
   testthat::expect_warning(as.double(col_freq(1)))
