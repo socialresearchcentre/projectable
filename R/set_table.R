@@ -1,23 +1,3 @@
-# encol_* -----------------------------------------------------------------
-
-#' encol_freq
-#'
-#' @param little_n an unquoted expression which evaluates to a logical, defining the count
-#' @param big_n an unquoted expression which evaluates to a logical, defining the base count
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
-#'
-#'
-encol_freq <- function(little_n, big_n) {
-  bquote(col_freq(
-    sum(.(substitute(little_n))),
-    sum(.(substitute(big_n)))
-  ))
-}
 
 # set_table ---------------------------------------------------------------
 

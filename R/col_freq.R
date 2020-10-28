@@ -1,9 +1,3 @@
-#' Internal vctrs methods
-#'
-#' @import vctrs
-#' @keywords internal
-#' @name projectable-vctrs
-
 
 # Validator and constructors ---------------------------------------------------
 
