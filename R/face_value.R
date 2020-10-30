@@ -26,6 +26,12 @@ face_value.default <- function(x) {
   x
 }
 
+face_value.projectable_col <- function(x) {
+  subclass <- class(x)[grep("projectable_col_", class(x))]
+  stop("`face_value()` not implemented for `projectable_col` of class `",
+       subclass, "`", call. = FALSE)
+}
+
 face_value.projectable_col_freq <- function(x) {
   vctrs::field(x, "proportion")
 }
