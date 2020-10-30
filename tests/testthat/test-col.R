@@ -15,33 +15,13 @@ testthat::test_that("col_freq", {
   testthat::expect_warning(col_freq(1:10, 2:11, 3:12), "!=")
   testthat::expect_warning(col_freq(2:11, 1:10), "> 1")
   testthat::expect_warning(col_freq(-(2:11), 1:10), "< 0")
-  testthat::expect_warning(vctrs::vec_cast(col_freq(), double()), "metadata")
-  testthat::expect_warning(vctrs::vec_cast(col_freq(), character()), "metadata")
-  testthat::expect_warning(as.double(col_freq(1)))
-  testthat::expect_warning(as.character(col_freq(1)))
+
 
   # Check errors
   testthat::expect_error(as.integer(col_freq(1)), class = "vctrs_error_incompatible_type")
   testthat::expect_error(as.logical(col_freq(1)), class = "vctrs_error_incompatible_type")
-
-  # Check conversions
-  testthat::expect_equal(
-    suppressWarnings(vctrs::vec_c(col_freq(1, 2), 1)),
-    c(1/2, 1)
-  )
-  testthat::expect_equal(
-    suppressWarnings(vctrs::vec_c(1, col_freq(1, 2))),
-    c(1, 1/2)
-  )
-
-  testthat::expect_equal(
-    suppressWarnings(vctrs::vec_c(col_freq(1, 2), "1")),
-    c("0.5", "1")
-  )
-  testthat::expect_equal(
-    suppressWarnings(vctrs::vec_c("1", col_freq(1, 2))),
-    c("1", "0.5")
-  )
+  testthat::expect_error(as.double(col_freq(1)), class = "vctrs_error_incompatible_type")
+  testthat::expect_error(as.character(col_freq(1)), class = "vctrs_error_incompatible_type")
 
   # Check comparisons
   testthat::expect_false(col_freq(1, 2) == col_freq(2, 4))
@@ -49,12 +29,17 @@ testthat::test_that("col_freq", {
   testthat::expect_false(col_freq(1, 2) > col_freq(2, 4))
   testthat::expect_true(col_freq(1, 3) < col_freq(1, 2))
   testthat::expect_true(col_freq(1, 2) > col_freq(1, 3))
+
+  # Check self-self compatibility
+  testthat::expect_identical(vctrs::vec_cast(col_freq(1, 2), col_freq()), col_freq(1, 2))
+  testthat::expect_s3_class(vctrs::vec_c(col_freq(1, 2), col_freq(1, 2)), "projectable_col_freq")
+  testthat::expect_identical(vctrs::vec_c(col_freq(1, 2), col_freq(3, 4)), col_freq(c(1, 3), c(2, 4)))
 })
 
 
 # col_binomial ------------------------------------------------------------
 
-testthat::test_that("col_freq", {
+testthat::test_that("col_binomial", {
   # Bernoulli trials
   x <- lapply(1:6, function (x) {
     rbinom(x * 100, 1, x * 0.1)
@@ -93,14 +78,6 @@ testthat::test_that("col_freq", {
     validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.5, 0.6, 0.5)),
     "`ci_lower` > `ci_upper`"
   )
-  testthat::expect_warning(
-    vctrs::vec_cast(col_binomial(), double()),
-    "metadata"
-  )
-  testthat::expect_warning(
-    vctrs::vec_cast(col_binomial(), character()),
-    "metadata"
-  )
 
   # Check errors
   testthat::expect_error(
@@ -131,19 +108,13 @@ testthat::test_that("col_freq", {
     as.logical(col_binomial(x_success, x_trials)),
     class = "vctrs_error_incompatible_type"
   )
-
-  # Check conversions
-  testthat::expect_identical(
-    suppressWarnings(vctrs::vec_c(col_binomial(1, 2), 1)),
-    rev(suppressWarnings(vctrs::vec_c(1, col_binomial(1, 2))))
+  testthat::expect_error(
+    as.double(col_binomial(x_success, x_trials)),
+    class = "vctrs_error_incompatible_type"
   )
-  testthat::expect_identical(
-    suppressWarnings(vctrs::vec_c(col_binomial(1, 2), "1")),
-    rev(suppressWarnings(vctrs::vec_c("1", col_binomial(1, 2))))
-  )
-  testthat:::expect_identical(
-    face_value(col_binomial(x_success, x_trials)),
-    suppressWarnings(vctrs::vec_cast(col_binomial(x_success, x_trials), double()))
+  testthat::expect_error(
+    as.character(col_binomial(x_success, x_trials)),
+    class = "vctrs_error_incompatible_type"
   )
 
   # Check comparisons
@@ -152,5 +123,10 @@ testthat::test_that("col_freq", {
   testthat::expect_false(col_binomial(1, 2) > col_binomial(2, 4))
   testthat::expect_true(col_binomial(1, 3) < col_binomial(1, 2))
   testthat::expect_true(col_binomial(1, 2) > col_binomial(1, 3))
+
+  # Check self-self compatibility
+  testthat::expect_identical(vctrs::vec_cast(col_binomial(1, 2), col_binomial()), col_binomial(1, 2))
+  testthat::expect_s3_class(vctrs::vec_c(col_binomial(1, 2), col_binomial(1, 2)), "projectable_col_binomial")
+  testthat::expect_identical(vctrs::vec_c(col_binomial(1, 2), col_binomial(3, 4)), col_binomial(c(1, 3), c(2, 4)))
 })
 

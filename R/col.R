@@ -22,55 +22,6 @@ vec_ptype_full.projectable_col <- function(x, ...) {
   paste0("col_", subclass)
 }
 
-# Define coercion rules --------------------------------------------------------
-
-# Doubles
-#' @export
-vec_ptype2.projectable_col.double <- function(x, y, ...) {
-  double()
-}
-
-#' @export
-vec_ptype2.double.projectable_col <- function(x, y, ...) {
-  double()
-}
-
-# Character
-#' @export
-vec_ptype2.projectable_col.character <- function(x, y, ...) {
-  character()
-}
-
-#' @export
-vec_ptype2.character.projectable_col <- function(x, y, ...) {
-  character()
-}
-
-# Define casting rules ---------------------------------------------------------
-
-#' @export
-vec_cast.projectable_col.projectable_col <- function(x, to, ...) {
-  x
-}
-
-#' @export
-vec_cast.double.projectable_col <- function(x, to, ...) {
-  warning(
-    "Coercing object of type `projectable_col` will strip it of metadata",
-    call. = FALSE
-  )
-  face_value(x)
-}
-
-#' @export
-vec_cast.character.projectable_col <- function(x, to, ...) {
-  warning(
-    "Coercing object of type `projectable_col` will strip it of metadata",
-    call. = FALSE
-  )
-  as.character(face_value(x))
-}
-
 # Define comparison rules ------------------------------------------------------
 
 #' @export

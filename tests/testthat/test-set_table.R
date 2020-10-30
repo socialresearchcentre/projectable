@@ -22,8 +22,8 @@ testthat::test_that("`.rows` uses expressions only", {
   )
 
   # Check calculations against one another
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_all == chk$little_n / chk$bigger_n)))
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_rbr == chk$little_n / chk$big_n)))
+  testthat::expect_true(all(face_value(chk$vshaped_all) == chk$little_n / chk$bigger_n))
+  testthat::expect_true(all(face_value(chk$vshaped_rbr) == chk$little_n / chk$big_n))
 
   # Check calculations against alternative
   testthat::expect_equal(
@@ -77,8 +77,8 @@ testthat::test_that("`.rows` uses one symbol only", {
   )
 
   # Check calculations against one another
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_all == chk$little_n / chk$bigger_n)))
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_rbr == chk$little_n / chk$big_n)))
+  testthat::expect_true(all(face_value(chk$vshaped_all) == chk$little_n / chk$bigger_n))
+  testthat::expect_true(all(face_value(chk$vshaped_rbr) == chk$little_n / chk$big_n))
 
   # Check calculations against alternative
   testthat::expect_equal(
@@ -132,8 +132,8 @@ testthat::test_that("`.rows` uses symbols only", {
   )
 
   # Check calculations against one another
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_all == chk$little_n / chk$bigger_n)))
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_rbr == chk$little_n / chk$big_n)))
+  testthat::expect_true(all(face_value(chk$vshaped_all) == chk$little_n / chk$bigger_n))
+  testthat::expect_true(all(face_value(chk$vshaped_rbr) == chk$little_n / chk$big_n))
 
   # Check calculations against alternative
   testthat::expect_equal(
@@ -212,8 +212,8 @@ testthat::test_that("`.rows` uses symbols and expressions", {
   )
 
   # Check calculations against one another
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_all == chk$little_n / chk$bigger_n)))
-  testthat::expect_true(all(suppressWarnings(chk$vshaped_rbr == chk$little_n / chk$big_n)))
+  testthat::expect_true(all(face_value(chk$vshaped_all) == chk$little_n / chk$bigger_n))
+  testthat::expect_true(all(face_value(chk$vshaped_rbr) == chk$little_n / chk$big_n))
 
   # Check calculations against alternative
   testthat::expect_equal(

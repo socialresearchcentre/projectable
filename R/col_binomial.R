@@ -133,46 +133,6 @@ vec_ptype2.projectable_col_binomial.projectable_col_binomial <- function(x, y, .
   new_col_binomial()
 }
 
-# Doubles
-#' @export
-vec_ptype2.projectable_col_binomial.double <- function(x, y, ...) {
-  vec_ptype2.projectable_col.double(x, y, ...)
-}
-
-#' @export
-vec_ptype2.double.projectable_col_binomial <- function(x, y, ...) {
-  vec_ptype2.double.projectable_col(x, y, ...)
-}
-
-# Character
-#' @export
-vec_ptype2.projectable_col_binomial.character <- function(x, y, ...) {
-  vec_ptype2.projectable_col.character(x, y, ...)
-}
-
-#' @export
-vec_ptype2.character.projectable_col_binomial <- function(x, y, ...) {
-  vec_ptype2.character.projectable_col(x, y, ...)
-}
-
-# Define casting rules ---------------------------------------------------------
-
-#' @export
-vec_cast.projectable_col_binomial.projectable_col_binomial <- function(x, to, ...) {
-  vec_cast.projectable_col.projectable_col(x, to, ...)
-}
-
-#' @export
-vec_cast.double.projectable_col_binomial <- function(x, to, ...) {
-  vec_cast.double.projectable_col(x, to, ...)
-
-}
-
-#' @export
-vec_cast.character.projectable_col_binomial <- function(x, to, ...) {
-  vec_cast.character.projectable_col(x, to, ...)
-}
-
 # Define comparison rules ------------------------------------------------------
 
 #' @export
