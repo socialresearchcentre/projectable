@@ -191,10 +191,12 @@ testthat::test_that("`.rows` uses symbols and expressions", {
   chk <- set_table(
     .data = mtcars,
     .rows = list(
-      four_cyl = cyl %in% 4,
-      six_cyl = cyl %in% 6,
-      eight_cyl = cyl %in% 8,
-      transmission = am
+      Cylinders = list(
+        four_cyl = cyl %in% 4,
+        six_cyl = cyl %in% 6,
+        eight_cyl = cyl %in% 8
+      ),
+      Transmission = am
     ),
     .cols = list(
       vshaped_all = encol_freq(vs %in% 1, nrow(mtcars)),
@@ -272,8 +274,8 @@ testthat::test_that("NSE gotchas", {
   .rows <- 4 # .rows is defined inside set_table
 
   testthat::expect_identical(
-    set_table(mtcars, list(cyl %in% .rows), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1))),
-    set_table(mtcars, list(cyl %in% 4), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
+    set_table(mtcars, list(Four = cyl %in% .rows), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1))),
+    set_table(mtcars, list(Four = cyl %in% 4), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
   )
 
   .rows <- 1 # .rows is defined inside set_table
@@ -293,4 +295,3 @@ testthat::test_that("Bad calls", {
     set_table(mtcars, cyl, list(vshaped = encol_freq(not_a_col %in% 1, vs %in% 0:1)))
   )
 })
-
