@@ -1,4 +1,61 @@
 
+# Validator and constructors ---------------------------------------------------
+
+new_col <- function(shadow = character(), ..., class = character()) {
+  vctrs::vec_assert(shadow, character())
+  vctrs::vec_assert(class, character())
+  if (...length() == 0) stop("`...` cannot be empty")
+
+  vctrs::new_rcrd(
+    list(
+      ...
+    ),
+    shadow = shadow,
+    class = c(class, "projectable_col")
+  )
+}
+
+validate_col <- function(x) {
+  # Check shadow against fields of x
+  shadow <- attr(x, "shadow")
+  enclos_env <- as.environment(list(`.` = "exists")) # `.` is always acceptable
+  data_env <- as.environment(vctrs::vec_data(x))
+  parent.env(data_env) <- enclos_env
+
+  tryCatch(
+    glue::glue(shadow, .envir = data_env),
+    error = function(e) {
+      obj_not_found <- grepl("object .* not found", e)
+      if (obj_not_found) {
+        missing_var <- sub(".* object ", "", e)
+        missing_var <- sub("not found", "", missing_var)
+        missing_var <- sub("\n", "", missing_var)
+        stop(missing_var, "is not a field of `x`", call. = FALSE)
+      }
+    }
+  )
+
+  x
+}
+
+# Helpers -----------------------------------------------------------------
+
+#' @export
+is_col <- function(x) {
+  inherits(x, "projectable_col")
+}
+
+#' @export
+col_shadow <- function(x) {
+  attr(x, "shadow")
+}
+
+#' @export
+`col_shadow<-` <- function(x, value) {
+  out <- `attr<-`(x, "shadow", value)
+  if (is_col(x)) out <- validate_col(out)
+  out
+}
 
 # Define frequency column presentation -----------------------------------------
 

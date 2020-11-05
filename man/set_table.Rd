@@ -9,9 +9,9 @@ set_table(.data, .rows, .cols)
 \arguments{
 \item{.data}{a dataframe}
 
-\item{.rows}{a list of unquoted expressions, which evaluate to logicals, defining the rows of the output}
+\item{.rows}{an expression or symbol, or a list of expressions and symbols, or a list of lists of expressions and symbols}
 
-\item{.cols}{a list of unquoted expressions, typically containing calls to \verb{encol_*()}, defining the columns of the output}
+\item{.cols}{a named list of unquoted expressions, typically containing calls to \verb{encol_*()}, defining the columns of the output}
 }
 \value{
 
@@ -36,9 +36,11 @@ as shorthand for \code{list(cyl \%in\% 4, cyl \%in\% 6, cyl \%in\% 8)}.
 set_table(
   .data = mtcars,
   .rows = list(
-    four_cyl = cyl \%in\% 4,
-    six_cyl = cyl \%in\% 6,
-    either = cyl \%in\% 4:6
+    Cylinders = list(
+      four_cyl = cyl \%in\% 4,
+      six_cyl = cyl \%in\% 6,
+      either = cyl \%in\% 4:6
+    )
   ),
   .cols = list(
     vshaped = encol_freq(vs \%in\% 1, nrow(mtcars)),

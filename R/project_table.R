@@ -1,125 +1,110 @@
-#' project_table
+#' Project a table
 #'
-#' The `project_table()` function is designed to take in a metadata rich
-#' table-like object, i.e. a dataframe made up of projectable
-#' `col_*`s, and to 'flatten' it out as per the instructions provided in the
-#' column specification.
+#' The `prj_table()` function is designed to take in a dataframe made up of
+#' `projectable_col`s, and to 'project' it into an ordinary dataframe as per the instructions
+#' provided in the `shadow` attribute of each column.
 #'
-#' The column specification, `.col`, tells R what pieces of information (data
-#' and or metadata) to extract from each of the columns in the `.data`. The
-#' resulting `projection` object will contain one column for each piece of
-#' information specified in `.col`. Thus one `col_freq` might be projected into
-#' three different columns in the output: one for the `proportion`, one for the
-#' `little_n`, and one for the `big_n` belonging to it.
+#' The `shadow` attribute of each column can be set via the `...` argument of
+#' `prj_table()` or by using the `prj_shadow_if()` and `prj_shadow_at()` helper
+#' functions.
 #'
 #' The `projection` output will also come attached with metadata which keeps
 #' track of which columns in the output belong to which columns in the input.
 #'
-#' @param .data a dataframe, ideally one containing `col_*`s
-#' @param .cols an optional named list of character vectors
-#' specifying how columns are to be projected.
-#'
-#' If nothing is supplied to `.cols` then a default specification will be used:
-#' all columns will be mapped to their 'face' value. For scalar numbers, the
-#' face value is equal to the scalar; for `col_*` the face value is whatever is
-#' displayed when the `col_*` is printed to the console.
+#' @param .data A dataframe, ideally one containing `projectable_col`s
+#' @param ... Name-value pairs. Each name should  bethe name of a column in
+#'   `.data`; each value should be a named character vector containing
+#'   glue-like specifications for the output columns.
 #'
 #' @return a `projection` object
 #' @export
 #'
 #' @examples
-#' # Cross tabulate frequencies and store with accompanying metadata
-#' x <- as.data.frame(lapply(
-#'   split(mtcars$cyl, mtcars$vs),
-#'   function(x) {col_freq(c(sum(x==4), sum(x==6), sum(x==8)), length(x))}
-#' ))
-#' names(x) <- c("non_V", "V")
-#' x$cyl <- c(4, 6, 7)
+#' # Create a table made up of `projectable_col`s
+#' my_tbl <- set_table(
+#'   .data = mtcars,
+#'   .rows = list(
+#'     Cylinders = cyl
+#'   ),
+#'   .cols = list(
+#'     vshaped = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
+#'     not_vshaped = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
+#'   )
+#' )
 #'
-#' # Project metadata rich frequency cross tab into two dimensions
-#' project_table(x, .cols = list(
-#'   cyl = "identity",
-#'   non_V = c("proportion", "big_n"),
-#'   V = c("proportion", "big_n")
-#' ))
-#' @name project_table
+#' # Project it back into an ordinary dataframe
+#' prj_table(my_tbl, vshaped = "{signif(p, 2)} ({n})", not_vshaped = "{signif(p, 2)} ({n})")
 #'
+#' @name prj_table
 # Project table ----------------------------------------------------------------
+prj_table <- function(.data, ...) {
+  add_shadows <- list(...)
+  for (i in seq_along(add_shadows)) {
+    var <- names(add_shadows)[[i]]
+    shdw <- add_shadows[[i]]
+    if (!var %in% names(.data)) stop("`", var, "` is not a column of `.data`")
+    .data[[var]] <- `col_shadow<-`(.data[[var]], shdw)
+  }
 
-project_table <- function(.data, .cols = NULL) {
-  # Make .data into a projectable object
-  .projectable <- projectable(
-    .data,
-    .cols
-  )
-
-  # Make .projectable into a table
-  cast_shadow(.projectable)
+  prj_cast_shadow(.data)
 }
 
+prj_cast_shadow <- function(.data) {
+  out <- mapply(function (col_i, name_i) {
+    out <- glue_each_in(col_shadow(col_i), col_i)
 
-# Projectable ------------------------------------------------------------------
-new_projectable <- function(x = tibble::tibble(), .cols = tibble::tibble()) {
-  stopifnot(tibble::is_tibble(x))
-
-  structure(
-    x,
-    .cols = .cols,
-    class = c("projectable_projectable", class(x))
-  )
-}
-
-validate_projectable <- function(x) {
-  .cols <- attr(x, ".cols")
-
-  # Types
-  if(!tibble::is_tibble(.cols)) {
-    stop("`.cols` must be a tibble")
-  }
-
-  # Columns
-  .col_names <- c("col_name", "col_value")
-  if (!identical(names(.cols), .col_names)) {
-    stop("`.cols` must be made up of all and only `",
-         paste(.col_names, collapse = "`, `"), "`")
-  }
-
-  x
-}
-
-# TODO: Export?
-projectable <- function(.data, .cols = NULL) {
-  .data <- tibble::as_tibble(.data)
-
-  if (is.null(.cols)) {
-    .cols <- as.list(rep("identity", ncol(.data)))
-    names(.cols) <- names(.data)
-  }
-
-  # Validate
-  if (anyDuplicated(names(.cols))) {
-    duplicate_names <- unique(names(.cols)[duplicated(names(.cols))])
-    stop(
-      "`.cols` must not contain duplicates, but there are duplicates of `",
-      paste(duplicate_names, collapse = "`, `"), "`", call. = FALSE
-    )
-  }
-  stopifnot(is.list(.cols))
-  stopifnot(all(names(.cols) %in% names(.data)))
-
-  .cols <- tibble::enframe(
-    unlist(lapply(names(.cols), function (x) {
-      out <- .cols[[x]]
-      names(out) <- rep(x, length(out))
+    if (length(out) > 1) {
+      out <- do.call(vctrs::vec_cbind, out)
+    } else if (length(out) == 1){
+      out <- data.frame(out[[1]], stringsAsFactors = FALSE)
+      names(out) <- name_i
       out
-    })),
-    name = "col_name",
-    value = "col_value"
-  )
+    }
+    out
+  }, .data, names(.data))
 
-  validate_projectable(
-    new_projectable(.data, .cols)
+  out <- out[vapply(out, function (x) length(x) != 0, logical(1))]
+
+  # Collect metadata
+  col_labels <-  unlist(
+    lapply(out, function (x) {
+      row_names <- names(x)
+      if (is.null(row_names)) row_names <- ""
+      row_names
+    })
   )
+  col_spanners <- unlist(lapply(names(out), function (x) {
+    rep(x, ncol(out[[x]]))
+  }))
+  col_spanners[col_spanners == col_labels] <- NA_character_
+
+  col_names <- paste(col_spanners, col_labels, sep = ".")
+  col_names[is.na(col_spanners)] <- col_labels[is.na(col_spanners)]
+
+  # Output
+  validate_projection(
+    new_projection(
+      tibble::as_tibble(do.call(cbind, out)),
+      .cols = tibble::tibble(
+        cols = col_names,
+        col_labels = col_labels,
+        col_spanners = col_spanners
+      )
+    )
+  )
+}
+
+glue_each_in <- function(.string, .data) {
+  # Establish search path
+  calling_env <- parent.frame()
+  enclos_env <- as.environment(list(`.` = face_value(.data)))
+  parent.env(enclos_env) <- calling_env
+  # Glue strings
+  lapply(.string, function (s) {
+    .data <- as.environment(.data)
+    parent.env(.data) <- enclos_env
+    glue::glue(s, .envir = .data)
+  })
 }
 
 # Projection -------------------------------------------------------------------
@@ -150,60 +135,3 @@ validate_projection <- function(x) {
 
   x
 }
-
-# Projector --------------------------------------------------------------------
-
-# TODO: Export?
-cast_shadow <- function(.projectable) {
-  .cols <- attr(.projectable, ".cols")
-
-  # Prepare output
-  out <- list()
-  for (row in seq(nrow(.cols))) {
-    cell_ij <- .projectable[[.cols[[row, "col_name"]]]]
-    field_ij <- .cols[[row, "col_value"]]
-
-
-    if (.cols[[row, "col_value"]] %in% "identity") {
-      out_ij <- list(face_value(cell_ij))
-      names(out_ij) <- .cols[[row, "col_name"]]
-    } else if (inherits(cell_ij, "projectable_col")){
-      if (!field_ij %in% vctrs::fields(cell_ij)) {
-        stop("`", field_ij, "` is not a field of column `", .cols[[row, "col_name"]], "`", call. = FALSE)
-      }
-      out_ij <- list(vctrs::field(cell_ij, field_ij))
-      names(out_ij) <- paste0(
-        .cols[[row, "col_name"]],
-        ".",
-        field_ij
-      )
-    } else {
-      stop(
-        "`", .cols[[row, "col_name"]],
-        "` does not possess projectable fields; must use `identity`, not `",
-        field_ij, "`", call. = FALSE
-      )
-    }
-
-    out <- c(out, out_ij)
-  }
-
-  # Output
-  col_labels <- .cols$col_value
-  col_labels[.cols$col_value == "identity"] <- names(out)[which(.cols$col_value == "identity")]
-  col_spanners <- .cols$col_name
-  col_spanners[.cols$col_value == "identity"] <- NA_character_
-
-  validate_projection(
-    new_projection(
-      tibble::as_tibble(out),
-      .cols = tibble::tibble(
-        cols = names(out),
-        col_labels = col_labels,
-        col_spanners = col_spanners
-      )
-    )
-  )
-}
-
-
