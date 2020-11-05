@@ -33,8 +33,8 @@
 #' proje_gt(
 #'   project_table(x, .cols = list(
 #'     cyl = "identity",
-#'     non_V = c("proportion", "big_n"),
-#'     V = c("proportion", "big_n")
+#'     non_V = c("p", "N"),
+#'     V = c("p", "N")
 #'   ))
 #' )
 proje_gt <- function(projection, ...) {

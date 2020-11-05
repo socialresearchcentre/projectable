@@ -25,10 +25,10 @@
 #'   )
 #' )
 #'
-encol_freq <- function(little_n, big_n) {
+encol_freq <- function(n, N) {
   bquote(col_freq(
-    sum(.(substitute(little_n))),
-    sum(.(substitute(big_n)))
+    sum(.(substitute(n))),
+    sum(.(substitute(N)))
   ))
 }
 
@@ -60,11 +60,11 @@ encol_freq <- function(little_n, big_n) {
 #'     non_vshaped = encol_binomial(vs %in% 0, vs %in% 0:1)
 #'   )
 #' )
-encol_binomial <- function(success, sample, ci_error = 0.05, population = Inf) {
+encol_binomial <- function(n, N, ci_error = 0.05, population = Inf) {
   bquote(
     col_binomial(
-      successes = sum(.(substitute(success))),
-      sample = sum(.(substitute(sample))),
+      n = sum(.(substitute(n))),
+      N = sum(.(substitute(N))),
       ci_error = .(ci_error),
       population = sum(.(substitute(population)))
     )

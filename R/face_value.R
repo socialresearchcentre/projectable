@@ -33,9 +33,10 @@ face_value.projectable_col <- function(x) {
 }
 
 face_value.projectable_col_freq <- function(x) {
-  vctrs::field(x, "proportion")
+  vctrs::field(x, "p")
 }
 
 face_value.projectable_col_binomial <- function(x) {
-  vctrs::field(x, "probability")
+  vctrs::field(x, "p")
 }
+

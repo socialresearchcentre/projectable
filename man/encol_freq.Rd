@@ -4,7 +4,7 @@
 \alias{encol_freq}
 \title{encol_freq}
 \usage{
-encol_freq(little_n, big_n)
+encol_freq(n, N)
 }
 \arguments{
 \item{little_n}{An unquoted expression which evaluates to a logical, defining the count; alternatively an integer representing the count}

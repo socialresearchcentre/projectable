@@ -5,16 +5,16 @@
 \alias{is_col_freq}
 \title{Frequency Columns}
 \usage{
-col_freq(little_n = double(), big_n = double(), proportion = NULL)
+col_freq(n = double(), N = double(), p = NULL)
 
 is_col_freq(x)
 }
 \arguments{
-\item{little_n}{A numeric vector of frequencies}
+\item{n}{A numeric vector of frequencies}
 
-\item{big_n}{A numeric vector of base frequencies}
+\item{N}{A numeric vector of base frequencies}
 
-\item{proportion}{A numeric vector of proportions, defaults to the quotient of \code{little_n} and \code{big_n}}
+\item{p}{A numeric vector of proportions, defaults to the quotient of \code{n} and \code{N}}
 
 \item{x}{An object to test}
 }

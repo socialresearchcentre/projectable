@@ -5,19 +5,14 @@
 \alias{is_col_binomial}
 \title{Binomial Column}
 \usage{
-col_binomial(
-  successes = integer(),
-  sample = integer(),
-  ci_error = 0.05,
-  population = Inf
-)
+col_binomial(n = integer(), N = integer(), ci_error = 0.05, population = Inf)
 
 is_col_binomial(x)
 }
 \arguments{
-\item{successes}{A numeric vector, the number of successes}
+\item{n}{A numeric vector, the number of successes}
 
-\item{sample}{A numeric vector, the number of Bernoulli trials}
+\item{N}{A numeric vector, the number of Bernoulli trials}
 
 \item{ci_error}{A numeric vector, the error to be used for calculating confidence intervals}
 

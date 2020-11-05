@@ -2,9 +2,9 @@
 #'
 #' Create, or test for, objects of type `projectable_col_freq`.
 #'
-#' @param little_n A numeric vector of frequencies
-#' @param big_n A numeric vector of base frequencies
-#' @param proportion A numeric vector of proportions, defaults to the quotient of `little_n` and `big_n`
+#' @param n A numeric vector of frequencies
+#' @param N A numeric vector of base frequencies
+#' @param p A numeric vector of proportions, defaults to the quotient of `n` and `N`
 #' @param x An object to test
 #'
 #' @return An S3 vector of class `projectable_col_freq`
@@ -17,9 +17,9 @@
 
 # Validator and constructors ---------------------------------------------------
 
-col_freq <- function(little_n = double(), big_n = double(), proportion = NULL) {
-  if (is.null(proportion)) proportion <- little_n / big_n
-  out <- vctrs::vec_cast_common(little_n, big_n, proportion, .to = double())
+col_freq <- function(n = double(), N = double(), p = NULL) {
+  if (is.null(p)) p <- n / N
+  out <- vctrs::vec_cast_common(n, N, p, .to = double())
   out <- vctrs::vec_recycle_common(!!!out)
 
   validate_col_freq(
@@ -27,32 +27,32 @@ col_freq <- function(little_n = double(), big_n = double(), proportion = NULL) {
   )
 }
 
-new_col_freq <- function(little_n = double(), big_n = double(), proportion = double()) {
-  vctrs::vec_assert(little_n, double())
-  vctrs::vec_assert(big_n, double())
-  vctrs::vec_assert(proportion, double())
-  stopifnot(length(unique(length(little_n), length(big_n), length(proportion))) == 1)
+new_col_freq <- function(n = double(), N = double(), p = double()) {
+  vctrs::vec_assert(n, double())
+  vctrs::vec_assert(N, double())
+  vctrs::vec_assert(p, double())
+  stopifnot(length(unique(length(n), length(N), length(p))) == 1)
 
   vctrs::new_rcrd(
     list(
-      little_n = little_n,
-      big_n = big_n,
-      proportion = proportion
+      n = n,
+      N = N,
+      p = p
     ),
     class = c("projectable_col_freq", "projectable_col")
   )
 }
 
 validate_col_freq <- function(x) {
-  little_n <- vctrs::field(x, "little_n")
-  big_n <- vctrs::field(x, "big_n")
-  proportion <- vctrs::field(x, "proportion")
+  n <- vctrs::field(x, "n")
+  N <- vctrs::field(x, "N")
+  p <- vctrs::field(x, "p")
 
 
-  # Check proportion value
-  chk_warn(proportion != (little_n / big_n), "`proportion` != `big_n` / `little_n`")
-  chk_warn(proportion > 1, "`proportion` > 1")
-  chk_warn(proportion < 0, "`proportion` < 0")
+  # Check p value
+  chk_warn(p != (n / N), "`p` != `N` / `n`")
+  chk_warn(p > 1, "`p` > 1")
+  chk_warn(p < 0, "`p` < 0")
 
   x
 }

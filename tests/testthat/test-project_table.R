@@ -10,8 +10,8 @@ testthat::test_that("project_table", {
   # Check correct operation
   testthat::expect_identical(names(project_table(x)), c("x", "y", "z"))
   testthat::expect_identical(
-    names(project_table(x,  list(z = "identity", x = c("proportion", "little_n")))),
-    c("z", "x.proportion", "x.little_n")
+    names(project_table(x,  list(z = "identity", x = c("p", "n")))),
+    c("z", "x.p", "x.n")
   )
   testthat::expect_equal(
     project_table(x,  list(z = "identity", x = c("proportion", "little_n")))[["x.little_n"]],
