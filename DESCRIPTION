@@ -15,7 +15,8 @@ Depends:
     R (>= 3.6.0)
 Imports: 
     vctrs,
-    tibble
+    tibble,
+    glue
 Suggests: 
     testthat,
     gt,

@@ -22,20 +22,24 @@ face_value <- function(x) {
   UseMethod("face_value")
 }
 
+#' @export
 face_value.default <- function(x) {
   x
 }
 
+#' @export
 face_value.projectable_col <- function(x) {
   subclass <- class(x)[grep("projectable_col_", class(x))]
   stop("`face_value()` not implemented for `projectable_col` of class `",
        subclass, "`", call. = FALSE)
 }
 
+#' @export
 face_value.projectable_col_freq <- function(x) {
   vctrs::field(x, "p")
 }
 
+#' @export
 face_value.projectable_col_binomial <- function(x) {
   vctrs::field(x, "p")
 }

@@ -52,8 +52,8 @@ crs_tab <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      vshaped = encol_freq(little_n = vs %in% 1, big_n = vs %in% 0:1),
-      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = vs %in% 0:1)
+      `V-Shaped` = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
+      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
     )
   )
 
@@ -71,7 +71,7 @@ value in `mtcars$am`.
 
 If we wanted to calculate the base for each frequency, not row-by-row, but 
 over the whole column we would have to explicitly instruct R, when it is evaluating
-`big_n`, not to look for `vs` within the filtered version of `mtcars`, but in 
+`N`, not to look for `vs` within the filtered version of `mtcars`, but in 
 `mtcars` overall. Thus we would write
 
 ```{r}
@@ -83,8 +83,8 @@ crs_tab_col <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      vshaped = encol_freq(little_n = vs %in% 1, big_n = mtcars$vs %in% 1), 
-      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = mtcars$vs %in% 0)
+      `V-Shaped` = encol_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
+      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
     )
   )
 
@@ -106,8 +106,8 @@ crs_tab_overall <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      vshaped = encol_freq(little_n = vs %in% 1, big_n = nrow(mtcars)), 
-      not_vshaped = encol_freq(little_n = vs %in% 0, big_n = nrow(mtcars))
+      `V-Shaped` = encol_freq(n = vs %in% 1, N = nrow(mtcars)), 
+      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = nrow(mtcars))
     )
   )
 
@@ -120,7 +120,7 @@ knitr::kable(crs_tab_overall)
 Once we have finished setting the table, what we should have is a table-like
 object with `projectable` `col_*`s. In addition to a face value, each of these 
 `col_*`s will have a set of metadata associated with it: a `col_freq`, for 
-instance, contains `little_n` and `big_n` metadata.
+instance, contains `n` and `N` metadata.
 
 ## Casting a shadow
 When it comes to displaying this metadata-rich table-like object, we have a range
@@ -131,7 +131,7 @@ In some circumstances, we may want to display only the face values of each
 
 However, in many cases, we will also want to be able to display the associated 
 metadata. Thus, there might be times when we want to display not only the 
-proportions but the associated `little_n` and `big_n` too.
+proportions but the associated `n` and `N` too.
 
 This is where the `project_table()` function comes in: we use it to 'unfold' each
 `col_*` into whichever of its constituent elements we would like to display. 
@@ -139,17 +139,15 @@ This is where the `project_table()` function comes in: we use it to 'unfold' eac
 (LINK TO ANOTHER VIGNETTE WITH MORE INFO ON THE CONCEPT OF 'PROJECTING' COLUMNS).
 
 ```{r}
-crs_tab <- crs_tab %>% 
-  project_table(
+crs_tab_display <- crs_tab %>% 
+  prj_table(
     .cols = list(
-      rows = "identity",
-      row_spanner = "identity",
-      vshaped = c("proportion", "little_n", "big_n"),
-      not_vshaped = c("proportion", "little_n", "big_n")
+      `V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}"),
+      `Not V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")
     )
   )
 
-knitr::kable(crs_tab)
+knitr::kable(crs_tab_display)
 ``` 
 
 We thus arrive at another 'flat' dataframe: a dataframe whose columns are simple
@@ -178,19 +176,18 @@ Instead of implementing any formatting functions, `projectable` implements a
 hand-off function, `proje_gt()`, which initialises a `gt` table object:
 
 ```{r}
-crs_tab <- crs_tab %>% 
-  dplyr::group_by(row_spanner) %>% 
-  proje_gt(rowname_col = "rows")
+crs_tab_gt <- crs_tab %>% 
+  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
+  prj_gt()
 
-crs_tab
+crs_tab_gt
 ```
 
 It is then possible to leverage all of the functionality of `gt` to apply 
 whatever formatting we want:
 
 ```{r}
-crs_tab %>% 
-  gt::fmt_percent(ends_with("proportion")) %>%
+crs_tab_gt %>% 
   gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 
   gt::tab_stubhead(label = "Vehicle Characteristics") %>% 
   gt::tab_options(

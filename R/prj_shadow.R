@@ -37,6 +37,17 @@
 #' prj_table(my_tbl)
 #'
 #' @export
+prj_shadow_all <- function(.data, .shadow) {
+  stopifnot(is.character(.shadow))
+  for (i in 1:ncol(.data)) {
+    .data[[i]] <- `col_shadow<-`(.data[[i]], .shadow)
+  }
+
+  .data
+}
+
+#' @rdname prj_shadow_all
+#' @export
 prj_shadow_if <- function(.data, .predicate, .shadow) {
   .predicate <- substitute(.predicate)
   stopifnot(is.character(.shadow))
@@ -50,7 +61,7 @@ prj_shadow_if <- function(.data, .predicate, .shadow) {
   .data
 }
 
-#' @rdname prj_shadow_if
+#' @rdname prj_shadow_all
 #' @export
 prj_shadow_at <- function(.data, .vars, .shadow) {
   stopifnot(is.character(.vars))

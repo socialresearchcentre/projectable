@@ -14,9 +14,11 @@
 #' track of which columns in the output belong to which columns in the input.
 #'
 #' @param .data A dataframe, ideally one containing `projectable_col`s
-#' @param `.cols` A named list. Each name should  bethe name of a column in
+#' @param `.cols` A named list. Each name should  be the name of a column in
 #'   `.data`; each value should be a named character vector containing
 #'   glue-like specifications for the output columns.
+#' @param rowgroup_col The name of a column in `.data` to group rows by; if `NULL` no grouping will be used.
+#' @param rowname_col The name of a column in `.data` to take as the row labels; if `NULL` no row labels will be applied
 #' @param ... Additional arguments to pass on to `gt::gt()`
 #'
 #' @return a `projection` object
@@ -45,6 +47,7 @@
 #' @name prj_table
 # Project table ----------------------------------------------------------------
 prj_table <- function(.data, .cols = list()) {
+  if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   .data <- add_shadows(.data = .data, .shadows = .cols)
   prj_cast_shadow(.data)
 }
@@ -61,9 +64,10 @@ prj_cast_shadow <- function(.data) {
       out
     }
     out
-  }, .data, names(.data))
+  }, .data, names(.data), SIMPLIFY = FALSE)
 
   out <- out[vapply(out, function (x) length(x) != 0, logical(1))]
+  out <- vctrs::vec_recycle_common(!!!out)
 
   # Collect metadata
   col_labels <-  unlist(
@@ -73,13 +77,18 @@ prj_cast_shadow <- function(.data) {
       row_names
     })
   )
+  if(is.null(col_labels)) col_labels <- character(0)
+  names(col_labels) <- NULL
+
   col_spanners <- unlist(lapply(names(out), function (x) {
     rep(x, ncol(out[[x]]))
   }))
   col_spanners[col_spanners == col_labels] <- NA_character_
+  names(col_spanners) <- NULL
 
   col_names <- paste(col_spanners, col_labels, sep = ".")
   col_names[is.na(col_spanners)] <- col_labels[is.na(col_spanners)]
+  names(col_names) <- NULL
 
   # Output
   out <- do.call(cbind, out)
@@ -105,14 +114,20 @@ glue_each_in <- function(.string, .data) {
   parent.env(enclos_env) <- calling_env
   # Glue strings
   lapply(.string, function (s) {
-    .data <- as.environment(.data)
-    parent.env(.data) <- enclos_env
-    glue::glue(s, .envir = .data)
+    if (is_col(.data)) {
+      data_env <- as.environment(.data)
+      parent.env(data_env) <- enclos_env
+    } else{
+      data_env <- enclos_env
+    }
+    glue::glue(s, .envir = data_env)
   })
 }
 
 add_shadows <- function(.data, .shadows) {
   stopifnot(is.list(.shadows))
+  if (any(duplicated(names(.shadows)))) stop("all names in `.shadows` must be unique")
+
   for (i in seq_along(.shadows)) {
     var <- names(.shadows)[[i]]
     shdw <- .shadows[[i]]
@@ -127,22 +142,23 @@ add_shadows <- function(.data, .shadows) {
 
 #' @export
 #' @rdname prj_table
-prj_gt <- function(.data, .cols = list(), ...) {
-  stopifnot("rows" %in% names(.data))
-  stopifnot("row_spanner" %in% names(.data))
+prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_col = "rows", ...) {
 
   # Project table
+  if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   projection <- add_shadows(.data ,.cols)
   projection <- prj_cast_shadow(projection)
 
   # Add row groups
-  row_groups <- unique(projection$row_spanner[!is.na(projection$row_spanner)])
-  row_groups <- tibble::tibble(row_spanner = row_groups)
-  row_groups$.rows <- lapply(row_groups$row_spanner, function (sp) {
-    which(projection$row_spanner %in% sp)
-  })
-  projection <- `attr<-`(projection, "groups", row_groups)
-  projection <- `class<-`(projection, c("grouped_df", class(projection)))
+  if (!is.null(rowgroup_col)) {
+    row_groups <- unique(projection$row_spanner[!is.na(projection$row_spanner)])
+    row_groups <- tibble::tibble(row_spanner = row_groups)
+    row_groups$.rows <- lapply(row_groups$row_spanner, function (sp) {
+      which(projection$row_spanner %in% sp)
+    })
+    projection <- `attr<-`(projection, "groups", row_groups)
+    projection <- `class<-`(projection, c("grouped_df", class(projection)))
+  }
 
   # Edit labels
   .col_spec <- attr(projection, ".cols")

@@ -1,82 +1,98 @@
-# project_table -----------------------------------------------------------
-testthat::test_that("project_table", {
-  x <- data.frame(
-    x = col_freq(1:3, 3:5),
-    y = col_freq(6:8, 9:11),
-    z = c("a", "b", "c"),
-    stringsAsFactors = FALSE
-  )
 
-  # Check correct operation
-  testthat::expect_identical(names(project_table(x)), c("x", "y", "z"))
-  testthat::expect_identical(
-    names(project_table(x,  list(z = "identity", x = c("p", "n")))),
-    c("z", "x.p", "x.n")
-  )
-  testthat::expect_equal(
-    project_table(x,  list(z = "identity", x = c("proportion", "little_n")))[["x.little_n"]],
-    1:3
-  )
+x <- data.frame(
+  x = col_freq(1:3, 3:5),
+  y = col_freq(6:8, 9:11),
+  z = c("a", "b", "c"),
+  stringsAsFactors = FALSE
+)
 
-  # Check metadata
-  testthat::expect_identical(
-    attr(project_table(x), ".cols"),
-    tibble::tibble(
-      cols = c("x", "y", "z"),
-      col_labels = c("x", "y", "z"),
-      col_spanners = NA_character_
-    )
-  )
+# prj_table -----------------------------------------------------------
 
-  testthat::expect_identical(
-    attr(project_table(x, list(z = "identity", x = c("proportion", "little_n"))), ".cols"),
-    tibble::tibble(
-      cols = c("z", "x.proportion", "x.little_n"),
-      col_labels = c("z", "proportion", "little_n"),
-      col_spanners = c(NA_character_, "x", "x")
-    )
-  )
+testthat::test_that("prj_table", {
 
+  # Empty
+  testthat::expect_identical(vctrs::vec_data(prj_table(x)), data.frame())
 
-  # Check incorrect operation
+  # Non-empty
+  x_prj <- prj_table(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}")))
+  testthat::expect_equal(ncol(x_prj), 3)
+  testthat::expect_equal(nrow(x_prj), 3)
+  testthat::expect_equal(names(x_prj), c("x.proportion", "x.count", "z"))
+
+  # Failed
   testthat::expect_error(
-    project_table(x,  list(z = "identity", z = "identity")),
-    "duplicate"
+    prj_table(x,  list(z = "{.}", z = "identity")),
+    "all names in `.cols` must be unique"
   )
   testthat::expect_error(
-    project_table(x,  list(z = "proportion", x = "identity")),
-    "does not possess projectable fields"
+    prj_table(x,  list(z = "{some_col}", x = "{p}")),
+    "object 'some_col' not found"
   )
   testthat::expect_error(
-    project_table(x,  list(z = "identity", x = "some_field")),
-    "not a field of column"
+    prj_table(x,  list(z = "{.}", x = "{some_field}")),
+    "some_field' is not a field of `x`"
+  )
+  testthat::expect_error(
+    prj_table(x,  list(m = "{.}", x = "{some_field}")),
+    "`m` is not a column of `.data`"
   )
 })
 
+testthat::test_that("prj_table metadata", {
+  # Empty
+  testthat::expect_identical(
+    attr(prj_table(x), ".cols"),
+    tibble::tibble(
+      cols = character(),
+      col_labels = character(),
+      col_spanners = character()
+    )
+  )
+
+  # Non-empty
+  testthat::expect_identical(
+    attr(prj_table(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}"))), ".cols"),
+    tibble::tibble(
+      cols = c("x.proportion", "x.count", "z"),
+      col_labels = c("proportion", "count", "z"),
+      col_spanners = c("x", "x", NA_character_)
+    )
+  )
+})
 
 # proje_gt ----------------------------------------------------------------
+y <- set_table(mtcars, cyl, list(v = encol_freq(vs %in% 1, vs %in% 0:1)))
 
-testthat::test_that("project_table", {
-  x <- data.frame(
-    x = col_freq(1:3, 3:5),
-    y = col_freq(6:8, 9:11),
-    z = c("a", "b", "c"),
-    stringsAsFactors = FALSE
-  )
+testthat::test_that("prj_gt", {
 
-
-
-  # Check correct operation
-  testthat::expect_s3_class(
-    proje_gt(project_table(x, list(x = c("proportion", "little_n"), y = "identity", z = "identity"))),
-    "gt_tbl"
-  )
-
-  # Check failure
+  # Empty
   testthat::expect_error(
-    proje_gt(x),
-    "must possess a `.cols`"
+    prj_gt(x, rowgroup_col = NULL, rowname_col = NULL),
+    "The `data` must have at least one column that isn't a 'group' column."
+  )
+
+  # Non-empty
+  x_prj <- prj_gt(x,  list(x = "{.}", y = "{p}"), rowgroup_col = NULL, rowname_col = NULL)
+  testthat::expect_equal(ncol(x_prj$`_data`), 2)
+  testthat::expect_equal(nrow(x_prj$`_data`), 3)
+  testthat::expect_equal(names(x_prj$`_data`), c("x", "y"))
+
+  y_prj <- prj_gt(y,  list(v = c(proportion = "{p}", count = "{n}")))
+  testthat::expect_equal(ncol(y_prj$`_data`), 4)
+  testthat::expect_equal(nrow(y_prj$`_data`), 3)
+  testthat::expect_equal(names(y_prj$`_data`), c("v.proportion", "v.count", "rows", "row_spanner"))
+
+  # Failed
+  testthat::expect_error(
+    prj_gt(x,  list(z = "{.}", z = "identity")),
+    "all names in `.cols` must be unique"
+  )
+  testthat::expect_error(
+    prj_gt(x,  list(z = "{some_col}", x = "{p}")),
+    "object 'some_col' not found"
+  )
+  testthat::expect_error(
+    prj_gt(x,  list(z = "{.}", x = "{some_field}")),
+    "some_field' is not a field of `x`"
   )
 })
-
-

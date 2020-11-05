@@ -37,21 +37,21 @@ testthat::test_that("`.rows` uses expressions only", {
 
   # Summing overall MECE proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk$vshaped_all, "proportion")) + sum(vctrs::field(chk$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk$vshaped_all, "p")) + sum(vctrs::field(chk$nvshaped_all, "p")),
     1
   )
   # Summing column proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk$vshaped_col, "proportion")),
+    sum(vctrs::field(chk$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk$nvshaped_col, "p")),
     1
   )
   # Summing row proportions should give 1
   testthat::expect_equal(
-    vctrs::field(chk$vshaped_rbr, "proportion") + vctrs::field(chk$nvshaped_rbr, "proportion"),
+    vctrs::field(chk$vshaped_rbr, "p") + vctrs::field(chk$nvshaped_rbr, "p"),
     c(1, 1, 1)
   )
 
@@ -92,21 +92,21 @@ testthat::test_that("`.rows` uses one symbol only", {
 
   # Summing overall MECE proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk$vshaped_all, "proportion")) + sum(vctrs::field(chk$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk$vshaped_all, "p")) + sum(vctrs::field(chk$nvshaped_all, "p")),
     1
   )
   # Summing column proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk$vshaped_col, "proportion")),
+    sum(vctrs::field(chk$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk$nvshaped_col, "p")),
     1
   )
   # Summing row proportions should give 1
   testthat::expect_equal(
-    vctrs::field(chk$vshaped_rbr, "proportion") + vctrs::field(chk$nvshaped_rbr, "proportion"),
+    vctrs::field(chk$vshaped_rbr, "p") + vctrs::field(chk$nvshaped_rbr, "p"),
     c(1, 1, 1)
   )
 
@@ -154,34 +154,34 @@ testthat::test_that("`.rows` uses symbols only", {
   chk_split <- split(chk, chk$row_spanner)
   # Summing overall MECE proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$vshaped_all, "proportion")) + sum(vctrs::field(chk_split[[1]]$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$vshaped_all, "p")) + sum(vctrs::field(chk_split[[1]]$nvshaped_all, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$vshaped_all, "proportion")) + sum(vctrs::field(chk_split[[2]]$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$vshaped_all, "p")) + sum(vctrs::field(chk_split[[2]]$nvshaped_all, "p")),
     1
   )
 
   # Summing column proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$vshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$nvshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$vshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$nvshaped_col, "p")),
     1
   )
   # Summing row proportions should give 1
   testthat::expect_equal(
-    vctrs::field(chk$vshaped_rbr, "proportion") + vctrs::field(chk$nvshaped_rbr, "proportion"),
+    vctrs::field(chk$vshaped_rbr, "p") + vctrs::field(chk$nvshaped_rbr, "p"),
     rep(1, nrow(chk))
   )
 
@@ -237,34 +237,34 @@ testthat::test_that("`.rows` uses symbols and expressions", {
   chk_split <- split(chk, chk$row_spanner)
   # Summing overall MECE proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$vshaped_all, "proportion")) + sum(vctrs::field(chk_split[[1]]$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$vshaped_all, "p")) + sum(vctrs::field(chk_split[[1]]$nvshaped_all, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$vshaped_all, "proportion")) + sum(vctrs::field(chk_split[[2]]$nvshaped_all, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$vshaped_all, "p")) + sum(vctrs::field(chk_split[[2]]$nvshaped_all, "p")),
     1
   )
 
   # Summing column proportions should give 1
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$vshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[1]]$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[1]]$nvshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$vshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$vshaped_col, "p")),
     1
   )
   testthat::expect_equal(
-    sum(vctrs::field(chk_split[[2]]$nvshaped_col, "proportion")),
+    sum(vctrs::field(chk_split[[2]]$nvshaped_col, "p")),
     1
   )
   # Summing row proportions should give 1
   testthat::expect_equal(
-    vctrs::field(chk$vshaped_rbr, "proportion") + vctrs::field(chk$nvshaped_rbr, "proportion"),
+    vctrs::field(chk$vshaped_rbr, "p") + vctrs::field(chk$nvshaped_rbr, "p"),
     rep(1, nrow(chk))
   )
 
