@@ -14,11 +14,13 @@
 #' track of which columns in the output belong to which columns in the input.
 #'
 #' @param .data A dataframe, ideally one containing `projectable_col`s
-#' @param `.cols` A named list. Each name should  be the name of a column in
-#'   `.data`; each value should be a named character vector containing
-#'   glue-like specifications for the output columns.
-#' @param rowgroup_col The name of a column in `.data` to group rows by; if `NULL` no grouping will be used.
-#' @param rowname_col The name of a column in `.data` to take as the row labels; if `NULL` no row labels will be applied
+#' @param .cols A named list. Each name should  be the name of a column in
+#'   `.data`; each value should be a named character vector containing glue-like
+#'   specifications for the output columns.
+#' @param rowgroup_col The name of a column in `.data` to group rows by; if
+#'   `NULL` no grouping will be used.
+#' @param rowname_col The name of a column in `.data` to take as the row labels;
+#'   if `NULL` no row labels will be applied
 #' @param ... Additional arguments to pass on to `gt::gt()`
 #'
 #' @return a `projection` object
@@ -39,10 +41,16 @@
 #' )
 #'
 #' # Project it back into an ordinary dataframe
-#' prj_table(my_tbl, list(`V-Shaped` = "{signif(p, 2)} ({n})", `Not V-shaped` = "{signif(p, 2)} ({n})"))
+#' prj_table(my_tbl, list(
+#'   `V-Shaped` = "{signif(p, 2)} ({n})",
+#'   `Not V-shaped` = "{signif(p, 2)} ({n})"
+#' ))
 #'
 #' # Produce a `gt` display object
-#' prj_gt(my_tbl, list(`V-Shaped` = "{signif(p, 2)} ({n})", `Not V-shaped` = "{signif(p, 2)} ({n})"))
+#' prj_gt(my_tbl, list(
+#'   `V-Shaped` = "{signif(p, 2)} ({n})",
+#'   `Not V-shaped` = "{signif(p, 2)} ({n})"
+#' ))
 #'
 #' @name prj_table
 # Project table ----------------------------------------------------------------
@@ -181,7 +189,7 @@ prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_
 }
 
 # Projection -------------------------------------------------------------------
-new_projection <- function(x = tibble(), .cols = tibble()) {
+new_projection <- function(x = tibble::tibble(), .cols = tibble::tibble()) {
   stopifnot(tibble::is_tibble(x))
 
   structure(

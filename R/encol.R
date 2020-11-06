@@ -4,8 +4,8 @@
 #'
 #' Generate a quoted call to `col_freq()`, typically to be evaluated within the context of a call to `set_table()`.
 #'
-#' @param little_n An unquoted expression which evaluates to a logical, defining the count; alternatively an integer representing the count
-#' @param big_n An unquoted expression which evaluates to a logical, defining the base count; alternatively an integer representing the base count
+#' @param n An unquoted expression which evaluates to a logical, defining the count; alternatively an integer representing the count
+#' @param N An unquoted expression which evaluates to a logical, defining the base count; alternatively an integer representing the base count
 #'
 #' @return A quoted call to `col_freq()`
 #' @export
@@ -39,8 +39,8 @@ encol_freq <- function(n, N) {
 #'
 #' Generate a quoted call to `col_binomial()`, typically to be evaluated within the context of a call to `set_table()`.
 #'
-#' @param success An unquoted expression that evaluates to a logical, defining successes; alternatively an integer representing the number of successes
-#' @param sample An unquoted expression that evaluates to a logical, defining the sample size; alternatively an integer representing the sample size
+#' @param n An unquoted expression that evaluates to a logical, defining successes; alternatively an integer representing the number of successes
+#' @param N An unquoted expression that evaluates to a logical, defining the sample size; alternatively an integer representing the sample size
 #' @param ci_error A scalar number representing the error, which is used to calculate confidence intervals.
 #' @param population An unquoted expression that evaluates to a logical, defining the population size; alternatively an number representing the population size
 #'

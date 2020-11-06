@@ -18,7 +18,7 @@
 #' @param .rows an expression or symbol, or a list of expressions and symbols, or a list of lists of expressions and symbols
 #' @param .cols a named list of unquoted expressions, typically containing calls to `encol_*()`, defining the columns of the output
 #'
-#' @return
+#' @return A dataframe containing columns and rows corresponding to `.cols` and `.rows`
 #' @export
 #'
 #' @examples

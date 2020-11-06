@@ -40,17 +40,27 @@ validate_col <- function(x) {
 
 # Helpers -----------------------------------------------------------------
 
+#' Test, get and set cols and their attributes
+#'
+#' There are various subclasses of `projectable_col` including the `col_freq` and
+#' `col_binomial`. These functions provide a high-level interface to those subclasses.
+#'
+#' @param x An object to test or to check the attributes of
+#' @param value A value to set the attribute to
+#'
 #' @export
 is_col <- function(x) {
   inherits(x, "projectable_col")
 }
 
 #' @export
+#' @rdname is_col
 col_shadow <- function(x) {
   attr(x, "shadow")
 }
 
 #' @export
+#' @rdname is_col
 `col_shadow<-` <- function(x, value) {
   out <- `attr<-`(x, "shadow", value)
   if (is_col(x)) out <- validate_col(out)

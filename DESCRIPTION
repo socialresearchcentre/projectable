@@ -1,5 +1,5 @@
 Package: projectable
-Title: Metadata-rich Tables
+Title: Metadata-Rich Tables
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Kinto",
@@ -16,12 +16,14 @@ Depends:
 Imports: 
     vctrs,
     tibble,
-    glue
+    glue,
+    stats
 Suggests: 
     testthat,
     gt,
     knitr,
-    rmarkdown
+    rmarkdown,
+    dplyr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

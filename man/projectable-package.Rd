@@ -4,7 +4,7 @@
 \name{projectable-package}
 \alias{projectable}
 \alias{projectable-package}
-\title{projectable: Metadata-rich Tables}
+\title{projectable: Metadata-Rich Tables}
 \description{
 Produce table-like objects made up of special metadata-rich
     column vectors, and project them into two dimensions.

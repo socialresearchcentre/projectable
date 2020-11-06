@@ -14,7 +14,7 @@ set_table(.data, .rows, .cols)
 \item{.cols}{a named list of unquoted expressions, typically containing calls to \verb{encol_*()}, defining the columns of the output}
 }
 \value{
-
+A dataframe containing columns and rows corresponding to \code{.cols} and \code{.rows}
 }
 \description{
 The \code{set_table()} function builds a table row-by-row and column-by-column

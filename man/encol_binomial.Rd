@@ -7,13 +7,13 @@
 encol_binomial(n, N, ci_error = 0.05, population = Inf)
 }
 \arguments{
+\item{n}{An unquoted expression that evaluates to a logical, defining successes; alternatively an integer representing the number of successes}
+
+\item{N}{An unquoted expression that evaluates to a logical, defining the sample size; alternatively an integer representing the sample size}
+
 \item{ci_error}{A scalar number representing the error, which is used to calculate confidence intervals.}
 
 \item{population}{An unquoted expression that evaluates to a logical, defining the population size; alternatively an number representing the population size}
-
-\item{success}{An unquoted expression that evaluates to a logical, defining successes; alternatively an integer representing the number of successes}
-
-\item{sample}{An unquoted expression that evaluates to a logical, defining the sample size; alternatively an integer representing the sample size}
 }
 \value{
 A quoted call to \code{col_binomial()}

@@ -39,7 +39,7 @@ col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, populati
   # Parameter estimation via Agresti-Coull
   if (length(n) > 0 ) {
     est_params <- lapply(1:length(n), function (i) {
-      std_quant <- qnorm(ci_error[i]/2)
+      std_quant <- stats::qnorm(ci_error[i]/2)
       n_hat <- N[i] + std_quant^2
       fin_pop_corr <- 1 - N[i] / population[i]
 

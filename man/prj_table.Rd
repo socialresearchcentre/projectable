@@ -18,15 +18,17 @@ prj_gt(
 \arguments{
 \item{.data}{A dataframe, ideally one containing \code{projectable_col}s}
 
-\item{rowgroup_col}{The name of a column in \code{.data} to group rows by; if \code{NULL} no grouping will be used.}
+\item{.cols}{A named list. Each name should  be the name of a column in
+\code{.data}; each value should be a named character vector containing glue-like
+specifications for the output columns.}
 
-\item{rowname_col}{The name of a column in \code{.data} to take as the row labels; if \code{NULL} no row labels will be applied}
+\item{rowgroup_col}{The name of a column in \code{.data} to group rows by; if
+\code{NULL} no grouping will be used.}
+
+\item{rowname_col}{The name of a column in \code{.data} to take as the row labels;
+if \code{NULL} no row labels will be applied}
 
 \item{...}{Additional arguments to pass on to \code{gt::gt()}}
-
-\item{`.cols`}{A named list. Each name should  be the name of a column in
-\code{.data}; each value should be a named character vector containing
-glue-like specifications for the output columns.}
 }
 \value{
 a \code{projection} object
@@ -61,9 +63,15 @@ my_tbl <- set_table(
 )
 
 # Project it back into an ordinary dataframe
-prj_table(my_tbl, list(`V-Shaped` = "{signif(p, 2)} ({n})", `Not V-shaped` = "{signif(p, 2)} ({n})"))
+prj_table(my_tbl, list(
+  `V-Shaped` = "{signif(p, 2)} ({n})",
+  `Not V-shaped` = "{signif(p, 2)} ({n})"
+))
 
 # Produce a `gt` display object
-prj_gt(my_tbl, list(`V-Shaped` = "{signif(p, 2)} ({n})", `Not V-shaped` = "{signif(p, 2)} ({n})"))
+prj_gt(my_tbl, list(
+  `V-Shaped` = "{signif(p, 2)} ({n})",
+  `Not V-shaped` = "{signif(p, 2)} ({n})"
+))
 
 }

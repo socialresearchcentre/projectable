@@ -7,9 +7,9 @@
 encol_freq(n, N)
 }
 \arguments{
-\item{little_n}{An unquoted expression which evaluates to a logical, defining the count; alternatively an integer representing the count}
+\item{n}{An unquoted expression which evaluates to a logical, defining the count; alternatively an integer representing the count}
 
-\item{big_n}{An unquoted expression which evaluates to a logical, defining the base count; alternatively an integer representing the base count}
+\item{N}{An unquoted expression which evaluates to a logical, defining the base count; alternatively an integer representing the base count}
 }
 \value{
 A quoted call to \code{col_freq()}

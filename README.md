@@ -51,22 +51,19 @@ mtcars %>%
         Transmission = am
       ),
       .cols = list(
-        vshaped = encol_freq(little_n = vs %in% 1, big_n = vs %in% 0:1),
-        not_vshaped = encol_freq(little_n = vs %in% 0, big_n = vs %in% 0:1)
+        vshaped = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
+        not_vshaped = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
       )
     ) %>% 
-  # Reshape for display 
-  project_table(
-    .cols = list(
-      rows = "identity",
-      row_spanner = "identity",
-      vshaped = c("proportion", "little_n", "big_n"),
-      not_vshaped = c("proportion", "little_n", "big_n")
-    )
-  ) %>% 
+  # Tag columns to display
+    prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
   # Pass through to `gt` for formatting
-  dplyr::group_by(row_spanner) %>% 
-  proje_gt(rowname_col = "rows")
-  
+  prj_gt() %>% 
+  gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 
+  gt::tab_stubhead(label = "Vehicle Characteristics") %>% 
+  gt::tab_options(
+    heading.background.color = "#080808",
+    row_group.background.color = "#f0f0f0"
+  )
 ```
 
