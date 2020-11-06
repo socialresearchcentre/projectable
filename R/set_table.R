@@ -16,7 +16,7 @@
 #'
 #' @param .data a dataframe
 #' @param .rows an expression or symbol, or a list of expressions and symbols, or a list of lists of expressions and symbols
-#' @param .cols a named list of unquoted expressions, typically containing calls to `encol_*()`, defining the columns of the output
+#' @param .cols a named list of unquoted expressions, typically containing calls to `col_*()`, defining the columns of the output
 #'
 #' @return A dataframe containing columns and rows corresponding to `.cols` and `.rows`
 #' @export
@@ -35,8 +35,8 @@
 #'     )
 #'   ),
 #'   .cols = list(
-#'     vshaped = encol_freq(vs %in% 1, nrow(mtcars)),
-#'     non_vshaped = encol_freq(vs %in% 0, nrow(mtcars))
+#'     vshaped = col_freq(vs %in% 1, nrow(mtcars)),
+#'     non_vshaped = col_freq(vs %in% 0, nrow(mtcars))
 #'   )
 #' )
 #'
@@ -46,8 +46,8 @@
 #'   .data = mtcars,
 #'   .rows = list(cylinders = cyl, transmission = am),
 #'   .cols = list(
-#'     vshaped = encol_freq(vs %in% 1, vs %in% 0:1),
-#'     non_vshaped = encol_freq(vs %in% 0, vs %in% 0:1)
+#'     vshaped = col_freq(vs %in% 1, vs %in% 0:1),
+#'     non_vshaped = col_freq(vs %in% 0, vs %in% 0:1)
 #'   )
 #' )
 #'
@@ -57,8 +57,8 @@
 #'   .data = mtcars,
 #'   .rows = cyl,
 #'   .cols = list(
-#'     vshaped = encol_freq(vs %in% 1, mtcars$vs %in% 1),
-#'     non_vshaped = encol_freq(vs %in% 0, mtcars$vs %in% 1)
+#'     vshaped = col_freq(vs %in% 1, mtcars$vs %in% 1),
+#'     non_vshaped = col_freq(vs %in% 0, mtcars$vs %in% 1)
 #'   )
 #' )
 #'

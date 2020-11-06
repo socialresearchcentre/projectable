@@ -15,7 +15,7 @@
 #'
 #' @examples
 #'
-#' face_value(col_freq(1:5, 6:10))
+#' face_value(col_freq(1:5, 6:10, summarised = TRUE))
 #'
 #' face_value(1:5)
 face_value <- function(x) {

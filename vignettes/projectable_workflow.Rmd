@@ -32,12 +32,7 @@ library(gt)
 The first step in the `projectable` workflow involves transforming an ordinary
 dataframe into a metadata-rich table-like object that is fit for projection. We 
 term this 'setting the table' and we perform it using the `set_table()` function
-along with `encol_*()` helpers.
-
-The `encol_*()` helpers are similar to `dplyr::vars()`: they are designed to
-be used only inside `projectable` verbs, and (in essence) they work by
-quoting their inputs so that they can be passed along for non-standard evaluation
-within the dataframe being operated upon. 
+along with `col_*()` helpers.
 
 Thus, to generate a frequency cross tabulation out of the `mtcars` dataset with
 rows corresponding to the number of cylinders and the transmission types, and 
@@ -52,8 +47,8 @@ crs_tab <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      `V-Shaped` = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
-      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
+      `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+      `Not V-Shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
     )
   )
 
@@ -65,7 +60,7 @@ Behind the scenes, `set_table()` loops over the row and column expressions it is
 provided. Each column expression in `.cols` is evaluated over `.data` filtered
 down to each row expression in `.rows`.
 
-In our example, `encol_freq(...)` is evaluated over `mtcars` filtered to each 
+In our example, `col_freq(...)` is evaluated over `mtcars` filtered to each 
 unique value in `mtcars$cyl`, and then over `mtcars` filtered to each unique 
 value in `mtcars$am`. 
 
@@ -83,8 +78,8 @@ crs_tab_col <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      `V-Shaped` = encol_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
-      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
+      `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
+      `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
     )
   )
 
@@ -106,8 +101,8 @@ crs_tab_overall <- mtcars %>%
       Transmission = am
     ),
     .cols = list(
-      `V-Shaped` = encol_freq(n = vs %in% 1, N = nrow(mtcars)), 
-      `Not V-Shaped` = encol_freq(n = vs %in% 0, N = nrow(mtcars))
+      `V-Shaped` = col_freq(n = vs %in% 1, N = nrow(mtcars)), 
+      `Not V-Shaped` = col_freq(n = vs %in% 0, N = nrow(mtcars))
     )
   )
 

@@ -51,12 +51,12 @@ mtcars %>%
         Transmission = am
       ),
       .cols = list(
-        vshaped = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
-        not_vshaped = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
+      `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
+      `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
       )
     ) %>% 
   # Tag columns to display
-    prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
+  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
   # Pass through to `gt` for formatting
   prj_gt() %>% 
   gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 

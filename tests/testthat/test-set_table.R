@@ -7,13 +7,13 @@ testthat::test_that("`.rows` uses expressions only", {
       eight_cyl = cyl %in% 8
     ),
     .cols = list(
-      vshaped_all = encol_freq(vs %in% 1, nrow(mtcars)),
-      vshaped_rbr = encol_freq(vs %in% 1, vs %in% 0:1),
-      vshaped_col = encol_freq(vs %in% 1, mtcars$vs %in% 1),
+      vshaped_all = col_freq(vs %in% 1, nrow(mtcars)),
+      vshaped_rbr = col_freq(vs %in% 1, vs %in% 0:1),
+      vshaped_col = col_freq(vs %in% 1, mtcars$vs %in% 1),
 
-      nvshaped_all = encol_freq(vs %in% 0, nrow(mtcars)),
-      nvshaped_rbr = encol_freq(vs %in% 0, vs %in% 0:1),
-      nvshaped_col = encol_freq(vs %in% 0, mtcars$vs %in% 0),
+      nvshaped_all = col_freq(vs %in% 0, nrow(mtcars)),
+      nvshaped_rbr = col_freq(vs %in% 0, vs %in% 0:1),
+      nvshaped_col = col_freq(vs %in% 0, mtcars$vs %in% 0),
 
       little_n = sum(vs %in% 1),
       big_n = length(vs),
@@ -62,13 +62,13 @@ testthat::test_that("`.rows` uses one symbol only", {
     .data = mtcars,
     .rows = cyl,
     .cols = list(
-      vshaped_all = encol_freq(vs %in% 1, nrow(mtcars)),
-      vshaped_rbr = encol_freq(vs %in% 1, vs %in% 0:1),
-      vshaped_col = encol_freq(vs %in% 1, mtcars$vs %in% 1),
+      vshaped_all = col_freq(vs %in% 1, nrow(mtcars)),
+      vshaped_rbr = col_freq(vs %in% 1, vs %in% 0:1),
+      vshaped_col = col_freq(vs %in% 1, mtcars$vs %in% 1),
 
-      nvshaped_all = encol_freq(vs %in% 0, nrow(mtcars)),
-      nvshaped_rbr = encol_freq(vs %in% 0, vs %in% 0:1),
-      nvshaped_col = encol_freq(vs %in% 0, mtcars$vs %in% 0),
+      nvshaped_all = col_freq(vs %in% 0, nrow(mtcars)),
+      nvshaped_rbr = col_freq(vs %in% 0, vs %in% 0:1),
+      nvshaped_col = col_freq(vs %in% 0, mtcars$vs %in% 0),
 
       little_n = sum(vs %in% 1),
       big_n = length(vs),
@@ -117,13 +117,13 @@ testthat::test_that("`.rows` uses symbols only", {
     .data = mtcars,
     .rows = list(cylinders = cyl, transmission = am),
     .cols = list(
-      vshaped_all = encol_freq(vs %in% 1, nrow(mtcars)),
-      vshaped_rbr = encol_freq(vs %in% 1, vs %in% 0:1),
-      vshaped_col = encol_freq(vs %in% 1, mtcars$vs %in% 1),
+      vshaped_all = col_freq(vs %in% 1, nrow(mtcars)),
+      vshaped_rbr = col_freq(vs %in% 1, vs %in% 0:1),
+      vshaped_col = col_freq(vs %in% 1, mtcars$vs %in% 1),
 
-      nvshaped_all = encol_freq(vs %in% 0, nrow(mtcars)),
-      nvshaped_rbr = encol_freq(vs %in% 0, vs %in% 0:1),
-      nvshaped_col = encol_freq(vs %in% 0, mtcars$vs %in% 0),
+      nvshaped_all = col_freq(vs %in% 0, nrow(mtcars)),
+      nvshaped_rbr = col_freq(vs %in% 0, vs %in% 0:1),
+      nvshaped_col = col_freq(vs %in% 0, mtcars$vs %in% 0),
 
       little_n = sum(vs %in% 1),
       big_n = length(vs),
@@ -199,13 +199,13 @@ testthat::test_that("`.rows` uses symbols and expressions", {
       Transmission = am
     ),
     .cols = list(
-      vshaped_all = encol_freq(vs %in% 1, nrow(mtcars)),
-      vshaped_rbr = encol_freq(vs %in% 1, vs %in% 0:1),
-      vshaped_col = encol_freq(vs %in% 1, mtcars$vs %in% 1),
+      vshaped_all = col_freq(vs %in% 1, nrow(mtcars)),
+      vshaped_rbr = col_freq(vs %in% 1, vs %in% 0:1),
+      vshaped_col = col_freq(vs %in% 1, mtcars$vs %in% 1),
 
-      nvshaped_all = encol_freq(vs %in% 0, nrow(mtcars)),
-      nvshaped_rbr = encol_freq(vs %in% 0, vs %in% 0:1),
-      nvshaped_col = encol_freq(vs %in% 0, mtcars$vs %in% 0),
+      nvshaped_all = col_freq(vs %in% 0, nrow(mtcars)),
+      nvshaped_rbr = col_freq(vs %in% 0, vs %in% 0:1),
+      nvshaped_col = col_freq(vs %in% 0, mtcars$vs %in% 0),
 
       little_n = sum(vs %in% 1),
       big_n = length(vs),
@@ -274,24 +274,24 @@ testthat::test_that("NSE gotchas", {
   .rows <- 4 # .rows is defined inside set_table
 
   testthat::expect_identical(
-    set_table(mtcars, list(Four = cyl %in% .rows), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1))),
-    set_table(mtcars, list(Four = cyl %in% 4), list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
+    set_table(mtcars, list(Four = cyl %in% .rows), list(vshaped = col_freq(vs %in% 1, vs %in% 0:1))),
+    set_table(mtcars, list(Four = cyl %in% 4), list(vshaped = col_freq(vs %in% 1, vs %in% 0:1)))
   )
 
   .rows <- 1 # .rows is defined inside set_table
 
   testthat::expect_identical(
-    set_table(mtcars, cyl, list(vshaped = encol_freq(vs %in% .rows, vs %in% 0:1))),
-    set_table(mtcars, cyl, list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
+    set_table(mtcars, cyl, list(vshaped = col_freq(vs %in% .rows, vs %in% 0:1))),
+    set_table(mtcars, cyl, list(vshaped = col_freq(vs %in% 1, vs %in% 0:1)))
   )
 })
 
 testthat::test_that("Bad calls", {
   testthat::expect_error(
-    set_table(mtcars, not_a_col, list(vshaped = encol_freq(vs %in% 1, vs %in% 0:1)))
+    set_table(mtcars, not_a_col, list(vshaped = col_freq(vs %in% 1, vs %in% 0:1)))
   )
 
   testthat::expect_error(
-    set_table(mtcars, cyl, list(vshaped = encol_freq(not_a_col %in% 1, vs %in% 0:1)))
+    set_table(mtcars, cyl, list(vshaped = col_freq(not_a_col %in% 1, vs %in% 0:1)))
   )
 })

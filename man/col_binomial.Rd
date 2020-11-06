@@ -5,7 +5,13 @@
 \alias{is_col_binomial}
 \title{Binomial Column}
 \usage{
-col_binomial(n = integer(), N = integer(), ci_error = 0.05, population = Inf)
+col_binomial(
+  n = integer(),
+  N = integer(),
+  ci_error = 0.05,
+  population = Inf,
+  summarised = FALSE
+)
 
 is_col_binomial(x)
 }
@@ -14,9 +20,15 @@ is_col_binomial(x)
 
 \item{N}{A numeric vector, the number of Bernoulli trials}
 
-\item{ci_error}{A numeric vector, the error to be used for calculating confidence intervals}
+\item{ci_error}{A numeric vector, the error to be used for calculating
+confidence intervals}
 
-\item{population}{A numeric vector, the number of individuals in the population to be used for calculating confidence intervals}
+\item{population}{A numeric vector, the number of individuals in the
+population to be used for calculating confidence intervals}
+
+\item{summarised}{A logical flagging whether or not \code{n} and \code{N} are being
+supplied in summarised form or not. If FALSE, \code{n} and \code{N} will be summed
+across to calculate the number of successes and trials respectively}
 
 \item{x}{An object to test}
 }
@@ -32,7 +44,14 @@ population size is not \code{Inf} a finite population correction will be applied
 }
 \examples{
 
+# Calculate and store summary statistics for a binomial distribution
 b_trials <- stats::rbinom(1000, 1, 0.5)
-col_binomial(sum(b_trials), length(b_trials))
+col_binomial(b_trials, b_trials \%in\% 0:1)
+
+# Store pre-calculated summary statistics for a binomial distribution
+b_trials <- lapply(1:5, function(x) stats::rbinom(1000, 1, 0.5))
+n_successes <- vapply(b_trials, function(x) sum(x), integer(1))
+n_sample <- vapply(b_trials, length, integer(1))
+col_binomial(n_successes, n_sample, summarised = TRUE)
 
 }

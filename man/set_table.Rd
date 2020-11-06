@@ -11,7 +11,7 @@ set_table(.data, .rows, .cols)
 
 \item{.rows}{an expression or symbol, or a list of expressions and symbols, or a list of lists of expressions and symbols}
 
-\item{.cols}{a named list of unquoted expressions, typically containing calls to \verb{encol_*()}, defining the columns of the output}
+\item{.cols}{a named list of unquoted expressions, typically containing calls to \verb{col_*()}, defining the columns of the output}
 }
 \value{
 A dataframe containing columns and rows corresponding to \code{.cols} and \code{.rows}
@@ -43,8 +43,8 @@ set_table(
     )
   ),
   .cols = list(
-    vshaped = encol_freq(vs \%in\% 1, nrow(mtcars)),
-    non_vshaped = encol_freq(vs \%in\% 0, nrow(mtcars))
+    vshaped = col_freq(vs \%in\% 1, nrow(mtcars)),
+    non_vshaped = col_freq(vs \%in\% 0, nrow(mtcars))
   )
 )
 
@@ -54,8 +54,8 @@ set_table(
   .data = mtcars,
   .rows = list(cylinders = cyl, transmission = am),
   .cols = list(
-    vshaped = encol_freq(vs \%in\% 1, vs \%in\% 0:1),
-    non_vshaped = encol_freq(vs \%in\% 0, vs \%in\% 0:1)
+    vshaped = col_freq(vs \%in\% 1, vs \%in\% 0:1),
+    non_vshaped = col_freq(vs \%in\% 0, vs \%in\% 0:1)
   )
 )
 
@@ -65,8 +65,8 @@ set_table(
   .data = mtcars,
   .rows = cyl,
   .cols = list(
-    vshaped = encol_freq(vs \%in\% 1, mtcars$vs \%in\% 1),
-    non_vshaped = encol_freq(vs \%in\% 0, mtcars$vs \%in\% 1)
+    vshaped = col_freq(vs \%in\% 1, mtcars$vs \%in\% 1),
+    non_vshaped = col_freq(vs \%in\% 0, mtcars$vs \%in\% 1)
   )
 )
 

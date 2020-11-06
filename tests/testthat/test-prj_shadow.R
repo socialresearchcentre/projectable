@@ -1,4 +1,4 @@
-x <- set_table(mtcars, list(cyl, am), list(v = encol_freq(vs %in% 1, vs %in% 0:1), nv = encol_freq(vs %in% 0, vs %in% 0:1)))
+x <- set_table(mtcars, list(cyl, am), list(v = col_freq(vs %in% 1, vs %in% 0:1), nv = col_freq(vs %in% 0, vs %in% 0:1)))
 
 testthat::test_that("prj_shadow_all", {
   x_shdw <- prj_shadow_all(x, "{.}")

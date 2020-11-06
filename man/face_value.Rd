@@ -21,7 +21,7 @@ If \code{x} is not a \code{projectable_col}, \code{face_value()} simply returns 
 }
 \examples{
 
-face_value(col_freq(1:5, 6:10))
+face_value(col_freq(1:5, 6:10, summarised = TRUE))
 
 face_value(1:5)
 }

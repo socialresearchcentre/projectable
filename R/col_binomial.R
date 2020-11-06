@@ -7,8 +7,13 @@
 #'
 #' @param n A numeric vector, the number of successes
 #' @param N A numeric vector, the number of Bernoulli trials
-#' @param ci_error A numeric vector, the error to be used for calculating confidence intervals
-#' @param population A numeric vector, the number of individuals in the population to be used for calculating confidence intervals
+#' @param ci_error A numeric vector, the error to be used for calculating
+#'   confidence intervals
+#' @param population A numeric vector, the number of individuals in the
+#'   population to be used for calculating confidence intervals
+#' @param summarised A logical flagging whether or not `n` and `N` are being
+#'   supplied in summarised form or not. If FALSE, `n` and `N` will be summed
+#'   across to calculate the number of successes and trials respectively
 #' @param x An object to test
 #'
 #' @return  An S3 vector of class `projectable_col_binomial`
@@ -16,15 +21,28 @@
 #'
 #' @examples
 #'
+#' # Calculate and store summary statistics for a binomial distribution
 #' b_trials <- stats::rbinom(1000, 1, 0.5)
-#' col_binomial(sum(b_trials), length(b_trials))
+#' col_binomial(b_trials, b_trials %in% 0:1)
+#'
+#' # Store pre-calculated summary statistics for a binomial distribution
+#' b_trials <- lapply(1:5, function(x) stats::rbinom(1000, 1, 0.5))
+#' n_successes <- vapply(b_trials, function(x) sum(x), integer(1))
+#' n_sample <- vapply(b_trials, length, integer(1))
+#' col_binomial(n_successes, n_sample, summarised = TRUE)
 #'
 #' @name col_binomial
 #'
 
 # Validator and constructors ---------------------------------------------------
 
-col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf) {
+col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf, summarised = FALSE) {
+  if (!summarised) {
+    # Summarise unsummarised inputs
+    n <- sum(n, na.rm = TRUE)
+    N <- sum(N, na.rm = TRUE)
+  }
+
   n <- as.integer(n)
   N <- vctrs::vec_recycle(as.integer(N), length(n))
   population <- vctrs::vec_recycle(as.double(population), length(n))

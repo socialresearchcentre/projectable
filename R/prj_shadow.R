@@ -25,8 +25,8 @@
 #'     Cylinders = cyl
 #'   ),
 #'   .cols = list(
-#'     vshaped = encol_freq(n = vs %in% 1, N = vs %in% 0:1),
-#'     not_vshaped = encol_freq(n = vs %in% 0, N = vs %in% 0:1)
+#'     vshaped = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+#'     not_vshaped = col_freq(n = vs %in% 0, N = vs %in% 0:1)
 #'   )
 #' )
 #'

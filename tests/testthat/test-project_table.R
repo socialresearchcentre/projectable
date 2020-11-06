@@ -1,7 +1,7 @@
 
 x <- data.frame(
-  x = col_freq(1:3, 3:5),
-  y = col_freq(6:8, 9:11),
+  x = col_freq(1:3, 3:5, summarised = TRUE),
+  y = col_freq(6:8, 9:11, summarised = TRUE),
   z = c("a", "b", "c"),
   stringsAsFactors = FALSE
 )
@@ -61,7 +61,7 @@ testthat::test_that("prj_table metadata", {
 })
 
 # proje_gt ----------------------------------------------------------------
-y <- set_table(mtcars, cyl, list(v = encol_freq(vs %in% 1, vs %in% 0:1)))
+y <- set_table(mtcars, cyl, list(v = col_freq(vs %in% 1, vs %in% 0:1)))
 
 testthat::test_that("prj_gt", {
 

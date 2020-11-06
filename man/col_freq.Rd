@@ -5,16 +5,23 @@
 \alias{is_col_freq}
 \title{Frequency Columns}
 \usage{
-col_freq(n = double(), N = double(), p = NULL)
+col_freq(n = double(), N = double(), p = NULL, summarised = FALSE)
 
 is_col_freq(x)
 }
 \arguments{
-\item{n}{A numeric vector of frequencies}
+\item{n}{A numeric vector of pre-calculated frequencies or a vector which
+sums to a frequency}
 
-\item{N}{A numeric vector of base frequencies}
+\item{N}{A numeric vector of pre-calculated base frequencies or a vector
+which sums to a base frequency}
 
-\item{p}{A numeric vector of proportions, defaults to the quotient of \code{n} and \code{N}}
+\item{p}{A numeric vector of proportions, defaults to the quotient of \code{n} and
+\code{N}}
+
+\item{summarised}{A logical flagging whether or not \code{n} and \code{N} are being
+supplied in summarised form or not. If FALSE, \code{n} and \code{N} will be summed
+across to calculate frequencies.}
 
 \item{x}{An object to test}
 }
@@ -25,6 +32,14 @@ An S3 vector of class \code{projectable_col_freq}
 Create, or test for, objects of type \code{projectable_col_freq}.
 }
 \examples{
-col_freq(1, 2, 1/2)
+
+# Calculate and store the frequency of manual cars in `mtcars` data set
+col_freq(mtcars$vs \%in\% 1, mtcars$vs \%in\% 0:1)
+
+# Pre-calculate a range of frequencies and store them
+dummy_data <- lapply(1:5, function(x) runif(100))
+little_n <- vapply(dummy_data, function(x) sum(x >= 0.5), integer(1))
+big_n <- vapply(dummy_data, length, integer(1))
+col_freq(little_n, big_n, summarised = TRUE)
 
 }
