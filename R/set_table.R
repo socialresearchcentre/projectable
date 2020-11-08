@@ -57,13 +57,15 @@
 #'   .data = mtcars,
 #'   .rows = cyl,
 #'   .cols = list(
-#'     vshaped = col_freq(vs %in% 1, mtcars$vs %in% 1),
-#'     non_vshaped = col_freq(vs %in% 0, mtcars$vs %in% 1)
+#'     vshaped = col_freq(vs %in% 1, .data$vs %in% 1), # We refer to the `.data` argument using the `.data` pronoun
+#'     non_vshaped = col_freq(vs %in% 0, .data$vs %in% 1)
 #'   )
 #' )
 #'
 set_table <- function(.data, .rows, .cols) {
   calling_env <- parent.frame()
+  pronoun_env <- as.environment(list(.data = .data))
+  `parent.env<-`(pronoun_env, calling_env)
   cl <- as.list(match.call())
 
   # Capture column expressions which must be provided in a named list
@@ -95,12 +97,12 @@ set_table <- function(.data, .rows, .cols) {
   out_rows <- lapply(.rows, function(.r_block) {
     if (is.list(.r_block)) {
       lapply(.r_block, function (.r_expr) {
-        row_with_cols(.r_expr, .cols, .data, calling_env)
+        row_with_cols(.r_expr, .cols, .data, pronoun_env)
       })
     } else if (is.symbol(.r_block)) {
-      row_with_cols(.r_block, .cols, .data, calling_env)
+      row_with_cols(.r_block, .cols, .data, pronoun_env)
     } else {
-      list(row_with_cols(.r_block, .cols, .data, calling_env))
+      list(row_with_cols(.r_block, .cols, .data, pronoun_env))
     }
 
   })
