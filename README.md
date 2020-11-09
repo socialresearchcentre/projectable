@@ -46,15 +46,13 @@ library(gt)
 mtcars %>% 
   # Create metadata rich table
   set_table(
-      .rows = list(
-        Cylinders = cyl,
-        Transmission = am
-      ),
-      .cols = list(
+    Cylinders = cyl,
+    Transmission = am,
+    .cols = list(
       `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
       `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
-      )
-    ) %>% 
+    )
+  ) %>% 
   # Tag columns to display
   prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
   # Pass through to `gt` for formatting

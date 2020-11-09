@@ -30,10 +30,8 @@
 #' # Create a table made up of `projectable_col`s
 #' my_tbl <- set_table(
 #'   .data = mtcars,
-#'   .rows = list(
-#'     Cylinders = cyl,
-#'     Transmission = list(Automatic = am %in% 0, Manual = am %in% 1)
-#'   ),
+#'   Cylinders = cyl,
+#'   Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
 #'   .cols = list(
 #'     `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
 #'     `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)

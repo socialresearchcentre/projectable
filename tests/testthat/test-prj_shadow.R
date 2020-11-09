@@ -1,15 +1,15 @@
-x <- set_table(mtcars, list(cyl, am), list(v = col_freq(vs %in% 1, vs %in% 0:1), nv = col_freq(vs %in% 0, vs %in% 0:1)))
+x <- set_table(mtcars, cyl, am, .cols = list(v = col_freq(vs %in% 1, vs %in% 0:1), nv = col_freq(vs %in% 0, vs %in% 0:1)))
 
 testthat::test_that("prj_shadow_all", {
   x_shdw <- prj_shadow_all(x, "{.}")
   testthat::expect_equal(
     vapply(x_shdw, col_shadow, character(1)),
-    c(v = "{.}", nv = "{.}", rows = "{.}", row_spanner = "{.}")
+    c( row_spanner = "{.}", rows = "{.}", v = "{.}", nv = "{.}")
   )
 
   testthat::expect_equal(ncol(prj_table(x_shdw)), 4)
   testthat::expect_equal(nrow(prj_table(x_shdw)), 5)
-  testthat::expect_equal(names(prj_table(x_shdw)), c("v", "nv", "rows", "row_spanner"))
+  testthat::expect_equal(names(prj_table(x_shdw)), c("row_spanner", "rows", "v", "nv"))
 })
 
 testthat::test_that("prj_shadow_if", {
@@ -35,3 +35,4 @@ testthat::test_that("prj_shadow_at", {
   testthat::expect_equal(nrow(prj_table(x_shdw)), 5)
   testthat::expect_equal(names(prj_table(x_shdw)), c("v", "rows", "row_spanner"))
 })
+

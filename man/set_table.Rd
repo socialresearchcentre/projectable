@@ -4,21 +4,24 @@
 \alias{set_table}
 \title{set_table}
 \usage{
-set_table(.data, .rows, .cols)
+set_table(.data, .cols, ...)
 }
 \arguments{
 \item{.data}{a dataframe}
 
-\item{.rows}{an expression or symbol, or a list of expressions and symbols, or a list of lists of expressions and symbols}
+\item{.cols}{a named list of unquoted expressions, typically containing calls
+to \verb{col_*()}, defining the columns of the output}
 
-\item{.cols}{a named list of unquoted expressions, typically containing calls to \verb{col_*()}, defining the columns of the output}
+\item{...}{additional arguments, which may be symbols/expressions or lists of
+symbols/expressions, defining the rows of the output}
 }
 \value{
-A dataframe containing columns and rows corresponding to \code{.cols} and \code{.rows}
+A dataframe containing columns and rows corresponding to \code{.cols} and
+\code{.rows}
 }
 \description{
-The \code{set_table()} function builds a table row-by-row and column-by-column
-out of an underlying dataframe.
+The \code{set_table()} function builds a table row-by-row and column-by-column out
+of an underlying dataframe.
 }
 \details{
 The expressions in \code{.cols} are evaluated over the data in \code{.data} filtered to
@@ -26,8 +29,8 @@ each expression in \code{.rows}.
 
 If \code{.rows} contains any unquoted names of columns in \code{.data}, these will be
 treated as shorthand for a list of expressions which puts each unique value
-from that column in a separate row. Thus, for instance, \code{cyl} would be treated
-as shorthand for \code{list(cyl \%in\% 4, cyl \%in\% 6, cyl \%in\% 8)}.
+from that column in a separate row. Thus, for instance, \code{cyl} would be
+treated as shorthand for \code{list(cyl \%in\% 4, cyl \%in\% 6, cyl \%in\% 8)}.
 }
 \examples{
 
@@ -35,12 +38,10 @@ as shorthand for \code{list(cyl \%in\% 4, cyl \%in\% 6, cyl \%in\% 8)}.
 # calculated over the entire dataframe
 set_table(
   .data = mtcars,
-  .rows = list(
-    Cylinders = list(
-      four_cyl = cyl \%in\% 4,
-      six_cyl = cyl \%in\% 6,
-      either = cyl \%in\% 4:6
-    )
+  Cylinders = list(
+    four_cyl = cyl \%in\% 4,
+    six_cyl = cyl \%in\% 6,
+    either = cyl \%in\% 4:6
   ),
   .cols = list(
     vshaped = col_freq(vs \%in\% 1, nrow(mtcars)),
@@ -52,7 +53,7 @@ set_table(
 # calculated row-by-row
 set_table(
   .data = mtcars,
-  .rows = list(cylinders = cyl, transmission = am),
+  cylinders = cyl, transmission = am,
   .cols = list(
     vshaped = col_freq(vs \%in\% 1, vs \%in\% 0:1),
     non_vshaped = col_freq(vs \%in\% 0, vs \%in\% 0:1)
@@ -63,10 +64,11 @@ set_table(
 # column
 set_table(
   .data = mtcars,
-  .rows = cyl,
+  cyl,
   .cols = list(
-    vshaped = col_freq(vs \%in\% 1, mtcars$vs \%in\% 1),
-    non_vshaped = col_freq(vs \%in\% 0, mtcars$vs \%in\% 1)
+    # Note that we refer to the `.data` argument using the `.data` pronoun
+    vshaped = col_freq(vs \%in\% 1, .data$vs \%in\% 1),
+    non_vshaped = col_freq(vs \%in\% 0, .data$vs \%in\% 1)
   )
 )
 

@@ -42,10 +42,8 @@ columns corresponding to the engine shape, we write:
 # Calculate frequency row-by-row
 crs_tab <- mtcars %>% 
   set_table(
-    .rows = list(
-      Cylinders = cyl,
-      Transmission = am
-    ),
+    Cylinders = cyl,
+    Transmission = am,
     .cols = list(
       `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
       `Not V-Shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
@@ -73,10 +71,8 @@ over the whole column we would have to explicitly instruct R, when it is evaluat
 # Calculate frequency row-by-row
 crs_tab_col <- mtcars %>% 
   set_table(
-    .rows = list(
-      Cylinders = cyl,
-      Transmission = am
-    ),
+    Cylinders = cyl,
+    Transmission = am,
     .cols = list(
       `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
       `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
@@ -96,10 +92,8 @@ column, but over the whole table, then we would write:
 # Calculate frequency row-by-row
 crs_tab_overall <- mtcars %>% 
   set_table(
-    .rows = list(
-      Cylinders = cyl,
-      Transmission = am
-    ),
+    Cylinders = cyl,
+    Transmission = am,
     .cols = list(
       `V-Shaped` = col_freq(n = vs %in% 1, N = nrow(mtcars)), 
       `Not V-Shaped` = col_freq(n = vs %in% 0, N = nrow(mtcars))

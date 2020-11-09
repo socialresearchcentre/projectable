@@ -39,9 +39,7 @@ specify those \code{shadow} attributes for multiple columns at once.
 # Create a table made up of `projectable_col`s
 my_tbl <- set_table(
   .data = mtcars,
-  .rows = list(
-    Cylinders = cyl
-  ),
+  Cylinders = cyl,
   .cols = list(
     vshaped = col_freq(n = vs \%in\% 1, N = vs \%in\% 0:1),
     not_vshaped = col_freq(n = vs \%in\% 0, N = vs \%in\% 0:1)
