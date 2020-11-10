@@ -6,3 +6,4 @@
 ^pkgdown$
 ^.github
 ^scratch
+^README\.Rmd$
