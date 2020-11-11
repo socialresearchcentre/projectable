@@ -7,9 +7,9 @@ testthat::test_that("prj_shadow_all", {
     c( row_spanner = "{.}", rows = "{.}", v = "{.}", nv = "{.}")
   )
 
-  testthat::expect_equal(ncol(prj_table(x_shdw)), 4)
-  testthat::expect_equal(nrow(prj_table(x_shdw)), 5)
-  testthat::expect_equal(names(prj_table(x_shdw)), c("row_spanner", "rows", "v", "nv"))
+  testthat::expect_equal(ncol(prj_project(x_shdw)), 4)
+  testthat::expect_equal(nrow(prj_project(x_shdw)), 5)
+  testthat::expect_equal(names(prj_project(x_shdw)), c("row_spanner", "rows", "v", "nv"))
 })
 
 testthat::test_that("prj_shadow_if", {
@@ -19,9 +19,9 @@ testthat::test_that("prj_shadow_if", {
     c(v = "{p}", nv = "{p}")
   )
 
-  testthat::expect_equal(ncol(prj_table(x_shdw)), 4)
-  testthat::expect_equal(nrow(prj_table(x_shdw)), 5)
-  testthat::expect_equal(names(prj_table(x_shdw)), c("v", "nv", "rows", "row_spanner"))
+  testthat::expect_equal(ncol(prj_project(x_shdw)), 4)
+  testthat::expect_equal(nrow(prj_project(x_shdw)), 5)
+  testthat::expect_equal(names(prj_project(x_shdw)), c("v", "nv", "rows", "row_spanner"))
 })
 
 testthat::test_that("prj_shadow_at", {
@@ -31,8 +31,8 @@ testthat::test_that("prj_shadow_at", {
     c(v = "{p}")
   )
 
-  testthat::expect_equal(ncol(prj_table(x_shdw)), 3)
-  testthat::expect_equal(nrow(prj_table(x_shdw)), 5)
-  testthat::expect_equal(names(prj_table(x_shdw)), c("v", "rows", "row_spanner"))
+  testthat::expect_equal(ncol(prj_project(x_shdw)), 3)
+  testthat::expect_equal(nrow(prj_project(x_shdw)), 5)
+  testthat::expect_equal(names(prj_project(x_shdw)), c("v", "rows", "row_spanner"))
 })
 

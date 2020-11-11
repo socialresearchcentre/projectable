@@ -50,6 +50,6 @@ my_tbl <- set_table(
 my_tbl <- prj_shadow_if(my_tbl, is_col_freq(.), c(Count = "{n}", Proportion = "{signif(p, 2)}"))
 
 # Project it back into an ordinary dataframe
-prj_table(my_tbl)
+prj_project(my_tbl)
 
 }

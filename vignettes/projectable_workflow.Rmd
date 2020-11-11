@@ -122,14 +122,14 @@ However, in many cases, we will also want to be able to display the associated
 metadata. Thus, there might be times when we want to display not only the 
 proportions but the associated `n` and `N` too.
 
-This is where the `project_table()` function comes in: we use it to 'unfold' each
+This is where the `prj_project()` function comes in: we use it to 'unfold' each
 `col_*` into whichever of its constituent elements we would like to display. 
 
 (LINK TO ANOTHER VIGNETTE WITH MORE INFO ON THE CONCEPT OF 'PROJECTING' COLUMNS).
 
 ```{r}
 crs_tab_display <- crs_tab %>% 
-  prj_table(
+  prj_project(
     .cols = list(
       `V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}"),
       `Not V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")
@@ -162,7 +162,7 @@ The bad news is that `projectable` can't do really any of this. The good news is
 that it doesn't need to. 
 
 Instead of implementing any formatting functions, `projectable` implements a 
-hand-off function, `proje_gt()`, which initialises a `gt` table object:
+hand-off function, `prj_gt()`, which initialises a `gt` table object:
 
 ```{r}
 crs_tab_gt <- crs_tab %>% 

@@ -1,13 +1,13 @@
 #' Project a table
 #'
-#' The `prj_table()` function is designed to take in a dataframe made up of
+#' The `prj_project()` function is designed to take in a dataframe made up of
 #' `projectable_col`s, and to 'project' it into an ordinary dataframe as per the
 #' instructions provided in the `shadow` attribute of each column. The
 #' `prj_gt()` function does the same thing, but initialises a `gt` object for
 #' display.
 #'
 #' The `shadow` attribute of each column can be set via the `.cols` argument of
-#' `prj_table()` or by using the `prj_shadow_if()` and `prj_shadow_at()` helper
+#' `prj_project()` or by using the `prj_shadow_if()` and `prj_shadow_at()` helper
 #' functions.
 #'
 #' The `projection` output will also come attached with metadata which keeps
@@ -39,7 +39,7 @@
 #' )
 #'
 #' # Project it back into an ordinary dataframe
-#' prj_table(my_tbl, list(
+#' prj_project(my_tbl, list(
 #'   `V-Shaped` = "{signif(p, 2)} ({n})",
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
@@ -50,9 +50,9 @@
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
 #'
-#' @name prj_table
+#' @name prj_project
 # Project table ----------------------------------------------------------------
-prj_table <- function(.data, .cols = list()) {
+prj_project <- function(.data, .cols = list()) {
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   .data <- add_shadows(.data = .data, .shadows = .cols)
   prj_cast_shadow(.data)
@@ -147,7 +147,7 @@ add_shadows <- function(.data, .shadows) {
 # prj_gt() ----------------------------------------------------------------
 
 #' @export
-#' @rdname prj_table
+#' @rdname prj_project
 prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_col = "rows", ...) {
 
   # Project table

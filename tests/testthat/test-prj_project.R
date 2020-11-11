@@ -6,42 +6,42 @@ x <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# prj_table -----------------------------------------------------------
+# prj_project -----------------------------------------------------------
 
-testthat::test_that("prj_table", {
+testthat::test_that("prj_project", {
 
   # Empty
-  testthat::expect_identical(vctrs::vec_data(prj_table(x)), data.frame())
+  testthat::expect_identical(vctrs::vec_data(prj_project(x)), data.frame())
 
   # Non-empty
-  x_prj <- prj_table(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}")))
+  x_prj <- prj_project(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}")))
   testthat::expect_equal(ncol(x_prj), 3)
   testthat::expect_equal(nrow(x_prj), 3)
   testthat::expect_equal(names(x_prj), c("x.proportion", "x.count", "z"))
 
   # Failed
   testthat::expect_error(
-    prj_table(x,  list(z = "{.}", z = "identity")),
+    prj_project(x,  list(z = "{.}", z = "identity")),
     "all names in `.cols` must be unique"
   )
   testthat::expect_error(
-    prj_table(x,  list(z = "{some_col}", x = "{p}")),
+    prj_project(x,  list(z = "{some_col}", x = "{p}")),
     "object 'some_col' not found"
   )
   testthat::expect_error(
-    prj_table(x,  list(z = "{.}", x = "{some_field}")),
+    prj_project(x,  list(z = "{.}", x = "{some_field}")),
     "some_field' is not a field of `x`"
   )
   testthat::expect_error(
-    prj_table(x,  list(m = "{.}", x = "{some_field}")),
+    prj_project(x,  list(m = "{.}", x = "{some_field}")),
     "`m` is not a column of `.data`"
   )
 })
 
-testthat::test_that("prj_table metadata", {
+testthat::test_that("prj_project metadata", {
   # Empty
   testthat::expect_identical(
-    attr(prj_table(x), ".cols"),
+    attr(prj_project(x), ".cols"),
     tibble::tibble(
       cols = character(),
       col_labels = character(),
@@ -51,7 +51,7 @@ testthat::test_that("prj_table metadata", {
 
   # Non-empty
   testthat::expect_identical(
-    attr(prj_table(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}"))), ".cols"),
+    attr(prj_project(x,  list(z = "{.}", x = c(proportion = "{p}", count = "{n}"))), ".cols"),
     tibble::tibble(
       cols = c("x.proportion", "x.count", "z"),
       col_labels = c("proportion", "count", "z"),
