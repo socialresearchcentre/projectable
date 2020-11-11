@@ -50,15 +50,19 @@ track of which columns in the output belong to which columns in the input.
 }
 \examples{
 # Create a table made up of `projectable_col`s
-my_tbl <- set_table(
+my_tbl <- prj_tbl_rows(
   .data = mtcars,
   Cylinders = cyl,
   Transmission = list(Automatic = am \%in\% 0, Manual = am \%in\% 1),
-  .cols = list(
-    `V-Shaped` = col_freq(n = vs \%in\% 1, N = vs \%in\% 0:1),
-    `Not V-shaped` = col_freq(n = vs \%in\% 0, N = vs \%in\% 0:1)
-  )
 )
+
+my_tbl <- prj_tbl_cols(
+  .data = my_tbl,
+  `V-Shaped` = col_freq(n = vs \%in\% 1, N = vs \%in\% 0:1),
+  `Not V-shaped` = col_freq(n = vs \%in\% 0, N = vs \%in\% 0:1)
+)
+
+my_tbl <- prj_tbl_summarise(.data = my_tbl)
 
 # Project it back into an ordinary dataframe
 prj_project(my_tbl, list(

@@ -47,16 +47,17 @@ library(projectable)
 library(dplyr)
 library(gt)
 
-my_tbl <- mtcars %>% 
-  # Create metadata rich table
-  set_table(
+my_tbl <- mtcars %>%
+  # Create metadata-rich summary table according to a column and row specification
+  prj_tbl_rows(
     Cylinders = cyl,
-    Transmission = am,
-    .cols = list(
-      `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
-      `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
-    )
+    Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
   ) %>% 
+  prj_tbl_cols(
+    `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+    `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+  ) %>%
+  prj_tbl_summarise() %>% 
   # Tag columns to display
   prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
   # Pass through to `gt` for formatting

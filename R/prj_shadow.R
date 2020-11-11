@@ -19,14 +19,19 @@
 #'
 #' @examples
 #' # Create a table made up of `projectable_col`s
-#' my_tbl <- set_table(
+#' my_tbl <- prj_tbl_rows(
 #'   .data = mtcars,
 #'   Cylinders = cyl,
-#'   .cols = list(
-#'     vshaped = col_freq(n = vs %in% 1, N = vs %in% 0:1),
-#'     not_vshaped = col_freq(n = vs %in% 0, N = vs %in% 0:1)
-#'   )
+#'   Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
 #' )
+#'
+#' my_tbl <- prj_tbl_cols(
+#'   .data = my_tbl,
+#'   `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+#'   `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+#' )
+#'
+#' my_tbl <- prj_tbl_summarise(.data = my_tbl)
 #'
 #' # Update the `shadow` attributes
 #' my_tbl <- prj_shadow_if(my_tbl, is_col_freq(.), c(Count = "{n}", Proportion = "{signif(p, 2)}"))

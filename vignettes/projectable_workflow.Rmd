@@ -15,8 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 This vignette steps through a typical `projectable` workflow, taking us from a 
-simple dataframe via a metadata-rich table constructed using `set_table()` 
-through to a projection of that table in `gt` format.
+simple dataframe via a metadata-rich table constructed using the `prj_tbl_*()` 
+functions through to a projection of that table in `gt` format.
 
 The `projectable` package was designed to gell with `gt` and the wider `tidyverse`,
 so -- although it is by no means necessary -- we will use `dplyr` verbs throughout.
@@ -31,7 +31,7 @@ library(gt)
 
 The first step in the `projectable` workflow involves transforming an ordinary
 dataframe into a metadata-rich table-like object that is fit for projection. We 
-term this 'setting the table' and we perform it using the `set_table()` function
+term this 'setting the table' and we perform it using the `prj_tbl_*()` functions
 along with `col_*()` helpers.
 
 Thus, to generate a frequency cross tabulation out of the `mtcars` dataset with
@@ -41,20 +41,21 @@ columns corresponding to the engine shape, we write:
 ```{r}
 # Calculate frequency row-by-row
 crs_tab <- mtcars %>% 
-  set_table(
+  prj_tbl_rows(
     Cylinders = cyl,
     Transmission = am,
-    .cols = list(
-      `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
-      `Not V-Shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
-    )
-  )
+  ) %>% 
+  prj_tbl_cols(
+    `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+    `Not V-Shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+  ) %>%
+  prj_tbl_summarise()
 
 # Notice that the rows sum to one
 knitr::kable(crs_tab)
 ```
 
-Behind the scenes, `set_table()` loops over the row and column expressions it is
+Behind the scenes, `prj_tbl_summarise()` loops over the row and column expressions it is
 provided. Each column expression in `.cols` is evaluated over `.data` filtered
 down to each row expression in `.rows`.
 
@@ -68,16 +69,17 @@ over the whole column we would have to explicitly instruct R, when it is evaluat
 `mtcars` overall. Thus we would write
 
 ```{r}
-# Calculate frequency row-by-row
+# Calculate frequency column-by-column
 crs_tab_col <- mtcars %>% 
-  set_table(
+  prj_tbl_rows(
     Cylinders = cyl,
     Transmission = am,
-    .cols = list(
-      `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
-      `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
-    )
-  )
+  ) %>% 
+  prj_tbl_cols(
+    `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
+    `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
+  ) %>%
+  prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,
 # the columns sum to one
@@ -89,16 +91,17 @@ And if we wanted to calculate the base for each frequency, not over the whole
 column, but over the whole table, then we would write:
 
 ```{r}
-# Calculate frequency row-by-row
+# Calculate frequency cell-by-cell
 crs_tab_overall <- mtcars %>% 
-  set_table(
+  prj_tbl_rows(
     Cylinders = cyl,
     Transmission = am,
-    .cols = list(
-      `V-Shaped` = col_freq(n = vs %in% 1, N = nrow(mtcars)), 
-      `Not V-Shaped` = col_freq(n = vs %in% 0, N = nrow(mtcars))
-    )
-  )
+  ) %>% 
+  prj_tbl_cols(
+    `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 0:1), 
+    `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0:1)
+  ) %>%
+  prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,
 # the cells sum to one

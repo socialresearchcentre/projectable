@@ -1,4 +1,10 @@
-x <- set_table(mtcars, cyl, am, .cols = list(v = col_freq(vs %in% 1, vs %in% 0:1), nv = col_freq(vs %in% 0, vs %in% 0:1)))
+x <- mtcars %>%
+  prj_tbl_rows(cyl, am) %>%
+  prj_tbl_cols(
+    v = col_freq(vs %in% 1, vs %in% 0:1),
+    nv = col_freq(vs %in% 0, vs %in% 0:1)
+  ) %>%
+  prj_tbl_summarise()
 
 testthat::test_that("prj_shadow_all", {
   x_shdw <- prj_shadow_all(x, "{.}")

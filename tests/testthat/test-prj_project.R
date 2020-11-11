@@ -61,7 +61,10 @@ testthat::test_that("prj_project metadata", {
 })
 
 # proje_gt ----------------------------------------------------------------
-y <- set_table(mtcars, cyl, .cols = list(v = col_freq(vs %in% 1, vs %in% 0:1)))
+y <- mtcars %>%
+  prj_tbl_rows(cyl) %>%
+  prj_tbl_cols(v = col_freq(vs %in% 1, vs %in% 0:1)) %>%
+  prj_tbl_summarise()
 
 testthat::test_that("prj_gt", {
 
