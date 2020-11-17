@@ -1,7 +1,7 @@
 
 # prj_tbl class ----------------------------------------------------------------
 
-new_prj_tbl <- function(.data = data.frame(), .rows = list(), .cols = list()) {
+new_prj_tbl <- function(.data = data.frame(), .rows = list(), .cols = list(), class = character()) {
   stopifnot(is.data.frame(.data))
   stopifnot(is.list(.rows))
   stopifnot(is.list(.cols))
@@ -10,7 +10,7 @@ new_prj_tbl <- function(.data = data.frame(), .rows = list(), .cols = list()) {
     .data,
     .rows = .rows,
     .cols = .cols,
-    class = "prj_tbl"
+    class = c("prj_tbl", class)
   )
 }
 
@@ -160,12 +160,11 @@ prj_tbl_rows <- function(.data, ...) {
   if (is_prj_tbl(.data)) {
     `attr<-`(.data, ".rows", .rows)
   } else{
-    out <- validate_prj_tbl(new_prj_tbl(
+    validate_prj_tbl(new_prj_tbl(
       .data = .data,
-      .rows = .rows
+      .rows = .rows,
+      class = class(.data)
     ))
-    class(out) <- c(class(out), class(.data)) # Restore class of .data
-    out
   }
 }
 
@@ -177,11 +176,10 @@ prj_tbl_cols <- function(.data, ...) {
   if (is_prj_tbl(.data)) {
     `attr<-`(.data, ".cols", .cols)
   } else{
-    out <- validate_prj_tbl(new_prj_tbl(
+    validate_prj_tbl(new_prj_tbl(
       .data = .data,
-      .cols = .cols
+      .cols = .cols,
+      class = class(.data)
     ))
-    class(out) <- c(class(out), class(.data)) # Restore class of .data
-    out
   }
 }
