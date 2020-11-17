@@ -32,7 +32,7 @@
 # Validator and constructors ---------------------------------------------------
 
 col_freq <- function(n = double(), N = double(), p = NULL, summarised = FALSE) {
-  if (!summarised) {
+  if (!summarised & length(n > 0) & length(N > 0)) {
     # Summarise unsummarised inputs
     n <- sum(n, na.rm = TRUE)
     N <- sum(N, na.rm = TRUE)
@@ -55,13 +55,14 @@ new_col_freq <- function(n = double(), N = double(), p = double()) {
   vctrs::vec_assert(p, double())
   stopifnot(length(unique(length(n), length(N), length(p))) == 1)
 
-  vctrs::new_rcrd(
-    list(
+  validate_col(
+    new_col(
+      shadow = character(),
       n = n,
       N = N,
-      p = p
-    ),
-    class = c("projectable_col_freq", "projectable_col")
+      p = p,
+      class = "projectable_col_freq"
+    )
   )
 }
 

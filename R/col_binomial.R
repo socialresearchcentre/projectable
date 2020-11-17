@@ -37,7 +37,7 @@
 # Validator and constructors ---------------------------------------------------
 
 col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf, summarised = FALSE) {
-  if (!summarised) {
+  if (!summarised & length(n > 0) & length(N > 0)) {
     # Summarise unsummarised inputs
     n <- sum(n, na.rm = TRUE)
     N <- sum(N, na.rm = TRUE)
