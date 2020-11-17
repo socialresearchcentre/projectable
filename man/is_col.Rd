@@ -4,6 +4,7 @@
 \alias{is_col}
 \alias{col_shadow}
 \alias{col_shadow<-}
+\alias{prj_project_col}
 \title{Test, get and set cols and their attributes}
 \usage{
 is_col(x)
@@ -11,6 +12,8 @@ is_col(x)
 col_shadow(x)
 
 col_shadow(x) <- value
+
+prj_project_col(x)
 }
 \arguments{
 \item{x}{An object to test or to check the attributes of}

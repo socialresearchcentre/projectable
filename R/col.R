@@ -67,6 +67,28 @@ col_shadow <- function(x) {
   out
 }
 
+#' @export
+#' @rdname is_col
+prj_project_col <- function(x) {
+  UseMethod("prj_project_col")
+}
+
+#' @export
+prj_project_col.default <- function(x) {
+  tibble::tibble(x = x)
+}
+
+#' @export
+prj_project_col.data.frame <- function(x) {
+  tibble::as_tibble(x)
+}
+
+#' @export
+prj_project_col.projectable_col <- function(x) {
+  tibble::as_tibble(vctrs::vec_data(x))
+}
+
+
 # Define frequency column presentation -----------------------------------------
 
 #' @export
