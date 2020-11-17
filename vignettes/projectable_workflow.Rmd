@@ -1,8 +1,8 @@
 ---
-title: "projectable_workflow"
+title: "The projectable workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{projectable_workflow}
+  %\VignetteIndexEntry{The projectable workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -38,13 +38,14 @@ Thus, to generate a frequency cross tabulation out of the `mtcars` dataset with
 rows corresponding to the number of cylinders and the transmission types, and 
 columns corresponding to the engine shape, we write:
 
-```{r}
-# Calculate frequency row-by-row
+```{r message = FALSE, warning = FALSE}
 crs_tab <- mtcars %>% 
+  # Specify the rows of the prj table
   prj_tbl_rows(
     Cylinders = cyl,
     Transmission = am,
-  ) %>% 
+  ) %>%
+  # Specify the columns of the prj table
   prj_tbl_cols(
     `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
     `Not V-Shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
@@ -56,12 +57,30 @@ knitr::kable(crs_tab)
 ```
 
 Behind the scenes, `prj_tbl_summarise()` loops over the row and column expressions it is
-provided. Each column expression in `.cols` is evaluated over `.data` filtered
-down to each row expression in `.rows`.
+provided. Each column expression provided via `prj_tbl_cols()` is evaluated over `.data` filtered
+down to each row expression provided via `prj_tbl_rows()`.
 
 In our example, `col_freq(...)` is evaluated over `mtcars` filtered to each 
 unique value in `mtcars$cyl`, and then over `mtcars` filtered to each unique 
 value in `mtcars$am`. 
+
+There are helper functions which make specifying the columns slightly less verbose. 
+Thus, an equivalent way to write the above is:
+
+```{r}
+crs_tab_simple <- mtcars %>% 
+  # Specify the rows of the prj table
+  prj_tbl_rows(
+    Cylinders = cyl,
+    Transmission = am,
+  ) %>%
+  # Specify the columns of the prj table
+  prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "row")) %>%
+  prj_tbl_summarise()
+
+# Notice that the rows sum to one
+knitr::kable(crs_tab_simple)
+```
 
 If we wanted to calculate the base for each frequency, not row-by-row, but 
 over the whole column we would have to explicitly instruct R, when it is evaluating
@@ -69,16 +88,16 @@ over the whole column we would have to explicitly instruct R, when it is evaluat
 `mtcars` overall. Thus we would write
 
 ```{r}
-# Calculate frequency column-by-column
 crs_tab_col <- mtcars %>% 
   prj_tbl_rows(
     Cylinders = cyl,
     Transmission = am,
   ) %>% 
   prj_tbl_cols(
-    `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 1), 
-    `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0)
+    `V-Shaped` = col_freq(n = vs %in% 1, N = .data$vs %in% 1), 
+    `Not V-Shaped` = col_freq(n = vs %in% 0, N = .data$vs %in% 0)
   ) %>%
+  # Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "col")) %>%
   prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,
@@ -101,6 +120,7 @@ crs_tab_overall <- mtcars %>%
     `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 0:1), 
     `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0:1)
   ) %>%
+  # Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "cell")) %>%
   prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,
@@ -110,32 +130,37 @@ knitr::kable(crs_tab_overall)
 
 
 Once we have finished setting the table, what we should have is a table-like
-object with `projectable` `col_*`s. In addition to a face value, each of these 
-`col_*`s will have a set of metadata associated with it: a `col_freq`, for 
-instance, contains `n` and `N` metadata.
+object with `projectable_col`s. In addition to a face value, each of these 
+`projectable_col`s will have a set of metadata associated with it: a `col_freq`, for 
+instance, contains `n` and `N` metadata alongside a `p` (proportion) face value.
 
 ## Casting a shadow
 When it comes to displaying this metadata-rich table-like object, we have a range
 of options. 
 
 In some circumstances, we may want to display only the face values of each 
-`col_*`, in which case we can simply print the table as we have done above.
+`projectable_col`, in which case we can simply print the table as we have done above.
 
 However, in many cases, we will also want to be able to display the associated 
 metadata. Thus, there might be times when we want to display not only the 
 proportions but the associated `n` and `N` too.
 
 This is where the `prj_project()` function comes in: we use it to 'unfold' each
-`col_*` into whichever of its constituent elements we would like to display. 
+`projectable_col` into whichever of its constituent elements we would like to display. 
+We do this by passing through a named list of glue-like character vectors where
+each name corresponds to a column in the table passed through as `.data`. Each
+element in the character vector will be pulled out into a column in the output.
 
-(LINK TO ANOTHER VIGNETTE WITH MORE INFO ON THE CONCEPT OF 'PROJECTING' COLUMNS).
+So, for instance, to display the proportion alongside the count in one column 
+and the base in another column for the `V-Shaped` and `Not V-shaped` columns we
+created, we write:
 
 ```{r}
 crs_tab_display <- crs_tab %>% 
   prj_project(
     .cols = list(
-      `V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}"),
-      `Not V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")
+      `V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}"),
+      `Not V-Shaped` = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")
     )
   )
 
@@ -169,7 +194,7 @@ hand-off function, `prj_gt()`, which initialises a `gt` table object:
 
 ```{r}
 crs_tab_gt <- crs_tab %>% 
-  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", `Sample` = "{N}")) %>% 
+  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
   prj_gt()
 
 crs_tab_gt

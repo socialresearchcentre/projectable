@@ -1,0 +1,112 @@
+---
+title: "Programming with projectable"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Programming with projectable}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(projectable)
+library(dplyr)
+```
+
+
+Other packages exist for producing summary tables in R. The main advantages
+`projectable` is intended to have over these other packages are flexibility and
+programmability.
+
+Concretely, what that means is that the `projectable` user can specify *exactly*
+what the columns and rows of the output table should include, and, moreover,
+that they can do this programmatically.
+
+Thus, taking the `mtcars` dataset as our example, if we wanted to see 
+transmission type and engine shape broken down by a few different vehicle
+characteristics, we could write:
+
+```{r}
+col_vars <- c("cyl", "gear")
+
+
+my_tbls <- lapply(col_vars, function(cvar) {
+  col_spec <- spec_col_freq(!!cvar, sort(unique(mtcars[[cvar]])))
+
+  mtcars %>% 
+    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_rows(
+      Transmission = am,
+      `Engine Shape` = vs
+    ) %>% 
+    prj_tbl_summarise() %>% 
+    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_project()
+})
+
+my_tbls
+```
+
+At the price of being a bit more verbose, we can gain finer-grained control
+over the shape of the output. We can, for instance, omit automatic cars:
+
+```{r}
+val_labels <- list(
+  cyl = c(`Four Cylinders` = 4, `Six Cylinders` = 6, `Eight Cylinders` = 8),
+  gear = c(`Three Gears` = 3, `Four Gears` = 4, `Five Gears` = 5)
+)
+
+my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
+  col_spec <- spec_col_freq(!!cvar, cval)
+  names(col_spec) <- names(cval)
+  
+  mtcars %>% 
+    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_rows(
+      Transmission = list(Manual = am %in% 1),
+      `Engine Shape` = list(
+        `V-shaped` = vs %in% 1,
+        `Not V-shaped` = vs %in% 0
+      )
+    ) %>% 
+    prj_tbl_summarise() %>% 
+    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_project()
+}, SIMPLIFY = FALSE)
+
+my_tbls
+```
+
+Or we can display only certain columns (this time doing column proportions 
+rather than row proportions):
+
+```{r}
+val_labels <- list(
+  cyl = c(`Four Cylinders` = 4, `Six Cylinders` = 6),
+  gear = c(`Three Gears` = 3, `Four Gears` = 4)
+)
+
+my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
+  col_spec <- spec_col_freq(!!cvar, .vals = cval, "col", .base = unique(mtcars[[cvar]]))
+  names(col_spec) <- names(cval)
+
+  mtcars %>% 
+    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_rows(
+      Transmission = am,
+      `Engine Shape` = vs
+    ) %>% 
+    prj_tbl_summarise() %>% 
+    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_project()
+}, SIMPLIFY = FALSE)
+
+my_tbls
+```
+
