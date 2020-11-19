@@ -83,7 +83,7 @@ testthat::test_that("prj_gt", {
   y_prj <- prj_gt(y,  list(v = c(proportion = "{p}", count = "{n}")))
   testthat::expect_equal(ncol(y_prj$`_data`), 4)
   testthat::expect_equal(nrow(y_prj$`_data`), 3)
-  testthat::expect_equal(names(y_prj$`_data`), c("v.proportion", "v.count", "rows", "row_spanner"))
+  testthat::expect_equal(names(y_prj$`_data`), c("row_spanner", "rows", "v.proportion", "v.count"))
 
   # Failed
   testthat::expect_error(

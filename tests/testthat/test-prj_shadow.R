@@ -1,10 +1,9 @@
-x <- mtcars %>%
-  prj_tbl_rows(cyl, am) %>%
-  prj_tbl_cols(
+x <-  prj_tbl_rows(mtcars, cyl, am)
+x <- prj_tbl_cols(x,
     v = col_freq(vs %in% 1, vs %in% 0:1),
     nv = col_freq(vs %in% 0, vs %in% 0:1)
-  ) %>%
-  prj_tbl_summarise()
+  )
+x <- prj_tbl_summarise(x)
 
 testthat::test_that("prj_shadow_all", {
   x_shdw <- prj_shadow_all(x, "{.}")
@@ -27,7 +26,7 @@ testthat::test_that("prj_shadow_if", {
 
   testthat::expect_equal(ncol(prj_project(x_shdw)), 4)
   testthat::expect_equal(nrow(prj_project(x_shdw)), 5)
-  testthat::expect_equal(names(prj_project(x_shdw)), c("v", "nv", "rows", "row_spanner"))
+  testthat::expect_equal(names(prj_project(x_shdw)), c("row_spanner", "rows", "v", "nv"))
 })
 
 testthat::test_that("prj_shadow_at", {
@@ -39,6 +38,6 @@ testthat::test_that("prj_shadow_at", {
 
   testthat::expect_equal(ncol(prj_project(x_shdw)), 3)
   testthat::expect_equal(nrow(prj_project(x_shdw)), 5)
-  testthat::expect_equal(names(prj_project(x_shdw)), c("v", "rows", "row_spanner"))
+  testthat::expect_equal(names(prj_project(x_shdw)), c("row_spanner", "rows", "v"))
 })
 

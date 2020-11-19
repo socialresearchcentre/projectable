@@ -102,8 +102,16 @@ prj_cast_shadow <- function(.data) {
 
   # Output
   out <- do.call(cbind, out)
-  if ("rows" %in% names(.data)) out$rows <- .data$rows
-  if ("row_spanner" %in% names(.data)) out$row_spanner <- .data$row_spanner
+  out_cols <- names(out)
+  if ("rows" %in% names(.data)) {
+    out$rows <- .data$rows
+    out_cols <- c(setdiff(c("rows"), out_cols), out_cols)
+  }
+  if ("row_spanner" %in% names(.data)) {
+    out$row_spanner <- .data$row_spanner
+    out_cols <- c(setdiff(c("row_spanner"), out_cols), out_cols)
+  }
+  out <- out[out_cols]
 
   validate_projection(
     new_projection(
