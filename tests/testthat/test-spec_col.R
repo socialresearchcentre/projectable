@@ -26,4 +26,18 @@ testthat::test_that("spec_col", {
   )
   # Summarise
   testthat::expect_identical(prj_tbl_summarise(my_tbl1), prj_tbl_summarise(my_tbl2))
+
+
+  # Check equivalence
+  my_tbl3a <-
+    my_tbl1 <- prj_tbl_cols(
+      .data = my_tbl,
+      !!!spec_col_freq("vs", 0, .base = 0:1),
+    )
+  my_tbl3b <-
+    my_tbl1 <- prj_tbl_cols(
+      .data = my_tbl,
+      !!!spec_col_freq(vs, 0:1),
+    )
+  testthat::expect_identical(prj_tbl_summarise(my_tbl3a)[["vs.0"]], prj_tbl_summarise(my_tbl3b)[["vs.0"]])
 })

@@ -4,14 +4,16 @@
 \alias{spec_col_freq}
 \title{Frequency cross-tabulations}
 \usage{
-spec_col_freq(.var, .vals, .type = "row")
+spec_col_freq(.var, .vals, .type = "row", .base = .vals)
 }
 \arguments{
 \item{.var}{An unquoted variable name}
 
-\item{.vals}{A vector of values \code{.var} might take}
+\item{.vals}{A vector of values \code{.var} to calculate frequencies over}
 
 \item{.type}{A string designating the type of frequency to calculate: "row", "col" or "cell"}
+
+\item{.base}{A vector of all the values \code{.var} might take}
 }
 \value{
 A list of expressions to be passed into \code{prj_tbl_cols()}
