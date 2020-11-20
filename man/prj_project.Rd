@@ -3,7 +3,7 @@
 \name{prj_project}
 \alias{prj_project}
 \alias{prj_gt}
-\title{Project a table}
+\title{Project metadata-rich tables}
 \usage{
 prj_project(.data, .cols = list())
 

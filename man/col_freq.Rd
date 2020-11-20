@@ -3,7 +3,7 @@
 \name{col_freq}
 \alias{col_freq}
 \alias{is_col_freq}
-\title{Frequency Columns}
+\title{Create, or test for, objects of type \code{projectable_col_freq}.}
 \usage{
 col_freq(n = double(), N = double(), p = NULL, summarised = FALSE)
 

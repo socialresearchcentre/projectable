@@ -1,4 +1,4 @@
-#' Frequency cross-tabulations
+#' Produce frequency cross-tabulations concisely
 #'
 #' Conveniently generate frequency column specifications by passing through an
 #' unquoted variable name and a set of valid values. This specification can then

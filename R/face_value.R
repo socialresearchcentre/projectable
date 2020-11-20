@@ -1,7 +1,7 @@
 
 # face_value --------------------------------------------------------------
 
-#' Face values
+#' Get face values
 #'
 #' Each `projectable_col` stores a face value alongside a range of metadata.
 #' This function extracts that value.

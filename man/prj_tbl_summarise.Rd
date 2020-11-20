@@ -4,7 +4,7 @@
 \alias{prj_tbl_summarise}
 \alias{prj_tbl_rows}
 \alias{prj_tbl_cols}
-\title{prj_tbl}
+\title{Create metadata-rich tables}
 \usage{
 prj_tbl_summarise(.data)
 

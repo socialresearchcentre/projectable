@@ -1,5 +1,3 @@
-#' Binomial Column
-#'
 #' Create, or test for, objects of type `projectable_col_binomial`.
 #'
 #' Confidence intervals are calculated using the Agresti-Coull method. If the

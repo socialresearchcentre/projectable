@@ -1,4 +1,4 @@
-#' Project a table
+#' Project metadata-rich tables
 #'
 #' The `prj_project()` function is designed to take in a dataframe made up of
 #' `projectable_col`s, and to 'project' it into an ordinary dataframe as per the

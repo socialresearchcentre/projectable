@@ -3,7 +3,7 @@
 \name{col_binomial}
 \alias{col_binomial}
 \alias{is_col_binomial}
-\title{Binomial Column}
+\title{Create, or test for, objects of type \code{projectable_col_binomial}.}
 \usage{
 col_binomial(
   n = integer(),
@@ -36,9 +36,6 @@ across to calculate the number of successes and trials respectively}
 An S3 vector of class \code{projectable_col_binomial}
 }
 \description{
-Create, or test for, objects of type \code{projectable_col_binomial}.
-}
-\details{
 Confidence intervals are calculated using the Agresti-Coull method. If the
 population size is not \code{Inf} a finite population correction will be applied.
 }

@@ -39,7 +39,7 @@ is_prj_tbl <- function(x) {
 
 # prj_tbl_summarise ------------------------------------------------------------
 
-#' prj_tbl
+#' Create metadata-rich tables
 #'
 #' Build a summary table with `prj_tbl_summarise()` as per column and row
 #' specifications provided via `prj_tbl_cols()` and `prj_table_rows()`

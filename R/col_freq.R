@@ -1,5 +1,3 @@
-#' Frequency Columns
-#'
 #' Create, or test for, objects of type `projectable_col_freq`.
 #'
 #' @param n A numeric vector of pre-calculated frequencies or a vector which

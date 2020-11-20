@@ -2,7 +2,7 @@
 % Please edit documentation in R/spec_col.R
 \name{spec_col_freq}
 \alias{spec_col_freq}
-\title{Frequency cross-tabulations}
+\title{Produce frequency cross-tabulations concisely}
 \usage{
 spec_col_freq(.var, .vals, .type = "row", .base = .vals)
 }

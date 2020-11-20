@@ -2,7 +2,7 @@
 % Please edit documentation in R/face_value.R
 \name{face_value}
 \alias{face_value}
-\title{Face values}
+\title{Get face values}
 \usage{
 face_value(x)
 }

@@ -40,7 +40,7 @@ validate_col <- function(x) {
 
 # Helpers -----------------------------------------------------------------
 
-#' Test, get and set cols and their attributes
+#' Test, get and set `projectable_cols` and their attributes
 #'
 #' There are various subclasses of `projectable_col` including the `col_freq` and
 #' `col_binomial`. These functions provide a high-level interface to those subclasses.
