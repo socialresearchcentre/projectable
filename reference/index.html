@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -109,7 +109,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/socialresearchcentre/projectable/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -137,7 +142,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-create-and-interface-with-projectable-columns" class="hasAnchor"><a href="#section-create-and-interface-with-projectable-columns" class="anchor"></a>Create and interface with projectable columns</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -151,55 +156,75 @@
         <td>
           <p><code><a href="col_binomial.html">col_binomial()</a></code> <code><a href="col_binomial.html">is_col_binomial()</a></code> </p>
         </td>
-        <td><p>Binomial Column</p></td>
+        <td><p>Create, or test for, objects of type <code>projectable_col_binomial</code>.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="col_freq.html">col_freq()</a></code> <code><a href="col_freq.html">is_col_freq()</a></code> </p>
         </td>
-        <td><p>Frequency Columns</p></td>
+        <td><p>Create, or test for, objects of type <code>projectable_col_freq</code>.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="face_value.html">face_value()</a></code> </p>
         </td>
-        <td><p>Face values</p></td>
+        <td><p>Get face values</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="is_col.html">is_col()</a></code> <code><a href="is_col.html">col_shadow()</a></code> <code><a href="is_col.html">`col_shadow&lt;-`()</a></code> <code><a href="is_col.html">prj_project_col()</a></code> </p>
         </td>
-        <td><p>Test, get and set cols and their attributes</p></td>
+        <td><p>Test, get and set <code>projectable_cols</code> and their attributes</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-create-metadata-rich-table-like-objects" class="hasAnchor"><a href="#section-create-metadata-rich-table-like-objects" class="anchor"></a>Create metadata-rich table-like objects</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="prj_tbl_summarise.html">prj_tbl_summarise()</a></code> <code><a href="prj_tbl_summarise.html">prj_tbl_rows()</a></code> <code><a href="prj_tbl_summarise.html">prj_tbl_cols()</a></code> </p>
+        </td>
+        <td><p>Create metadata-rich tables</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="list_to_dataframe.html">list_to_dataframe()</a></code> </p>
+          <p><code><a href="spec_col_freq.html">spec_col_freq()</a></code> </p>
         </td>
-        <td><p>Convert a nested list to a tibble</p></td>
-      </tr><tr>
+        <td><p>Produce frequency cross-tabulations concisely</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-project-metadata-rich-table-like-objects" class="hasAnchor"><a href="#section-project-metadata-rich-table-like-objects" class="anchor"></a>Project metadata-rich table-like objects</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="prj_project.html">prj_project()</a></code> <code><a href="prj_project.html">prj_gt()</a></code> </p>
         </td>
-        <td><p>Project a table</p></td>
+        <td><p>Project metadata-rich tables</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="prj_shadow_all.html">prj_shadow_all()</a></code> <code><a href="prj_shadow_all.html">prj_shadow_if()</a></code> <code><a href="prj_shadow_all.html">prj_shadow_at()</a></code> </p>
         </td>
         <td><p>Specify projections for multiple columns</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="prj_tbl_summarise.html">prj_tbl_summarise()</a></code> <code><a href="prj_tbl_summarise.html">prj_tbl_rows()</a></code> <code><a href="prj_tbl_summarise.html">prj_tbl_cols()</a></code> </p>
-        </td>
-        <td><p>prj_tbl</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spec_col_freq.html">spec_col_freq()</a></code> </p>
-        </td>
-        <td><p>Frequency cross-tabulations</p></td>
       </tr>
     </tbody>
     </table>

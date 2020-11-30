@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Binomial Column — col_binomial • projectable</title>
+<title>Create, or test for, objects of type projectable_col_binomial. — col_binomial • projectable</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Binomial Column — col_binomial" />
-<meta property="og:description" content="Create, or test for, objects of type projectable_col_binomial." />
+<meta property="og:title" content="Create, or test for, objects of type projectable_col_binomial. — col_binomial" />
+<meta property="og:description" content="Confidence intervals are calculated using the Agresti-Coull method. If the
+population size is not Inf a finite population correction will be applied." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -110,7 +111,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/socialresearchcentre/projectable/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -124,13 +130,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Binomial Column</h1>
-    
+    <h1>Create, or test for, objects of type <code>projectable_col_binomial</code>.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/R/col_binomial.R'><code>R/col_binomial.R</code></a></small>
     <div class="hidden name"><code>col_binomial.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create, or test for, objects of type <code>projectable_col_binomial</code>.</p>
+    <p>Confidence intervals are calculated using the Agresti-Coull method. If the
+population size is not <code>Inf</code> a finite population correction will be applied.</p>
     </div>
 
     <pre class="usage"><span class='fu'>col_binomial</span><span class='op'>(</span>
@@ -179,10 +186,6 @@ across to calculate the number of successes and trials respectively</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An S3 vector of class <code>projectable_col_binomial</code></p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Confidence intervals are calculated using the Agresti-Coull method. If the
-population size is not <code>Inf</code> a finite population correction will be applied.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
