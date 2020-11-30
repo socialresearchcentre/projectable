@@ -1,3 +1,23 @@
 
 development:
   mode: auto
+
+reference:
+- title: Create and interface with projectable columns
+  contents:
+  - '`col_binomial`'
+  - '`col_freq`'
+  - '`face_value`'
+  - '`is_col`'
+
+reference:
+- title: Create metadata-rich table-like objects
+  contents:
+  - '`prj_tbl_summarise`'
+  - '`spec_col_freq`'
+
+reference:
+- title: Project metadata-rich table-like objects
+  contents:
+  - '`prj_project`'
+  - '`prj_shadow_all`'
