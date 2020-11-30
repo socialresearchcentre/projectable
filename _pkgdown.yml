@@ -9,14 +9,10 @@ reference:
   - '`col_freq`'
   - '`face_value`'
   - '`is_col`'
-
-reference:
 - title: Create metadata-rich table-like objects
   contents:
   - '`prj_tbl_summarise`'
   - '`spec_col_freq`'
-
-reference:
 - title: Project metadata-rich table-like objects
   contents:
   - '`prj_project`'
