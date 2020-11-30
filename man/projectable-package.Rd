@@ -9,6 +9,15 @@
 Produce table-like objects made up of special metadata-rich
     column vectors, and project them into two dimensions.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://socialresearchcentre.github.io/projectable}
+  \item \url{https://github.com/socialresearchcentre/projectable}
+  \item Report bugs at \url{https://github.com/socialresearchcentre/projectable/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Kinto Behr \email{kinto.behr@srcentre.com.au}
 
