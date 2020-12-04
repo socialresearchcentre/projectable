@@ -59,7 +59,7 @@ new_col_freq <- function(n = double(), N = double(), p = double()) {
       n = n,
       N = N,
       p = p,
-      class = "projectable_col_freq"
+      class = "freq"
     )
   )
 }

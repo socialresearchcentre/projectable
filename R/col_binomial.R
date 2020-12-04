@@ -110,7 +110,7 @@ new_col_binomial <- function(n = integer(),
       p = p,
       ci_lower = ci_lower,
       ci_upper = ci_upper,
-      class = "projectable_col_binomial"
+      class = "binomial"
     )
   )
 }

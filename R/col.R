@@ -1,17 +1,42 @@
-
+#' Create new `projectable_col`vectors
+#'
+#' To create a new class of `projectable_col` vectors, one simply needs to
+#' define a `col_*()` helper function. This can be done with the `new_col()`
+#' constructor function. The first field passed into the `new_col()` function
+#' via the `...` argument will be taken as the face value. This can be overriden
+#' by explicitly defining a `face_value()` method. The subclass of the
+#' `projectable_col` created in this way will be `projectable_col_*` where `*`
+#' is replaced by whatever is passed in as the `class` argument.
+#'
+#' @param ... Fields to store in the `projectable_col`
+#' @param shadow A shadow to initialise the `projectable_col` with
+#' @param class A character vector giving the `projectable_col` subclass.
+#'
+#' @return A `projectable_col` vector with subclass `projectable_col_*` where
+#' `*` is given by whatever was passed in as the `class` argument.
+#' @export
+#'
+#' @examples
+#'
+#' # Define a `col_student` helper function:
+#' col_student <- function(name = character(), age = integer(), grade = double()) {
+#'   new_col(name = name, age = age, grade = grade, class = "student")
+#' }
+#' col_student(c("Kinto", "Pinto"), c(25, 100), c(99, 100))
+#'
+#' @name new_col
 # Validator and constructors ---------------------------------------------------
-
-new_col <- function(shadow = character(), ..., class = character()) {
+new_col <- function(..., shadow = character(), class = character()) {
   vctrs::vec_assert(shadow, character())
   vctrs::vec_assert(class, character())
-  if (...length() == 0) stop("`...` cannot be empty")
+  if (...length() == 0) stop("`...` cannot be empty", call. = FALSE)
 
   vctrs::new_rcrd(
     list(
       ...
     ),
     shadow = shadow,
-    class = c(class, "projectable_col")
+    class = c(paste0("projectable_col_", class), "projectable_col")
   )
 }
 
@@ -93,22 +118,37 @@ prj_project_col.projectable_col <- function(x) {
 
 #' @export
 format.projectable_col <- function(x, ...) {
-  out <- signif(face_value(x), 2)
+  out <- face_value(x)
+  if (is.numeric(out)) {
+    out <- signif(face_value(out), 2)
+  }
+
+  out
 }
 
 #' @export
 vec_ptype_abbr.projectable_col <- function(x, ...) {
-  subclass <- class(x)[grep("projectable_col_", class(x))]
-  subclass <- gsub("projectable_col_", "", subclass[1])
-  subclass <- gsub("[aeiou]", "", subclass)
-  paste0("col_", subclass)
+  if (any(grepl("projectable_col_", class(x)))) {
+    subclass <- class(x)[grep("projectable_col_", class(x))]
+    subclass <- gsub("projectable_col_", "", subclass[1])
+    subclass <- gsub("[aeiou]", "", subclass)
+    if (is.na(subclass)) subclass <- class(x)[[1]]
+    out <- paste0("col_", subclass)
+  } else {
+    out <- "col"
+  }
 }
 
 #' @export
 vec_ptype_full.projectable_col <- function(x, ...) {
-  subclass <- class(x)[grep("projectable_col_", class(x))]
-  subclass <- gsub("projectable_col_", "", subclass[1])
-  paste0("col_", subclass)
+  if (any(grepl("projectable_col_", class(x)))) {
+    subclass <- class(x)[grep("projectable_col_", class(x))]
+    subclass <- gsub("projectable_col_", "", subclass[1])
+    if (is.na(subclass)) subclass <- class(x)[[1]]
+    out <- paste0("col_", subclass)
+  } else {
+    out <- "col"
+  }
 }
 
 # Define comparison rules ------------------------------------------------------
