@@ -9,6 +9,9 @@
 #'   confidence intervals
 #' @param population A numeric vector, the number of individuals in the
 #'   population to be used for calculating confidence intervals
+#' @param method The name of a method to be passed through to `asbio::ci.p()` for
+#'   parameter estimation. The default is "agresti.coull", but other options
+#'   include "asymptotic", "score", "LR" and "exact". See `asbio::ci.p()` for details.
 #' @param summarised A logical flagging whether or not `n` and `N` are being
 #'   supplied in summarised form or not. If FALSE, `n` and `N` will be summed
 #'   across to calculate the number of successes and trials respectively
@@ -34,53 +37,79 @@
 
 # Validator and constructors ---------------------------------------------------
 
-col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf, summarised = FALSE) {
-  if (!summarised & length(n > 0) & length(N > 0)) {
-    # Summarise unsummarised inputs
-    n <- sum(n, na.rm = TRUE)
-    N <- sum(N, na.rm = TRUE)
-  }
 
+
+col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf, method = "agresti.coull", summarised = FALSE) {
   n <- as.integer(n)
-  N <- vctrs::vec_recycle(as.integer(N), length(n))
-  population <- vctrs::vec_recycle(as.double(population), length(n))
-  ci_error <- vctrs::vec_recycle(as.double(ci_error), length(n))
-
-  # Check inputs
-  chk_stop(n > N, "`n` > `N`")
-  chk_stop(N > population, "`N` > `population`")
   chk_stop(ci_error > 1, "`ci_error` > 1")
   chk_stop(ci_error < 0, "`ci_error` < 0")
 
-  # Parameter estimation via Agresti-Coull
-  if (length(n) > 0 ) {
-    est_params <- lapply(1:length(n), function (i) {
-      std_quant <- stats::qnorm(ci_error[i]/2)
-      n_hat <- N[i] + std_quant^2
-      fin_pop_corr <- 1 - N[i] / population[i]
+  if (length(n) == 0 & length(N) == 0) {
+    return(new_col_binomial())
+  } else if (summarised) {
+    N <- vctrs::vec_recycle(as.integer(N), length(n))
+    ci_error <- vctrs::vec_recycle(as.double(ci_error), length(n))
+    population <- vctrs::vec_recycle(as.double(population), length(n))
+    chk_stop(n > N, "`n` > `N`")
+    chk_stop(N > population, "`N` > `population`")
 
-      est_prob <- (n[i] + (std_quant^2)/2) / n_hat
-      est_ci <- std_quant * sqrt(fin_pop_corr * (est_prob / n_hat) * (1 - est_prob))
-
-      c(est_prob = est_prob, est_ci = est_ci)
+    ci_est <- lapply(1:length(n), function (i) {
+      asbio::ci.p(
+        conf = 1-ci_error[i],
+        summarized = TRUE,
+        phat = n[i]/N[i],
+        fpc = population[i] == Inf,
+        n = N[i],
+        N = population[i],
+        method = method,
+        plot = FALSE
+      )
     })
 
-    est_prob <- vapply(est_params, function (x) x["est_prob"], FUN.VALUE = double(1))
-    est_ci <- vapply(est_params, function (x) x["est_ci"], FUN.VALUE = double(1))
+    ci_est <- list(
+      p = vapply(ci_est, function (x) x[["ci"]][1], FUN.VALUE = double(1)),
+      ci_lower = vapply(ci_est, function (x) x[["ci"]][2], FUN.VALUE = double(1)),
+      ci_upper = vapply(ci_est, function (x) x[["ci"]][3], FUN.VALUE = double(1)),
+      head = ci_est[[1]][["head"]]
+    )
+    ci_est$head <- vctrs::vec_recycle(ci_est$head, length(ci_est$p))
   } else {
-    est_prob <- double()
-    est_ci <- double()
+    stopifnot(length(ci_error) == 1)
+    stopifnot(length(population) == 1)
+    if (!all(n %in% 0:1)) stop("`n` must be binary if `summarised` = FALSE", call. = FALSE)
+
+    ci_est <- asbio::ci.p(
+      data = n,
+      conf = 1-ci_error,
+      summarized = FALSE,
+      fpc = population == Inf,
+      N = population,
+      method = method,
+      plot = FALSE
+    )
+
+    ci_est <- list(
+      p = ci_est$ci[1],
+      ci_lower = ci_est$ci[2],
+      ci_upper = ci_est$ci[3],
+      head = ci_est$head
+    )
+
+    if (length(N) != 0) message("`N` supplied but not required; setting `N` to `length(n)`")
+    N <- length(n)
+    n <- sum(n, na.rm = TRUE)
   }
 
-  validate_col_binomial(
+ validate_col_binomial(
     new_col_binomial(
       n = n,
       N = N,
       population = population,
       ci_error = ci_error,
-      p = est_prob,
-      ci_lower = est_prob - abs(est_ci),
-      ci_upper = est_prob + abs(est_ci)
+      p = ci_est$p,
+      ci_lower = ci_est$ci_lower,
+      ci_upper = ci_est$ci_upper,
+      note = ci_est$head
     )
   )
 }
@@ -91,7 +120,8 @@ new_col_binomial <- function(n = integer(),
                              ci_error = double(),
                              p = double(),
                              ci_lower = double(),
-                             ci_upper = double()) {
+                             ci_upper = double(),
+                             note = character()) {
   vctrs::vec_assert(n, integer())
   vctrs::vec_assert(N, integer())
   vctrs::vec_assert(population, double())
@@ -110,6 +140,7 @@ new_col_binomial <- function(n = integer(),
       p = p,
       ci_lower = ci_lower,
       ci_upper = ci_upper,
+      note = note,
       class = "binomial"
     )
   )

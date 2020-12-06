@@ -21,7 +21,8 @@ Imports:
     tibble,
     glue,
     stats,
-    rlang
+    rlang,
+    asbio
 Suggests: 
     testthat,
     gt,

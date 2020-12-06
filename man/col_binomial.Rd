@@ -10,6 +10,7 @@ col_binomial(
   N = integer(),
   ci_error = 0.05,
   population = Inf,
+  method = "agresti.coull",
   summarised = FALSE
 )
 
@@ -25,6 +26,10 @@ confidence intervals}
 
 \item{population}{A numeric vector, the number of individuals in the
 population to be used for calculating confidence intervals}
+
+\item{method}{The name of a method to be passed through to \code{asbio::ci.p()} for
+parameter estimation. The default is "agresti.coull", but other options
+include "asymptotic", "score", "LR" and "exact". See \code{asbio::ci.p()} for details.}
 
 \item{summarised}{A logical flagging whether or not \code{n} and \code{N} are being
 supplied in summarised form or not. If FALSE, \code{n} and \code{N} will be summed

@@ -59,29 +59,29 @@ testthat::test_that("col_binomial", {
   testthat::expect_s3_class(col_binomial(summarised = TRUE), "projectable_col")
   testthat::expect_identical(
     vctrs::fields(col_binomial(summarised = TRUE)),
-    c("n", "N", "population", "ci_error", "p", "ci_lower", "ci_upper")
+    c("n", "N", "population", "ci_error", "p", "ci_lower", "ci_upper", "note")
   )
   testthat::expect_true(is_col_binomial(col_binomial(summarised = TRUE)))
 
   # Check warnings
   testthat::expect_warning(
-    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, -1, -2, 0.6)),
+    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, -1, -2, 0.6, "")),
     "`p` < 0"
   )
   testthat::expect_warning(
-    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 2, 0, 3)),
+    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 2, 0, 3, "")),
     "`p` > 1"
   )
   testthat::expect_warning(
-    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.4, 0.5, 0.6)),
+    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.4, 0.5, 0.6, "")),
     "`p` < `ci_lower`"
   )
   testthat::expect_warning(
-    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.7, 0.5, 0.6)),
+    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.7, 0.5, 0.6, "")),
     "`p` > `ci_upper`"
   )
   testthat::expect_warning(
-    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.5, 0.6, 0.5)),
+    validate_col_binomial(new_col_binomial(1L, 1L, 1, 0.05, 0.5, 0.6, 0.5, "")),
     "`ci_lower` > `ci_upper`"
   )
 
@@ -103,6 +103,10 @@ testthat::test_that("col_binomial", {
     "`ci_error` < 0"
   )
   testthat::expect_error(
+    col_binomial(1:10),
+    "`n` must be binary"
+  )
+  testthat::expect_error(
     col_binomial(summarised = TRUE, x_success, 1:2),
     class = "vctrs_error_incompatible_size"
   )
@@ -122,6 +126,10 @@ testthat::test_that("col_binomial", {
     as.character(col_binomial(summarised = TRUE, x_success, x_trials)),
     class = "vctrs_error_incompatible_type"
   )
+  testthat::expect_error(
+    col_binomial(1, 2, summarised = TRUE, method = "something random"),
+    "should be one of"
+  )
 
   # Check comparisons
   testthat::expect_false(col_binomial(summarised = TRUE, 1, 2) == col_binomial(summarised = TRUE, 2, 4))
@@ -134,9 +142,15 @@ testthat::test_that("col_binomial", {
   testthat::expect_identical(vctrs::vec_cast(col_binomial(summarised = TRUE, 1, 2), col_binomial(summarised = TRUE)), col_binomial(summarised = TRUE, 1, 2))
   testthat::expect_s3_class(vctrs::vec_c(col_binomial(summarised = TRUE, 1, 2), col_binomial(summarised = TRUE, 1, 2)), "projectable_col_binomial")
   testthat::expect_identical(vctrs::vec_c(col_binomial(summarised = TRUE, 1, 2), col_binomial(summarised = TRUE, 3, 4)), col_binomial(summarised = TRUE, c(1, 3), c(2, 4)))
+
+  # Check equivalence of certain variations on inputs
+  testthat::expect_identical(
+    col_binomial(mtcars$vs %in% 1, mtcars$vs %in% 0:1),
+    col_binomial(mtcars$vs %in% 1)
+  )
 })
 
-testthat::test_that("col_freq: summarised/unsummarised equivalence", {
+testthat::test_that("col_binomial: summarised/unsummarised equivalence", {
   testthat::expect_identical(
     col_binomial(sum(mtcars$vs %in% 1), sum(mtcars$vs %in% 0:1), summarised = TRUE),
     col_binomial(mtcars$vs %in% 1, mtcars$vs %in% 0:1)
