@@ -57,12 +57,12 @@ testthat::test_that("prj_table_summarise row input types", {
   )
 
   expected_outputs <- list(
-    tibble::tibble(row_spanner = c("1", "1"), rows = c("0", "1"), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
-    tibble::tibble(row_spanner = c("1"), rows = c(NA_character_), Manual = col_freq(c(7), c(14), summarised = TRUE)),
-    tibble::tibble(row_spanner = c("Shape", "Shape"), rows = c("0", "1"), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
-    tibble::tibble(row_spanner = c("Shape"), rows = c(NA_character_), Manual = col_freq(c(7), c(14), summarised = TRUE)),
-    tibble::tibble(row_spanner = c("1", "1"), rows = c("NV", "V"), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
-    tibble::tibble(row_spanner = c("Shape", "Shape"), rows = c("NV", "V"), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE))
+    tibble::tibble(row_spanner = col_row(c("1", "1")), rows = col_row(c("0", "1")), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
+    tibble::tibble(row_spanner = col_row(c("1")), rows = col_row(c(NA_character_)), Manual = col_freq(c(7), c(14), summarised = TRUE)),
+    tibble::tibble(row_spanner = col_row(c("Shape", "Shape")), rows = col_row(c("0", "1")), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
+    tibble::tibble(row_spanner = col_row(c("Shape")), rows = col_row(c(NA_character_)), Manual = col_freq(c(7), c(14), summarised = TRUE)),
+    tibble::tibble(row_spanner = col_row(c("1", "1")), rows = col_row(c("NV", "V")), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE)),
+    tibble::tibble(row_spanner = col_row(c("Shape", "Shape")), rows = col_row(c("NV", "V")), Manual = col_freq(c(6, 7), c(18, 14), summarised = TRUE))
   )
 
   for (i in seq_along(row_inputs)) {

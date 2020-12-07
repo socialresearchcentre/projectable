@@ -36,6 +36,13 @@ testthat::test_that("prj_project", {
     prj_project(x,  list(m = "{.}", x = "{some_field}")),
     "`m` is not a column of `.data`"
   )
+
+  # Retains col_rows
+  x$z <- col_row(x$z)
+  testthat::expect_identical(
+    names(prj_project(x)),
+    "z"
+  )
 })
 
 testthat::test_that("prj_project metadata", {
@@ -61,10 +68,9 @@ testthat::test_that("prj_project metadata", {
 })
 
 # proje_gt ----------------------------------------------------------------
-y <- mtcars %>%
-  prj_tbl_rows(cyl) %>%
-  prj_tbl_cols(v = col_freq(vs %in% 1, vs %in% 0:1)) %>%
-  prj_tbl_summarise()
+y <- prj_tbl_rows(mtcars, cyl)
+y <- prj_tbl_cols(y, v = col_freq(vs %in% 1, vs %in% 0:1))
+y <- prj_tbl_summarise(y)
 
 testthat::test_that("prj_gt", {
 
@@ -97,5 +103,12 @@ testthat::test_that("prj_gt", {
   testthat::expect_error(
     prj_gt(x,  list(z = "{.}", x = "{some_field}")),
     "some_field' is not a field of `x`"
+  )
+
+  # Retains col_rows
+  x$z <- col_row(x$z)
+  testthat::expect_identical(
+    names(prj_gt(x, rowgroup_col = NULL, rowname_col = NULL)$`_data`),
+    "z"
   )
 })

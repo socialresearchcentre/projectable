@@ -107,9 +107,8 @@ prj_tbl_summarise <- function(.data) {
   out <- list_to_dataframe(out)
   names(out)[which(names(out) == "rows_0")] <- "row_spanner"
   names(out)[which(names(out)== "rows_1")] <- "rows"
-  vctrs::vec_rbind(tibble::tibble(row_spanner = character(), rows = character()), out)
+  vctrs::vec_rbind(tibble::tibble(row_spanner = col_row(), rows = col_row()), out)
 }
-
 
 evaluate_columns <- function(.col_exprs, .data, .enclos) {
   lapply(.col_exprs, function (.col) {
