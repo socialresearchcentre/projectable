@@ -24,6 +24,24 @@
 #' }
 #' col_student(c("Kinto", "Pinto"), c(25, 100), c(99, 100))
 #'
+#' # Define a `col_fivenum` helper function:
+#' col_fivenum <- function(x, na.rm = TRUE) {
+#'   five_num <- fivenum(x, na.rm)
+#'   new_col(
+#'     median = five_num[3],
+#'     min = five_num[1],
+#'     hinge_lower = five_num[2],
+#'     hinge_upper = five_num[4],
+#'     max = five_num[5],
+#'     class = "fivenum"
+#'   )
+#' }
+#'
+#' library(dplyr)
+#' iris %>%
+#'   group_by(Species) %>%
+#'   summarise(across(where(is.numeric), col_fivenum))
+#'
 #' @name new_col
 # Validator and constructors ---------------------------------------------------
 new_col <- function(..., shadow = character(), class = character()) {
