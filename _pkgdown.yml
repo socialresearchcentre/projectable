@@ -7,8 +7,10 @@ reference:
   contents:
   - '`col_binomial`'
   - '`col_freq`'
+  - '`col_row`'
   - '`face_value`'
   - '`is_col`'
+  - '`new_col`'
 - title: Create metadata-rich table-like objects
   contents:
   - '`prj_tbl_summarise`'

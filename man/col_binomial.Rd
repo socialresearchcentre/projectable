@@ -41,14 +41,14 @@ across to calculate the number of successes and trials respectively}
 An S3 vector of class \code{projectable_col_binomial}
 }
 \description{
-Confidence intervals are calculated using the Agresti-Coull method. If the
-population size is not \code{Inf} a finite population correction will be applied.
+Parameters are estimated using \code{asbio::ci.p()}. If the population size is not
+\code{Inf} a finite population correction will be applied.
 }
 \examples{
 
 # Calculate and store summary statistics for a binomial distribution
 b_trials <- stats::rbinom(1000, 1, 0.5)
-col_binomial(b_trials, b_trials \%in\% 0:1)
+col_binomial(b_trials)
 
 # Store pre-calculated summary statistics for a binomial distribution
 b_trials <- lapply(1:5, function(x) stats::rbinom(1000, 1, 0.5))

@@ -1,7 +1,7 @@
 #' Create, or test for, objects of type `projectable_col_binomial`.
 #'
-#' Confidence intervals are calculated using the Agresti-Coull method. If the
-#' population size is not `Inf` a finite population correction will be applied.
+#' Parameters are estimated using `asbio::ci.p()`. If the population size is not
+#' `Inf` a finite population correction will be applied.
 #'
 #' @param n A numeric vector, the number of successes
 #' @param N A numeric vector, the number of Bernoulli trials
@@ -24,7 +24,7 @@
 #'
 #' # Calculate and store summary statistics for a binomial distribution
 #' b_trials <- stats::rbinom(1000, 1, 0.5)
-#' col_binomial(b_trials, b_trials %in% 0:1)
+#' col_binomial(b_trials)
 #'
 #' # Store pre-calculated summary statistics for a binomial distribution
 #' b_trials <- lapply(1:5, function(x) stats::rbinom(1000, 1, 0.5))
