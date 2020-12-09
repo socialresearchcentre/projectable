@@ -54,15 +54,14 @@ col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, populati
     chk_stop(N > population, "`N` > `population`")
 
     ci_est <- lapply(1:length(n), function (i) {
-      asbio::ci.p(
+      ci_binomial(
         conf = 1-ci_error[i],
         summarized = TRUE,
         phat = n[i]/N[i],
         fpc = population[i] == Inf,
         n = N[i],
         N = population[i],
-        method = method,
-        plot = FALSE
+        method = method
       )
     })
 
@@ -78,14 +77,13 @@ col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, populati
     stopifnot(length(population) == 1)
     if (!all(n %in% 0:1)) stop("`n` must be binary if `summarised` = FALSE", call. = FALSE)
 
-    ci_est <- asbio::ci.p(
+    ci_est <- ci_binomial(
       data = n,
       conf = 1-ci_error,
       summarized = FALSE,
       fpc = population == Inf,
       N = population,
-      method = method,
-      plot = FALSE
+      method = method
     )
 
     ci_est <- list(
