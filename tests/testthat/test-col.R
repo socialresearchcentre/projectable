@@ -1,3 +1,58 @@
+
+# new_col -----------------------------------------------------------------
+
+testthat::test_that("new_col", {
+  col_fivenum <- function(x = numeric(), na.rm = TRUE) {
+    five_num <- fivenum(x, na.rm)
+    new_col(
+      median = five_num[3],
+      min = five_num[1],
+      hinge_lower = five_num[2],
+      hinge_upper = five_num[4],
+      max = five_num[5],
+      class = "fivenum"
+    )
+  }
+  x <- col_fivenum(1:100)
+
+  # Check class
+  testthat::expect_s3_class(x, c("projectable_col_fivenum", "projectable_col"))
+  testthat::expect_true(is_col(x))
+
+  # Check behaviour
+  testthat::expect_identical(
+    face_value(x),
+    fivenum(1:100)[3]
+  )
+
+  # Check output
+  testthat::expect_output(
+    print(x),
+    "col_fivenum"
+  )
+  testthat::expect_output(
+    print(tibble::tibble(x = x)),
+    "col_fvnm"
+  )
+
+  # Check errors
+  testthat::expect_error(
+    new_col(class = "empty"),
+    "`...` cannot be empty"
+  )
+
+  # Check names
+  testthat::expect_identical(
+    {names(x) <- "A"; names(x)},
+    "A"
+  )
+  testthat::expect_identical(
+    {`names<-`(x, "A"); names(x)},
+    "A"
+  )
+})
+
+
 # col_freq ---------------------------------------------------------------------
 testthat::test_that("col_freq", {
   testthat::expect_s3_class(col_freq(summarised = TRUE), "projectable_col_freq")
@@ -46,6 +101,16 @@ testthat::test_that("col_freq", {
   testthat::expect_identical(
     {`names<-`(x, LETTERS); names(x)},
     LETTERS
+  )
+
+  # Check output
+  testthat::expect_output(
+    print(x),
+    "col_freq"
+  )
+  testthat::expect_output(
+    print(tibble::tibble(x = x)),
+    "col_frq"
   )
 
 })
@@ -173,6 +238,16 @@ testthat::test_that("col_binomial", {
     {`names<-`(x, LETTERS); names(x)},
     LETTERS
   )
+
+  # Check output
+  testthat::expect_output(
+    print(x),
+    "col_binomial"
+  )
+  testthat::expect_output(
+    print(tibble::tibble(x = x)),
+    "col_bnml"
+  )
 })
 
 testthat::test_that("col_binomial: summarised/unsummarised equivalence", {
@@ -181,3 +256,34 @@ testthat::test_that("col_binomial: summarised/unsummarised equivalence", {
     col_binomial(mtcars$vs %in% 1, mtcars$vs %in% 0:1)
   )
 })
+
+
+# prj_project_col ---------------------------------------------------------
+testthat::test_that("prj_project_col", {
+  x <- col_freq(1:26, 1:26*1:26, summarised = TRUE)
+  xx <- prj_project_col(x)
+  xx_expected <- tibble::tibble(
+    n = as.double(1:26),
+    N = as.double(1:26*1:26),
+    p = 1:26 / (1:26*1:26)
+  )
+
+  # Check projection
+  testthat::expect_identical(
+    xx,
+    xx_expected
+  )
+
+  # Check idempotent
+  testthat::expect_identical(
+    prj_project_col(xx),
+    xx_expected
+  )
+
+  # Check tibble
+  testthat::expect_identical(
+    prj_project_col(1:10),
+    tibble::tibble(x = 1:10)
+  )
+})
+
