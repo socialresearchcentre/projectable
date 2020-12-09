@@ -44,7 +44,7 @@
 #'
 #' @name new_col
 # Validator and constructors ---------------------------------------------------
-new_col <- function(..., shadow = character(), class = character()) {
+new_col <- function(..., shadow = character(), class) {
   vctrs::vec_assert(shadow, character())
   vctrs::vec_assert(class, character())
   if (...length() == 0) stop("`...` cannot be empty", call. = FALSE)

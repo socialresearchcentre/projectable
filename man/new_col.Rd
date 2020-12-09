@@ -4,7 +4,7 @@
 \alias{new_col}
 \title{Create new \code{projectable_col}vectors}
 \usage{
-new_col(..., shadow = character(), class = character())
+new_col(..., shadow = character(), class)
 }
 \arguments{
 \item{...}{Fields to store in the \code{projectable_col}}
