@@ -131,6 +131,17 @@ prj_project_col.projectable_col <- function(x) {
   tibble::as_tibble(vctrs::vec_data(x))
 }
 
+#' @export
+`names<-.projectable_col` <- function(x, value) {
+  names(vctrs::field(x, vctrs::fields(x)[1])) <- value
+  x
+}
+
+#' @export
+names.projectable_col <- function(x) {
+  names(vctrs::field(x, vctrs::fields(x)[1]))
+}
+
 
 # Define frequency column presentation -----------------------------------------
 

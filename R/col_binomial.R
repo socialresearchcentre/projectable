@@ -171,6 +171,17 @@ is_col_binomial <- function(x) {
   inherits(x, "projectable_col_binomial")
 }
 
+#' @export
+`names<-.projectable_col_binomial` <- function(x, value) {
+  names(vctrs::field(x, "p")) <- value
+  x
+}
+
+#' @export
+names.projectable_col_binomial <- function(x) {
+  names(vctrs::field(x, "p"))
+}
+
 # Define coercion rules --------------------------------------------------------
 
 # Self-coercion

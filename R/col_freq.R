@@ -87,6 +87,17 @@ is_col_freq <- function(x) {
   inherits(x, "projectable_col_freq")
 }
 
+#' @export
+`names<-.projectable_col_freq` <- function(x, value) {
+  names(vctrs::field(x, "p")) <- value
+  x
+}
+
+#' @export
+names.projectable_col_freq <- function(x) {
+  names(vctrs::field(x, "p"))
+}
+
 # Define coercion rules --------------------------------------------------------
 
 #' @export

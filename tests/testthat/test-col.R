@@ -35,7 +35,21 @@ testthat::test_that("col_freq", {
   testthat::expect_identical(vctrs::vec_cast(col_freq(summarised = TRUE, 1, 2), col_freq(summarised = TRUE)), col_freq(summarised = TRUE, 1, 2))
   testthat::expect_s3_class(vctrs::vec_c(col_freq(summarised = TRUE, 1, 2), col_freq(summarised = TRUE, 1, 2)), "projectable_col_freq")
   testthat::expect_identical(vctrs::vec_c(col_freq(summarised = TRUE, 1, 2), col_freq(summarised = TRUE, 3, 4)), col_freq(summarised = TRUE, c(1, 3), c(2, 4)))
+
+
+  # Check names
+  x <- col_freq(1:26, 1:26*1:26, summarised = TRUE)
+  testthat::expect_identical(
+    {names(x) <- LETTERS; names(x)},
+    LETTERS
+  )
+  testthat::expect_identical(
+    {`names<-`(x, LETTERS); names(x)},
+    LETTERS
+  )
+
 })
+
 testthat::test_that("col_freq: summarised/unsummarised equivalence", {
   testthat::expect_identical(
     col_freq(sum(mtcars$vs %in% 1), sum(mtcars$vs %in% 0:1), summarised = TRUE),
@@ -147,6 +161,17 @@ testthat::test_that("col_binomial", {
   testthat::expect_identical(
     col_binomial(mtcars$vs %in% 1, mtcars$vs %in% 0:1),
     col_binomial(mtcars$vs %in% 1)
+  )
+
+  # Check names
+  x <- col_binomial(rbinom(26, 100, 0.7), rep(100, 26), summarised = TRUE)
+  testthat::expect_identical(
+    {names(x) <- LETTERS; names(x)},
+    LETTERS
+  )
+  testthat::expect_identical(
+    {`names<-`(x, LETTERS); names(x)},
+    LETTERS
   )
 })
 
