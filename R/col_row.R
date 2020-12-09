@@ -43,7 +43,9 @@ is_col_row <- function(x) {
 # Type hierarchy ---------------------------------------------------------------
 
 #' @export
-vec_ptype2.projectable_col_row.projectable_col_row <- function(x, y, ...) col_row()
+vec_ptype2.projectable_col_row.projectable_col_row <- function(x, y, ...) {
+  col_row(vctrs::vec_ptype_common(unclass(x), unclass(y)))
+}
 
 #' @export
 vec_ptype2.character.projectable_col_row <- function(x, y, ...) col_row()
@@ -51,14 +53,19 @@ vec_ptype2.character.projectable_col_row <- function(x, y, ...) col_row()
 vec_ptype2.projectable_col_row.character <- function(x, y, ...) col_row()
 
 #' @export
-vec_ptype2.numeric.projectable_col_row <- function(x, y, ...) col_row()
+vec_ptype2.double.projectable_col_row <- function(x, y, ...) col_row(double())
 #' @export
-vec_ptype2.projectable_col_row.numeric <- function(x, y, ...) col_row()
+vec_ptype2.projectable_col_row.double <- function(x, y, ...) col_row(double())
 
 #' @export
-vec_ptype2.logical.projectable_col_row <- function(x, y, ...) col_row()
+vec_ptype2.integer.projectable_col_row <- function(x, y, ...) col_row(integer())
 #' @export
-vec_ptype2.projectable_col_row.logical <- function(x, y, ...) col_row()
+vec_ptype2.projectable_col_row.integer <- function(x, y, ...) col_row(integer())
+
+#' @export
+vec_ptype2.logical.projectable_col_row <- function(x, y, ...) col_row(logical())
+#' @export
+vec_ptype2.projectable_col_row.logical <- function(x, y, ...) col_row(logical())
 
 # Type conversion --------------------------------------------------------------
 
@@ -68,9 +75,14 @@ vec_cast.projectable_col_row.character <- function(x, to, ...) col_row(x)
 vec_cast.character.projectable_col_row <- function(x, to, ...) as.character(x)
 
 #' @export
-vec_cast.projectable_col_row.numeric <- function(x, to, ...) col_row(x)
+vec_cast.projectable_col_row.double <- function(x, to, ...) col_row(x)
 #' @export
-vec_cast.numeric.projectable_col_row <- function(x, to, ...) as.numeric(x)
+vec_cast.double.projectable_col_row <- function(x, to, ...) as.double(x)
+
+#' @export
+vec_cast.projectable_col_row.integer <- function(x, to, ...) col_row(x)
+#' @export
+vec_cast.integer.projectable_col_row <- function(x, to, ...) as.integer(x)
 
 #' @export
 vec_cast.projectable_col_row.logical <- function(x, to, ...) col_row(x)
