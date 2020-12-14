@@ -132,6 +132,10 @@ testthat::test_that("col_binomial", {
   x_success <- vapply(x, function(x) sum(x), FUN.VALUE = double(1))
   x_trials <- vapply(x, function(x) length(x), FUN.VALUE = double(1))
 
+  # Check all methods don't error
+  for (i in c("exact", "score", "LR")) {
+    col_binomial(rbinom(100, 1, 0.7), method = i)
+  }
 
   # Check correct
   testthat::expect_s3_class(col_binomial(summarised = TRUE), "projectable_col_binomial")
