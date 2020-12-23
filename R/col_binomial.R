@@ -38,67 +38,51 @@
 # Validator and constructors ---------------------------------------------------
 
 
-
 col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, population = Inf, method = "agresti.coull", summarised = FALSE) {
+  # Check inputs
+  if (length(n) == 0 & length(N) == 0) return(new_col_binomial())
   n <- as.integer(n)
+  N <- as.integer(N)
+  if (!summarised) {
+    if (!all(n %in% 0:1)) stop("`n` must be binary if `summarised` = FALSE", call. = FALSE)
+    if (!all(N %in% 0:1)) stop("`N` must be binary if `summarised` = FALSE", call. = FALSE)
+    if (length(N) == 0) {N <- length(n)} else {N <- vctrs::vec_recycle(as.integer(N), length(n))}
+    n <- sum(n, na.rm = TRUE)
+    N <- sum(N, na.rm = TRUE)
+  } else {
+    N <- vctrs::vec_recycle(as.integer(N), length(n))
+  }
+  ci_error <- vctrs::vec_recycle(as.double(ci_error), length(n))
+  population <- vctrs::vec_recycle(as.double(population), length(n))
   chk_stop(ci_error > 1, "`ci_error` > 1")
   chk_stop(ci_error < 0, "`ci_error` < 0")
+  chk_stop(n > N, "`n` > `N`")
+  chk_stop(N > population, "`N` > `population`")
 
-  if (length(n) == 0 & length(N) == 0) {
-    return(new_col_binomial())
-  } else if (summarised) {
-    N <- vctrs::vec_recycle(as.integer(N), length(n))
-    ci_error <- vctrs::vec_recycle(as.double(ci_error), length(n))
-    population <- vctrs::vec_recycle(as.double(population), length(n))
-    chk_stop(n > N, "`n` > `N`")
-    chk_stop(N > population, "`N` > `population`")
-
-    ci_est <- lapply(1:length(n), function (i) {
-      ci_binomial(
-        conf = 1-ci_error[i],
-        summarized = TRUE,
-        phat = n[i]/N[i],
-        fpc = population[i] == Inf,
-        n = N[i],
-        N = population[i],
-        method = method
-      )
-    })
-
-    ci_est <- list(
-      p = vapply(ci_est, function (x) x[["ci"]][1], FUN.VALUE = double(1)),
-      ci_lower = vapply(ci_est, function (x) x[["ci"]][2], FUN.VALUE = double(1)),
-      ci_upper = vapply(ci_est, function (x) x[["ci"]][3], FUN.VALUE = double(1)),
-      head = ci_est[[1]][["head"]]
-    )
-    ci_est$head <- vctrs::vec_recycle(ci_est$head, length(ci_est$p))
-  } else {
-    stopifnot(length(ci_error) == 1)
-    stopifnot(length(population) == 1)
-    if (!all(n %in% 0:1)) stop("`n` must be binary if `summarised` = FALSE", call. = FALSE)
-
-    ci_est <- ci_binomial(
-      data = n,
-      conf = 1-ci_error,
-      summarized = FALSE,
-      fpc = population == Inf,
-      N = population,
+  # Estimate parameters
+  ci_est <- lapply(1:length(n), function (i) {
+    ci_binomial(
+      conf = 1-ci_error[i],
+      summarized = TRUE,
+      phat = n[i]/N[i],
+      fpc = population[i] == Inf,
+      n = N[i],
+      N = population[i],
       method = method
     )
+  })
 
-    ci_est <- list(
-      p = ci_est$ci[1],
-      ci_lower = ci_est$ci[2],
-      ci_upper = ci_est$ci[3],
-      head = ci_est$head
-    )
+  # Reshape for output
+  ci_est <- list(
+    p = vapply(ci_est, function (x) x[["ci"]][1], FUN.VALUE = double(1)),
+    ci_lower = vapply(ci_est, function (x) x[["ci"]][2], FUN.VALUE = double(1)),
+    ci_upper = vapply(ci_est, function (x) x[["ci"]][3], FUN.VALUE = double(1)),
+    head = ci_est[[1]][["head"]]
+  )
+  ci_est$head <- vctrs::vec_recycle(ci_est$head, length(ci_est$p))
 
-    if (length(N) != 0) message("`N` supplied but not required; setting `N` to `length(n)`")
-    N <- length(n)
-    n <- sum(n, na.rm = TRUE)
-  }
-
- validate_col_binomial(
+  # Output
+  validate_col_binomial(
     new_col_binomial(
       n = n,
       N = N,
