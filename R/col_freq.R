@@ -29,7 +29,10 @@
 
 # Validator and constructors ---------------------------------------------------
 
-col_freq <- function(n = double(), N = double(), p = NULL, summarised = FALSE) {
+col_freq <- function(n = double(), N = double(), p = NULL, weight = 1, summarised = FALSE) {
+  n <- n * weight
+  N <- N * weight
+
   if (!summarised & length(n > 0) & length(N > 0)) {
     # Summarise unsummarised inputs
     n <- sum(n, na.rm = TRUE)
