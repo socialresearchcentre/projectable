@@ -49,13 +49,13 @@
 #' ))
 #'
 #' # Produce a `gt` display object
-#' prj_gt(my_tbl, list(
+#' out <- prj_gt(my_tbl, list(
 #'   `V-Shaped` = "{signif(p, 2)} ({n})",
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
 #'
 #' #' # Produce a `flextable` display object
-#' prj_flex(my_tbl, list(
+#' out <- prj_flex(my_tbl, list(
 #'   `V-Shaped` = "{signif(p, 2)} ({n})",
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
