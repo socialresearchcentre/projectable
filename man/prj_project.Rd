@@ -3,6 +3,7 @@
 \name{prj_project}
 \alias{prj_project}
 \alias{prj_gt}
+\alias{prj_flex}
 \title{Project metadata-rich tables}
 \usage{
 prj_project(.data, .cols = list())
@@ -14,6 +15,8 @@ prj_gt(
   rowname_col = "rows",
   ...
 )
+
+prj_flex(.data, .cols = list())
 }
 \arguments{
 \item{.data}{A dataframe, ideally one containing \code{projectable_col}s}
@@ -72,6 +75,12 @@ prj_project(my_tbl, list(
 
 # Produce a `gt` display object
 prj_gt(my_tbl, list(
+  `V-Shaped` = "{signif(p, 2)} ({n})",
+  `Not V-shaped` = "{signif(p, 2)} ({n})"
+))
+
+#' # Produce a `flextable` display object
+prj_flex(my_tbl, list(
   `V-Shaped` = "{signif(p, 2)} ({n})",
   `Not V-shaped` = "{signif(p, 2)} ({n})"
 ))

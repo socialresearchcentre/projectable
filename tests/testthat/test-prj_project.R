@@ -112,3 +112,44 @@ testthat::test_that("prj_gt", {
     "z"
   )
 })
+
+
+# prj_flex() -------------------------------------------------------------------
+testthat::test_that("prj_flex", {
+
+  # Empty
+  testthat::expect_error(prj_flex(x))
+
+  # Non-empty
+  x_prj <- prj_flex(x,  list(x = "{.}", y = "{p}"))
+  testthat::expect_equal(ncol(x_prj$body$dataset), 2)
+  testthat::expect_equal(nrow(x_prj$body$dataset), 3)
+  testthat::expect_equal(names(x_prj$body$dataset), c("x", "y"))
+
+  y_prj <- prj_flex(y,  list(v = c(proportion = "{p}", count = "{n}")))
+  testthat::expect_equal(ncol(y_prj$body$dataset), 4)
+  testthat::expect_equal(nrow(y_prj$body$dataset), 3)
+  testthat::expect_equal(names(y_prj$body$dataset), c("row_spanner", "rows", "v.proportion", "v.count"))
+
+  # Failed
+  testthat::expect_error(
+    prj_flex(x,  list(z = "{.}", z = "identity")),
+    "all names in `.cols` must be unique"
+  )
+  testthat::expect_error(
+    prj_flex(x,  list(z = "{some_col}", x = "{p}")),
+    "object 'some_col' not found"
+  )
+  testthat::expect_error(
+    prj_flex(x,  list(z = "{.}", x = "{some_field}")),
+    "some_field' is not a field of `x`"
+  )
+
+  # Retains col_rows
+  x$z <- col_row(x$z)
+  testthat::expect_identical(
+    names(prj_flex(x)$body$dataset),
+    "z"
+  )
+})
+

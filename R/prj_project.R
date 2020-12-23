@@ -54,6 +54,12 @@
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
 #'
+#' #' # Produce a `flextable` display object
+#' prj_flex(my_tbl, list(
+#'   `V-Shaped` = "{signif(p, 2)} ({n})",
+#'   `Not V-shaped` = "{signif(p, 2)} ({n})"
+#' ))
+#'
 #' @name prj_project
 # Project table ----------------------------------------------------------------
 prj_project <- function(.data, .cols = list()) {
@@ -190,6 +196,39 @@ prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_
   }
 
   out
+}
+
+
+# prj_flex() --------------------------------------------------------------
+
+#' @export
+#' @rdname prj_project
+prj_flex <- function(.data, .cols = list()) {
+  # Project table
+  if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
+  projection <- add_shadows(.data ,.cols)
+  projection <- prj_cast_shadow(projection)
+
+  # Treat row columns differently
+  col_row_names <- names(.data)[vapply(.data, is_col_row, logical(1))]
+
+  # Get col spec
+  .col_spec <- attr(projection, ".cols")
+  if (is.null(.col_spec)) stop("`projection` must possess a `.cols` attribute")
+  .col_spec <- .col_spec[, c("cols", "col_spanners", "col_labels")]
+  if (length(col_row_names) > 0) .col_spec <- .col_spec[!.col_spec$cols %in% col_row_names, ]
+
+  # Initialise flextable
+  projection <- flextable::flextable(projection)
+
+  # Add header
+  projection <- flextable::set_header_df(projection, mapping = .col_spec, key = "cols")
+  projection <- flextable::merge_h(projection, part = "header")
+
+  # Merge rows
+  projection <- flextable::merge_v(projection, j = col_row_names)
+
+  flextable::theme_vanilla(projection)
 }
 
 # Projection -------------------------------------------------------------------
