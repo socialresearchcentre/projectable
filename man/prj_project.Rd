@@ -6,17 +6,18 @@
 \alias{prj_flex}
 \title{Project metadata-rich tables}
 \usage{
-prj_project(.data, .cols = list())
+prj_project(.data, .cols = list(), .digits = getOption("prj_digits"))
 
 prj_gt(
   .data,
   .cols = list(),
+  .digits = getOption("prj_digits"),
   rowgroup_col = "row_spanner",
   rowname_col = "rows",
   ...
 )
 
-prj_flex(.data, .cols = list())
+prj_flex(.data, .cols = list(), .digits = getOption("prj_digits"))
 }
 \arguments{
 \item{.data}{A dataframe, ideally one containing \code{projectable_col}s}
@@ -24,6 +25,8 @@ prj_flex(.data, .cols = list())
 \item{.cols}{A named list. Each name should  be the name of a column in
 \code{.data}; each value should be a named character vector containing glue-like
 specifications for the output columns.}
+
+\item{.digits}{A number representing the number of digits to round each numeric value to.}
 
 \item{rowgroup_col}{The name of a column in \code{.data} to group rows by; if
 \code{NULL} no grouping will be used.}
@@ -74,13 +77,13 @@ prj_project(my_tbl, list(
 ))
 
 # Produce a `gt` display object
-prj_gt(my_tbl, list(
+out <- prj_gt(my_tbl, list(
   `V-Shaped` = "{signif(p, 2)} ({n})",
   `Not V-shaped` = "{signif(p, 2)} ({n})"
 ))
 
 #' # Produce a `flextable` display object
-prj_flex(my_tbl, list(
+out <- prj_flex(my_tbl, list(
   `V-Shaped` = "{signif(p, 2)} ({n})",
   `Not V-shaped` = "{signif(p, 2)} ({n})"
 ))

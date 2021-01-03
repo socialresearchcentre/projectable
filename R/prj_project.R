@@ -17,6 +17,7 @@
 #' @param .cols A named list. Each name should  be the name of a column in
 #'   `.data`; each value should be a named character vector containing glue-like
 #'   specifications for the output columns.
+#' @param .digits A number representing the number of digits to round each numeric value to.
 #' @param rowgroup_col The name of a column in `.data` to group rows by; if
 #'   `NULL` no grouping will be used.
 #' @param rowname_col The name of a column in `.data` to take as the row labels;
@@ -62,18 +63,21 @@
 #'
 #' @name prj_project
 # Project table ----------------------------------------------------------------
-prj_project <- function(.data, .cols = list()) {
+prj_project <- function(.data, .cols = list(), .digits = getOption("prj_digits")) {
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   .data <- add_shadows(.data = .data, .shadows = .cols)
-  prj_cast_shadow(.data)
+  prj_cast_shadow(.data, .digits = .digits)
 }
 
-prj_cast_shadow <- function(.data) {
+
+# Helpers ----------------------------------------------------------------------
+
+prj_cast_shadow <- function(.data, .digits) {
   out <- mapply(function (col_i, name_i) {
     if (is_col_row(col_i)) {
       out <- list(col_i)
     } else {
-      out <- glue_each_in(col_shadow(col_i), col_i)
+      out <- glue_each_in(col_shadow(col_i), col_i, .transformer = round_transformer(.digits))
     }
 
     if (length(out) > 1) {
@@ -125,7 +129,21 @@ prj_cast_shadow <- function(.data) {
   )
 }
 
-glue_each_in <- function(.string, .data) {
+can_numeric <- function (x) {
+  !any(!is.na(x) & is.na(suppressWarnings(as.numeric(x))))
+}
+
+round_transformer <- function(.digits) {
+  .digits <- .digits
+  function(text, envir) {
+    out <- glue::identity_transformer(text, envir)
+    if (can_numeric(out)) out <- round(as.numeric(out), .digits)
+    out
+  }
+}
+
+glue_each_in <- function(.string, .data, .transformer = NULL) {
+  if (is.null(.transformer)) .transformer <- glue::identity_transformer
   # Establish search path
   calling_env <- parent.frame()
   enclos_env <- as.environment(list(`.` = face_value(.data)))
@@ -138,7 +156,7 @@ glue_each_in <- function(.string, .data) {
     } else{
       data_env <- enclos_env
     }
-    glue::glue(s, .envir = data_env)
+    glue::glue(s, .envir = data_env, .transformer = .transformer)
   })
 }
 
@@ -160,12 +178,18 @@ add_shadows <- function(.data, .shadows) {
 
 #' @export
 #' @rdname prj_project
-prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_col = "rows", ...) {
+prj_gt <-
+  function(.data,
+           .cols = list(),
+           .digits = getOption("prj_digits"),
+           rowgroup_col = "row_spanner",
+           rowname_col = "rows",
+           ...) {
 
   # Project table
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   projection <- add_shadows(.data ,.cols)
-  projection <- prj_cast_shadow(projection)
+  projection <- prj_cast_shadow(projection, .digits = .digits)
 
   # Add row groups
   if (!is.null(rowgroup_col)) {
@@ -203,11 +227,11 @@ prj_gt <- function(.data, .cols = list(), rowgroup_col = "row_spanner", rowname_
 
 #' @export
 #' @rdname prj_project
-prj_flex <- function(.data, .cols = list()) {
+prj_flex <- function(.data, .cols = list(), .digits = getOption("prj_digits")) {
   # Project table
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   projection <- add_shadows(.data ,.cols)
-  projection <- prj_cast_shadow(projection)
+  projection <- prj_cast_shadow(projection, .digits = .digits)
 
   # Treat row columns differently
   col_row_names <- names(.data)[vapply(.data, is_col_row, logical(1))]
