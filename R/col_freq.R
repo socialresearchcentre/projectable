@@ -6,6 +6,7 @@
 #'   which sums to a base frequency
 #' @param p A numeric vector of proportions, defaults to the quotient of `n` and
 #'   `N`
+#' @param weight A numeric vector of weights for calculating weighted frequencies.
 #' @param summarised A logical flagging whether or not `n` and `N` are being
 #'   supplied in summarised form or not. If FALSE, `n` and `N` will be summed
 #'   across to calculate frequencies.

@@ -5,7 +5,7 @@
 \alias{is_col_freq}
 \title{Create, or test for, objects of type \code{projectable_col_freq}.}
 \usage{
-col_freq(n = double(), N = double(), p = NULL, summarised = FALSE)
+col_freq(n = double(), N = double(), p = NULL, weight = 1, summarised = FALSE)
 
 is_col_freq(x)
 }
@@ -18,6 +18,8 @@ which sums to a base frequency}
 
 \item{p}{A numeric vector of proportions, defaults to the quotient of \code{n} and
 \code{N}}
+
+\item{weight}{A numeric vector of weights for calculating weighted frequencies.}
 
 \item{summarised}{A logical flagging whether or not \code{n} and \code{N} are being
 supplied in summarised form or not. If FALSE, \code{n} and \code{N} will be summed
