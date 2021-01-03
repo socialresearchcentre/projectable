@@ -138,7 +138,7 @@
     <p>Create, or test for, objects of type <code>projectable_col_freq</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>col_freq</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span><span class='op'>(</span><span class='op'>)</span>, N <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span><span class='op'>(</span><span class='op'>)</span>, p <span class='op'>=</span> <span class='cn'>NULL</span>, summarised <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>col_freq</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span><span class='op'>(</span><span class='op'>)</span>, N <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span><span class='op'>(</span><span class='op'>)</span>, p <span class='op'>=</span> <span class='cn'>NULL</span>, weight <span class='op'>=</span> <span class='fl'>1</span>, summarised <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>is_col_freq</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
@@ -159,6 +159,10 @@ which sums to a base frequency</p></td>
       <th>p</th>
       <td><p>A numeric vector of proportions, defaults to the quotient of <code>n</code> and
 <code>N</code></p></td>
+    </tr>
+    <tr>
+      <th>weight</th>
+      <td><p>A numeric vector of weights for calculating weighted frequencies.</p></td>
     </tr>
     <tr>
       <th>summarised</th>
