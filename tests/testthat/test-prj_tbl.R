@@ -90,3 +90,14 @@ testthat::test_that("prj_tbl_summarise errors", {
     "`.cols` must be made up of expressions"
   )
 })
+
+testthat::test_that("Output skips rows which match no records in output (#19)", {
+  out <- prj_tbl_cols(mtcars, four_cyl = col_freq(cyl %in% 4, !cyl %in% NA))
+  out1 <- prj_tbl_rows(out, big = mpg > 100, small = mpg < 100)
+  out2 <- prj_tbl_rows(out, small = mpg < 100)
+
+  expect_identical(
+    prj_tbl_summarise(out1),
+    prj_tbl_summarise(out2)
+  )
+})

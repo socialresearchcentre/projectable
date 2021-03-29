@@ -112,6 +112,7 @@ prj_tbl_summarise <- function(.data) {
 
 evaluate_columns <- function(.col_exprs, .data, .enclos) {
   lapply(.col_exprs, function (.col) {
+    if (is.null(.data)) .data <- .enclos$.data[0, ]
     if (is.symbol(.col)) {
       stop("`.cols` must be made up of expressions, not symbols", call. = FALSE)
     } else if (identical(.col[[1]], quote(list))) {
