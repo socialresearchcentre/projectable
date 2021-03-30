@@ -101,3 +101,34 @@ testthat::test_that("Output skips rows which match no records in output (#19)", 
     prj_tbl_summarise(out2)
   )
 })
+
+testthat::test_that("Can specify rows using spec (#20)", {
+  spec <- data.frame(
+    row_spanner = c("Transmission"),
+    rows = c("Automatic", "Manual"),
+    row_exprs = c("am %in% 0", "am %in% 1")
+  )
+
+  spec_rows <- lapply(unique(spec$row_spanner), function(spanner) {
+    spec_i <- spec[spec$row_spanner %in% spanner, ]
+    row_epxrs <- rlang::parse_exprs(spec_i$row_exprs)
+    rlang::set_names(row_epxrs, spec_i$rows)
+  })
+
+  spec_rows <- rlang::set_names(spec_rows, unique(spec$row_spanner))
+
+  out <-
+    prj_tbl_cols(
+      mtcars,
+      `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+      `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+    )
+
+  out1 <- prj_tbl_rows(out, !!!spec_rows)
+  out2 <- prj_tbl_rows(out, Transmission = list(Automatic = am %in% 0, Manual = am %in% 1))
+
+  expect_identical(
+    prj_tbl_summarise(out1),
+    prj_tbl_summarise(out2)
+  )
+})

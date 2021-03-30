@@ -20,7 +20,13 @@ validate_prj_tbl <- function(x) {
 
   if (!is.null(.rows)) {
     lapply(.rows, function (expr) {
-      if (!is.language(expr)) stop("`.rows` must contain only objects of type `language`", call. = FALSE)
+      if (is.list(expr)) {
+        lapply(expr, function (expr) {
+          if (!is.language(expr)) stop("`.rows` must contain only objects of type `language`", call. = FALSE)
+        })
+      } else {
+        if (!is.language(expr)) stop("`.rows` must contain only objects of type `language`", call. = FALSE)
+      }
     })
   }
 
@@ -85,21 +91,12 @@ prj_tbl_summarise <- function(.data) {
 
 
   out <- lapply(.rows, function (.row) {
-    if (is.symbol(.row)) {
-      if (!deparse(.row) %in% names(.data)) stop("`", .row, "` is not an element of `.data`", call. = FALSE)
-      row_data <- split(.data, eval(.row, .data, .enclos))
-      lapply(row_data, function (rdat) {
-        evaluate_columns(.cols, rdat, .enclos)
+    if (is.list(.row)) {
+      lapply(.row, function (.row) {
+        evaluate_row(.row, .cols, .data, .enclos)
       })
-    } else if (identical(.row[[1]], quote(list))) {
-      .row <- .row[2:length(.row)]
-      lapply(.row, function (row_expr) {
-        row_data <- split(.data, eval(row_expr, .data, .enclos))[["TRUE"]]
-        evaluate_columns(.cols, row_data, .enclos)
-      })
-    } else if (is.call(.row)) {
-      row_data <- split(.data, eval(.row, .data, .enclos))[["TRUE"]]
-      evaluate_columns(.cols, row_data, .enclos)
+    } else {
+      evaluate_row(.row, .cols, .data, .enclos)
     }
   })
 
@@ -108,6 +105,25 @@ prj_tbl_summarise <- function(.data) {
   names(out)[which(names(out) == "rows_0")] <- "row_spanner"
   names(out)[which(names(out)== "rows_1")] <- "rows"
   vctrs::vec_rbind(tibble::tibble(row_spanner = col_row(), rows = col_row()), out)
+}
+
+evaluate_row <- function(.row, .cols, .data, .enclos) {
+  if (is.symbol(.row)) {
+    if (!deparse(.row) %in% names(.data)) stop("`", .row, "` is not an element of `.data`", call. = FALSE)
+    row_data <- split(.data, eval(.row, .data, .enclos))
+    lapply(row_data, function (rdat) {
+      evaluate_columns(.cols, rdat, .enclos)
+    })
+  } else if (identical(.row[[1]], quote(list))) {
+    .row <- .row[2:length(.row)]
+    lapply(.row, function (row_expr) {
+      row_data <- split(.data, eval(row_expr, .data, .enclos))[["TRUE"]]
+      evaluate_columns(.cols, row_data, .enclos)
+    })
+  } else if (is.call(.row)) {
+    row_data <- split(.data, eval(.row, .data, .enclos))[["TRUE"]]
+    evaluate_columns(.cols, row_data, .enclos)
+  }
 }
 
 evaluate_columns <- function(.col_exprs, .data, .enclos) {
