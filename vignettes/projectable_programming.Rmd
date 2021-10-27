@@ -46,7 +46,7 @@ my_tbls <- lapply(col_vars, function(cvar) {
       `Engine Shape` = vs
     ) %>% 
     prj_tbl_summarise() %>% 
-    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_shadow(everything(), .shadow = "{signif(p, 2)} ({n})") %>% 
     prj_project()
 })
 
@@ -76,7 +76,7 @@ my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
       )
     ) %>% 
     prj_tbl_summarise() %>% 
-    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_shadow(everything(), .shadow = "{signif(p, 2)} ({n})") %>% 
     prj_project()
 }, SIMPLIFY = FALSE)
 
@@ -103,7 +103,7 @@ my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
       `Engine Shape` = vs
     ) %>% 
     prj_tbl_summarise() %>% 
-    prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+    prj_shadow(everything(), .shadow = "{signif(p, 2)} ({n})") %>% 
     prj_project()
 }, SIMPLIFY = FALSE)
 

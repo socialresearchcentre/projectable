@@ -194,7 +194,7 @@ hand-off function, `prj_gt()`, which initialises a `gt` table object:
 
 ```{r}
 crs_tab_gt <- crs_tab %>% 
-  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
+  prj_shadow(where(is_col_freq), .shadow = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
   prj_gt()
 
 crs_tab_gt

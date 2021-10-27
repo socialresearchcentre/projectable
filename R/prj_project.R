@@ -7,8 +7,7 @@
 #' display.
 #'
 #' The `shadow` attribute of each column can be set via the `.cols` argument of
-#' `prj_project()` or by using the `prj_shadow_if()` and `prj_shadow_at()` helper
-#' functions.
+#' `prj_project()` or by using the `prj_shadow()` helper function.
 #'
 #' The `projection` output will also come attached with metadata which keeps
 #' track of which columns in the output belong to which columns in the input.

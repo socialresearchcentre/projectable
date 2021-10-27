@@ -3,15 +3,14 @@
 #' The transition from a metadata-rich dataframe consisting of
 #' `projectable_col`s to an ordinary dataframe that is fit for presentation is
 #' guided by the `shadow` attributes attached to each column of the initial
-#' dataframe. The `prj_shadow_*()` functions are designed to make it easy to
+#' dataframe. The `prj_shadow()` function is designed to make it easy to
 #' specify those `shadow` attributes for multiple columns at once.
 #'
 #' @param .data A dataframe, ideally one containing `projectabel_col`s
-#' @param .predicate A predicate function to be applied to the columns or a
-#'   logical vector. The variables for which `.predicate` is or returns TRUE
-#'   have their `shadow` updated
-#' @param .vars A character vector containing the names of columns in `.data` of
-#'   which to update the `shadow` attribute
+#' @param ... [`tidy-select`](https://tidyselect.r-lib.org/articles/syntax.html)
+#'   One or more unquoted expressions separated by commas. Variable names can be
+#'   used as if they were positions in the data frame, so expressions like `x:y`
+#'   can be used to select a range of variables.
 #' @param .shadow A character vector containing glue-like specifications to
 #'   which to set the `shadow` attribute of the relevant columns.
 #'
@@ -34,44 +33,21 @@
 #' my_tbl <- prj_tbl_summarise(.data = my_tbl)
 #'
 #' # Update the `shadow` attributes
-#' my_tbl <- prj_shadow_if(my_tbl, is_col_freq(.), c(Count = "{n}", Proportion = "{signif(p, 2)}"))
+#' shadow <- c(Count = "{n}", Proportion = "{signif(p, 2)}")
+#' my_tbl <- prj_shadow(my_tbl, where(is_col_freq), .shadow = shadow)
 #'
 #' # Project it back into an ordinary dataframe
 #' prj_project(my_tbl)
 #'
 #' @export
-prj_shadow_all <- function(.data, .shadow) {
-  stopifnot(is.character(.shadow))
-  for (i in 1:ncol(.data)) {
+prj_shadow <- function(.data, ..., .shadow) {
+  expr <- rlang::expr(c(...))
+  pos <- tidyselect::eval_select(expr, data = .data)
+
+  for (i in names(pos)) {
     .data[[i]] <- `col_shadow<-`(.data[[i]], .shadow)
   }
 
   .data
 }
 
-#' @rdname prj_shadow_all
-#' @export
-prj_shadow_if <- function(.data, .predicate, .shadow) {
-  .predicate <- substitute(.predicate)
-  stopifnot(is.character(.shadow))
-  for (i in 1:ncol(.data)) {
-    add_metadata <- eval(.predicate, envir = list(`.` = .data[[i]]))
-    if (add_metadata) {
-      .data[[i]] <- `col_shadow<-`(.data[[i]], .shadow)
-    }
-  }
-
-  .data
-}
-
-#' @rdname prj_shadow_all
-#' @export
-prj_shadow_at <- function(.data, .vars, .shadow) {
-  stopifnot(is.character(.vars))
-  stopifnot(is.character(.shadow))
-  for (i in .vars) {
-    .data[[i]] <- `col_shadow<-`(.data[[i]], .shadow)
-  }
-
-  .data
-}

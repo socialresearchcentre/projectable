@@ -21,7 +21,8 @@ Imports:
     tibble,
     glue,
     stats,
-    rlang
+    rlang,
+    tidyselect
 Suggests: 
     testthat,
     gt,
