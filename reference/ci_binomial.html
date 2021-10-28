@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert a nested list to a tibble — list_to_dataframe • projectable</title>
+<title>Estimate confidence intervals for binomial distributions — ci_binomial • projectable</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,10 @@
 
 
 
-<meta property="og:title" content="Convert a nested list to a tibble — list_to_dataframe" />
-<meta property="og:description" content="The innermost list is bound together column-wise; the other lists are bound
-together row-wise. The names of the innermost list become the column names,
-and proceeding outwards the names of successive lists are stored within
-columns of the output tibble starting as row_i, then row_i+1, etc." />
+<meta property="og:title" content="Estimate confidence intervals for binomial distributions — ci_binomial" />
+<meta property="og:description" content="This function is an almost exact copy of the asbio::ci.p() function. The
+only differences are that (1) the plot argument and associated functionality
+have been removed, and (2) the output head has been slighlty altered." />
 
 
 
@@ -132,36 +131,81 @@ columns of the output tibble starting as row_i, then row_i+1, etc." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert a nested list to a tibble</h1>
-    <small class="dont-index">Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/R/prj_tbl.R'><code>R/prj_tbl.R</code></a></small>
-    <div class="hidden name"><code>list_to_dataframe.Rd</code></div>
+    <h1>Estimate confidence intervals for binomial distributions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/R/ci_binomial.R'><code>R/ci_binomial.R</code></a></small>
+    <div class="hidden name"><code>ci_binomial.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The innermost list is bound together column-wise; the other lists are bound
-together row-wise. The names of the innermost list become the column names,
-and proceeding outwards the names of successive lists are stored within
-columns of the output tibble starting as <code>row_i</code>, then <code>row_i+1</code>, etc.</p>
+    <p>This function is an almost exact copy of the <code>asbio::ci.p()</code> function. The
+only differences are that (1) the <code>plot</code> argument and associated functionality
+have been removed, and (2) the output <code>head</code> has been slighlty altered.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list_to_dataframe</span><span class='op'>(</span><span class='va'>x</span>, i <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ci_binomial</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  conf <span class='op'>=</span> <span class='fl'>0.95</span>,
+  summarized <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  phat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fpc <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  n <span class='op'>=</span> <span class='cn'>NULL</span>,
+  N <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='st'>"agresti.coull"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A nested list (i.e. a list of lists of lists of...)</p></td>
+      <th>data</th>
+      <td><p>A vector of binary data.  Required if <code>summarized = FALSE</code>.</p></td>
     </tr>
     <tr>
-      <th>i</th>
-      <td><p>A starting index to suffix <code>row_</code> columns with</p></td>
+      <th>conf</th>
+      <td><p>Level of confidence <code>1 - P(type I error)</code>.</p></td>
+    </tr>
+    <tr>
+      <th>summarized</th>
+      <td><p>Logical; indicate whether raw data or summary stats are to be used.</p></td>
+    </tr>
+    <tr>
+      <th>phat</th>
+      <td><p>Estimate of π. Required if <code>summarized = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>fpc</th>
+      <td><p>Logical. Indicates whether finite population corrections should be
+used. If <code>fpc = TRUE</code> then <code>N</code> must be specified. Finite population corrections
+are not possible for <code>method = "exact"</code> or <code>method = "score"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Sample size. Required if <code>summarized = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>Population size. Required if <code>fpc = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>Type of method to be used in confidence interval calculations,
+<code>method ="agresti.coull"</code> is the default. Other procedures include
+<code>method = "asymptotic"</code> which provides the conventional normal (Wald)
+approximation, <code>method = "score"</code>, <code>method = "LR"</code>, and <code>method = "exact"</code> (see
+Details below). Partial names can be used. The <code>"exact"</code> method cannot be
+implemented if <code>summarized=TRUE</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble</p>
+    <p>Returns a list of class = "ci".</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>See <code>?asbio::ci.p</code> for details.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>See <code>?asbio::ci.p</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

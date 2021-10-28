@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Project metadata-rich tables — prj_project • projectable</title>
+<title>Specify projections for multiple columns — prj_shadow • projectable</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,12 @@
 
 
 
-<meta property="og:title" content="Project metadata-rich tables — prj_project" />
-<meta property="og:description" content="The prj_project() function is designed to take in a dataframe made up of
-projectable_cols, and to 'project' it into an ordinary dataframe as per the
-instructions provided in the shadow attribute of each column. The
-prj_gt() function does the same thing, but initialises a gt object for
-display." />
+<meta property="og:title" content="Specify projections for multiple columns — prj_shadow" />
+<meta property="og:description" content="The transition from a metadata-rich dataframe consisting of
+projectable_cols to an ordinary dataframe that is fit for presentation is
+guided by the shadow attributes attached to each column of the initial
+dataframe. The prj_shadow() function is designed to make it easy to
+specify those shadow attributes for multiple columns at once." />
 
 
 
@@ -133,75 +133,45 @@ display." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Project metadata-rich tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/R/prj_project.R'><code>R/prj_project.R</code></a></small>
-    <div class="hidden name"><code>prj_project.Rd</code></div>
+    <h1>Specify projections for multiple columns</h1>
+    <small class="dont-index">Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/R/prj_shadow.R'><code>R/prj_shadow.R</code></a></small>
+    <div class="hidden name"><code>prj_shadow.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>prj_project()</code> function is designed to take in a dataframe made up of
-<code>projectable_col</code>s, and to 'project' it into an ordinary dataframe as per the
-instructions provided in the <code>shadow</code> attribute of each column. The
-<code>prj_gt()</code> function does the same thing, but initialises a <code>gt</code> object for
-display.</p>
+    <p>The transition from a metadata-rich dataframe consisting of
+<code>projectable_col</code>s to an ordinary dataframe that is fit for presentation is
+guided by the <code>shadow</code> attributes attached to each column of the initial
+dataframe. The <code>prj_shadow()</code> function is designed to make it easy to
+specify those <code>shadow</code> attributes for multiple columns at once.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prj_project</span><span class='op'>(</span><span class='va'>.data</span>, .cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, .digits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"prj_digits"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>prj_gt</span><span class='op'>(</span>
-  <span class='va'>.data</span>,
-  .cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  .digits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"prj_digits"</span><span class='op'>)</span>,
-  rowgroup_col <span class='op'>=</span> <span class='st'>"row_spanner"</span>,
-  rowname_col <span class='op'>=</span> <span class='st'>"rows"</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
-
-<span class='fu'>prj_flex</span><span class='op'>(</span><span class='va'>.data</span>, .cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, .digits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"prj_digits"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>prj_shadow</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>...</span>, <span class='va'>.shadow</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A dataframe, ideally one containing <code>projectable_col</code>s</p></td>
-    </tr>
-    <tr>
-      <th>.cols</th>
-      <td><p>A named list. Each name should  be the name of a column in
-<code>.data</code>; each value should be a named character vector containing glue-like
-specifications for the output columns.</p></td>
-    </tr>
-    <tr>
-      <th>.digits</th>
-      <td><p>A number representing the number of digits to round each
-numeric value to. If <code>NULL</code> no rounding will be performed</p></td>
-    </tr>
-    <tr>
-      <th>rowgroup_col</th>
-      <td><p>The name of a column in <code>.data</code> to group rows by; if
-<code>NULL</code> no grouping will be used.</p></td>
-    </tr>
-    <tr>
-      <th>rowname_col</th>
-      <td><p>The name of a column in <code>.data</code> to take as the row labels;
-if <code>NULL</code> no row labels will be applied</p></td>
+      <td><p>A dataframe, ideally one containing <code>projectabel_col</code>s</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments to pass on to <code><a href='https://gt.rstudio.com/reference/gt.html'>gt::gt()</a></code></p></td>
+      <td><p><a href='https://tidyselect.r-lib.org/articles/syntax.html'><code>tidy-select</code></a>
+One or more unquoted expressions separated by commas. Variable names can be
+used as if they were positions in the data frame, so expressions like <code>x:y</code>
+can be used to select a range of variables.</p></td>
+    </tr>
+    <tr>
+      <th>.shadow</th>
+      <td><p>A character vector containing glue-like specifications to
+which to set the <code>shadow</code> attribute of the relevant columns.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>projection</code> object</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>shadow</code> attribute of each column can be set via the <code>.cols</code> argument of
-<code>prj_project()</code> or by using the <code><a href='prj_shadow.html'>prj_shadow()</a></code> helper function.</p>
-<p>The <code>projection</code> output will also come attached with metadata which keeps
-track of which columns in the output belong to which columns in the input.</p>
+    <p>A dataframe, the columns of which have updated <code>shadow</code> attributes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create a table made up of `projectable_col`s</span>
@@ -219,31 +189,21 @@ track of which columns in the output belong to which columns in the input.</p>
 
 <span class='va'>my_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prj_tbl_summarise.html'>prj_tbl_summarise</a></span><span class='op'>(</span>.data <span class='op'>=</span> <span class='va'>my_tbl</span><span class='op'>)</span>
 
+<span class='co'># Update the `shadow` attributes</span>
+<span class='va'>shadow</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>Count <span class='op'>=</span> <span class='st'>"{n}"</span>, Proportion <span class='op'>=</span> <span class='st'>"{signif(p, 2)}"</span><span class='op'>)</span>
+<span class='va'>my_tbl</span> <span class='op'>&lt;-</span> <span class='fu'>prj_shadow</span><span class='op'>(</span><span class='va'>my_tbl</span>, <span class='fu'>where</span><span class='op'>(</span><span class='va'>is_col_freq</span><span class='op'>)</span>, .shadow <span class='op'>=</span> <span class='va'>shadow</span><span class='op'>)</span>
+
 <span class='co'># Project it back into an ordinary dataframe</span>
-<span class='fu'>prj_project</span><span class='op'>(</span><span class='va'>my_tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  `V-Shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>,
-  `Not V-shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>
-<span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 4</span>
-#&gt;   row_spanner  rows      `V-Shaped` `Not V-shaped`
-#&gt; <span style='color: #BCBCBC;'>*</span> <span style='color: #949494; font-style: italic;'>&lt;col_row&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;col_row&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;glue&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;glue&gt;</span>        
-#&gt; <span style='color: #BCBCBC;'>1</span> Cylinders    4         0.91 (10)  0.09 (1)      
-#&gt; <span style='color: #BCBCBC;'>2</span> Cylinders    6         0.57 (4)   0.43 (3)      
-#&gt; <span style='color: #BCBCBC;'>3</span> Cylinders    8         0 (0)      1 (14)        
-#&gt; <span style='color: #BCBCBC;'>4</span> Transmission Automatic 0.37 (7)   0.63 (12)     
-#&gt; <span style='color: #BCBCBC;'>5</span> Transmission Manual    0.54 (7)   0.46 (6)      </div><div class='input'>
-<span class='co'># Produce a `gt` display object</span>
-<span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>prj_gt</span><span class='op'>(</span><span class='va'>my_tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  `V-Shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>,
-  `Not V-shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>
-<span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>#' # Produce a `flextable` display object</span>
-<span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>prj_flex</span><span class='op'>(</span><span class='va'>my_tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  `V-Shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>,
-  `Not V-shaped` <span class='op'>=</span> <span class='st'>"{signif(p, 2)} ({n})"</span>
-<span class='op'>)</span><span class='op'>)</span>
-
+<span class='fu'><a href='prj_project.html'>prj_project</a></span><span class='op'>(</span><span class='va'>my_tbl</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 6</span>
+#&gt;   row_spanner  rows      `V-Shaped.Count` `V-Shaped.Proportion` `Not V-shaped.C…
+#&gt; <span style='color: #BCBCBC;'>*</span> <span style='color: #949494; font-style: italic;'>&lt;col_row&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;col_row&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;glue&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;glue&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;glue&gt;</span>          
+#&gt; <span style='color: #BCBCBC;'>1</span> Cylinders    4         10               0.91                  1               
+#&gt; <span style='color: #BCBCBC;'>2</span> Cylinders    6         4                0.57                  3               
+#&gt; <span style='color: #BCBCBC;'>3</span> Cylinders    8         0                0                     14              
+#&gt; <span style='color: #BCBCBC;'>4</span> Transmission Automatic 7                0.37                  12              
+#&gt; <span style='color: #BCBCBC;'>5</span> Transmission Manual    7                0.54                  6               
+#&gt; <span style='color: #949494;'># … with 1 more variable: Not V-shaped.Proportion &lt;glue&gt;</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

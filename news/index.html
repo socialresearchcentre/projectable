@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -111,7 +111,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/socialresearchcentre/projectable/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,11 +132,25 @@
       <small>Source: <a href='https://github.com/socialresearchcentre/projectable/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="projectable-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#projectable-development-version" class="anchor"></a>projectable (development version)</h1>
+    <div id="projectable-002" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.2">
+<a href="#projectable-002" class="anchor"></a>projectable 0.0.2</h1>
 <ul>
+<li>Implement <code>new_col</code> function to allow users to make their own <code>col</code> objects (<a href='https://github.com/socialresearchcentre/projectable/issues/16'>#16</a>).</li>
+<li>Add rounding to projections (<a href='https://github.com/socialresearchcentre/projectable/issues/11'>#11</a>).</li>
+<li>Add <code>weight</code> argument to <code>col_freq</code> to allow for weighted frequencies.</li>
+<li>Implemented <code>prj_flextable()</code> for projecting as a <code>flextable</code> object (<a href='https://github.com/socialresearchcentre/projectable/issues/12'>#12</a>).</li>
+<li>Implemented a <code>col_row</code> class and associated <code><a href="../reference/col_row.html">col_row()</a></code> function to allow special handling of dataframe columns representing row labels. (<a href='https://github.com/socialresearchcentre/projectable/issues/14'>#14</a>).</li>
+<li>Reimplemented the <code><a href="../reference/col_binomial.html">col_binomial()</a></code> function using <code>asbio::ci.p()</code> primarily to allow the user to select a parameter estimation method, and added a <code>note</code> field to the <code>col_binomial</code> class to store information on how the parameters were estimated. (<a href='https://github.com/socialresearchcentre/projectable/issues/8'>#8</a>, <a href='https://github.com/socialresearchcentre/projectable/issues/9'>#9</a>).</li>
+<li>Made <code>projectable_col</code> class extensible by introducing the <code><a href="../reference/new_col.html">new_col()</a></code> function. (<a href='https://github.com/socialresearchcentre/projectable/issues/16'>#16</a>).</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul>
+</div>
+    <div id="projectable-001" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.1">
+<a href="#projectable-001" class="anchor"></a>projectable 0.0.1</h1>
+<ul>
+<li>Initial release</li>
 </ul>
 </div>
   </div>

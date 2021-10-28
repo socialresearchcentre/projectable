@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/socialresearchcentre/projectable/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,8 +85,7 @@
 
       
 
-      </header><script src="projectable_programming_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="projectable_programming_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="projectable_programming_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="projectable_programming_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Programming with projectable</h1>
@@ -119,28 +118,28 @@
       `Engine Shape` <span class="op">=</span> <span class="va">vs</span>
     <span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/prj_shadow_all.html">prj_shadow_if</a></span><span class="op">(</span><span class="fu"><a href="../reference/is_col.html">is_col</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
 <span class="va">my_tbls</span>
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   row_spanner  rows  cyl.4     cyl.6    cyl.8    </span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt; &lt;glue&gt;    &lt;glue&gt;   &lt;glue&gt;   </span>
-<span class="co">#&gt; 1 Transmission 0     0.16 (3)  0.21 (4) 0.63 (12)</span>
-<span class="co">#&gt; 2 Transmission 1     0.62 (8)  0.23 (3) 0.15 (2) </span>
-<span class="co">#&gt; 3 Engine Shape 0     0.056 (1) 0.17 (3) 0.78 (14)</span>
-<span class="co">#&gt; 4 Engine Shape 1     0.71 (10) 0.29 (4) 0 (0)    </span>
+<span class="co">#&gt; # A tibble: 4 × 5</span>
+<span class="co">#&gt;   row_spanner  rows      cyl.4     cyl.6    cyl.8    </span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt; &lt;glue&gt;    &lt;glue&gt;   &lt;glue&gt;   </span>
+<span class="co">#&gt; 1 Transmission 0         0.16 (3)  0.21 (4) 0.63 (12)</span>
+<span class="co">#&gt; 2 Transmission 1         0.62 (8)  0.23 (3) 0.15 (2) </span>
+<span class="co">#&gt; 3 Engine Shape 0         0.06 (1)  0.17 (3) 0.78 (14)</span>
+<span class="co">#&gt; 4 Engine Shape 1         0.71 (10) 0.29 (4) 0 (0)    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   row_spanner  rows  gear.3    gear.4    gear.5   </span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt; &lt;glue&gt;    &lt;glue&gt;    &lt;glue&gt;   </span>
-<span class="co">#&gt; 1 Transmission 0     0.79 (15) 0.21 (4)  0 (0)    </span>
-<span class="co">#&gt; 2 Transmission 1     0 (0)     0.62 (8)  0.38 (5) </span>
-<span class="co">#&gt; 3 Engine Shape 0     0.67 (12) 0.11 (2)  0.22 (4) </span>
-<span class="co">#&gt; 4 Engine Shape 1     0.21 (3)  0.71 (10) 0.071 (1)</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 4 × 5</span>
+<span class="co">#&gt;   row_spanner  rows      gear.3    gear.4    gear.5  </span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt; &lt;glue&gt;    &lt;glue&gt;    &lt;glue&gt;  </span>
+<span class="co">#&gt; 1 Transmission 0         0.79 (15) 0.21 (4)  0 (0)   </span>
+<span class="co">#&gt; 2 Transmission 1         0 (0)     0.62 (8)  0.38 (5)</span>
+<span class="co">#&gt; 3 Engine Shape 0         0.67 (12) 0.11 (2)  0.22 (4)</span>
+<span class="co">#&gt; 4 Engine Shape 1         0.21 (3)  0.71 (10) 0.07 (1)</span></code></pre></div>
 <p>At the price of being a bit more verbose, we can gain finer-grained control over the shape of the output. We can, for instance, omit automatic cars:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">val_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
@@ -162,25 +161,25 @@
       <span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/prj_shadow_all.html">prj_shadow_if</a></span><span class="op">(</span><span class="fu"><a href="../reference/is_col.html">is_col</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">my_tbls</span>
 <span class="co">#&gt; $cyl</span>
-<span class="co">#&gt; # A tibble: 3 x 5</span>
+<span class="co">#&gt; # A tibble: 3 × 5</span>
 <span class="co">#&gt;   row_spanner  rows         `Four Cylinders` `Six Cylinders` `Eight Cylinders`</span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt;        &lt;glue&gt;           &lt;glue&gt;          &lt;glue&gt;           </span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt;    &lt;glue&gt;           &lt;glue&gt;          &lt;glue&gt;           </span>
 <span class="co">#&gt; 1 Transmission Manual       0.62 (8)         0.23 (3)        0.15 (2)         </span>
 <span class="co">#&gt; 2 Engine Shape V-shaped     0.71 (10)        0.29 (4)        0 (0)            </span>
-<span class="co">#&gt; 3 Engine Shape Not V-shaped 0.056 (1)        0.17 (3)        0.78 (14)        </span>
+<span class="co">#&gt; 3 Engine Shape Not V-shaped 0.06 (1)         0.17 (3)        0.78 (14)        </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $gear</span>
-<span class="co">#&gt; # A tibble: 3 x 5</span>
+<span class="co">#&gt; # A tibble: 3 × 5</span>
 <span class="co">#&gt;   row_spanner  rows         `Three Gears` `Four Gears` `Five Gears`</span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt;        &lt;glue&gt;        &lt;glue&gt;       &lt;glue&gt;      </span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt;    &lt;glue&gt;        &lt;glue&gt;       &lt;glue&gt;      </span>
 <span class="co">#&gt; 1 Transmission Manual       0 (0)         0.62 (8)     0.38 (5)    </span>
-<span class="co">#&gt; 2 Engine Shape V-shaped     0.21 (3)      0.71 (10)    0.071 (1)   </span>
+<span class="co">#&gt; 2 Engine Shape V-shaped     0.21 (3)      0.71 (10)    0.07 (1)    </span>
 <span class="co">#&gt; 3 Engine Shape Not V-shaped 0.67 (12)     0.11 (2)     0.22 (4)</span></code></pre></div>
 <p>Or we can display only certain columns (this time doing column proportions rather than row proportions):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -200,28 +199,28 @@
       `Engine Shape` <span class="op">=</span> <span class="va">vs</span>
     <span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../reference/prj_shadow_all.html">prj_shadow_if</a></span><span class="op">(</span><span class="fu"><a href="../reference/is_col.html">is_col</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">my_tbls</span>
 <span class="co">#&gt; $cyl</span>
-<span class="co">#&gt; # A tibble: 4 x 4</span>
-<span class="co">#&gt;   row_spanner  rows  `Four Cylinders` `Six Cylinders`</span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt; &lt;glue&gt;           &lt;glue&gt;         </span>
-<span class="co">#&gt; 1 Transmission 0     0.27 (3)         0.57 (4)       </span>
-<span class="co">#&gt; 2 Transmission 1     0.73 (8)         0.43 (3)       </span>
-<span class="co">#&gt; 3 Engine Shape 0     0.091 (1)        0.43 (3)       </span>
-<span class="co">#&gt; 4 Engine Shape 1     0.91 (10)        0.57 (4)       </span>
+<span class="co">#&gt; # A tibble: 4 × 4</span>
+<span class="co">#&gt;   row_spanner  rows      `Four Cylinders` `Six Cylinders`</span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt; &lt;glue&gt;           &lt;glue&gt;         </span>
+<span class="co">#&gt; 1 Transmission 0         0.27 (3)         0.57 (4)       </span>
+<span class="co">#&gt; 2 Transmission 1         0.73 (8)         0.43 (3)       </span>
+<span class="co">#&gt; 3 Engine Shape 0         0.09 (1)         0.43 (3)       </span>
+<span class="co">#&gt; 4 Engine Shape 1         0.91 (10)        0.57 (4)       </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $gear</span>
-<span class="co">#&gt; # A tibble: 4 x 4</span>
-<span class="co">#&gt;   row_spanner  rows  `Three Gears` `Four Gears`</span>
-<span class="co">#&gt; * &lt;chr&gt;        &lt;chr&gt; &lt;glue&gt;        &lt;glue&gt;      </span>
-<span class="co">#&gt; 1 Transmission 0     1 (15)        0.33 (4)    </span>
-<span class="co">#&gt; 2 Transmission 1     0 (0)         0.67 (8)    </span>
-<span class="co">#&gt; 3 Engine Shape 0     0.8 (12)      0.17 (2)    </span>
-<span class="co">#&gt; 4 Engine Shape 1     0.2 (3)       0.83 (10)</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 4 × 4</span>
+<span class="co">#&gt;   row_spanner  rows      `Three Gears` `Four Gears`</span>
+<span class="co">#&gt; * &lt;col_row&gt;    &lt;col_row&gt; &lt;glue&gt;        &lt;glue&gt;      </span>
+<span class="co">#&gt; 1 Transmission 0         1 (15)        0.33 (4)    </span>
+<span class="co">#&gt; 2 Transmission 1         0 (0)         0.67 (8)    </span>
+<span class="co">#&gt; 3 Engine Shape 0         0.8 (12)      0.17 (2)    </span>
+<span class="co">#&gt; 4 Engine Shape 1         0.2 (3)       0.83 (10)</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
