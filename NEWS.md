@@ -1,5 +1,9 @@
-# projectable (development version)
+# projectable 0.0.2
 
+* Implement `new_col` function to allow users to make their own `col` objects (#16).
+* Add rounding to projections (#11).
+* Add `weight` argument to `col_freq` to allow for weighted frequencies.
+* Implemented `prj_flextable()` for projecting as a `flextable` object (#12).
 * Implemented a `col_row` class and associated `col_row()` function to allow 
   special handling of dataframe columns representing row labels. (#14).
 * Reimplemented the `col_binomial()` function using `asbio::ci.p()` primarily
@@ -9,3 +13,7 @@
 * Made `projectable_col` class extensible by introducing the `new_col()` 
   function. (#16).
 * Added a `NEWS.md` file to track changes to the package.
+
+# projectable 0.0.1
+
+* Initial release

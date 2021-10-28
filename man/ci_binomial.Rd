@@ -53,3 +53,4 @@ See \code{?asbio::ci.p} for details.
 \author{
 See \code{?asbio::ci.p}
 }
+\keyword{internal}
