@@ -25,6 +25,7 @@
 #' @return Returns a list of class = "ci".
 #'
 #' @author See `?asbio::ci.p`
+#' @keywords internal
 #'
 ci_binomial <-
   function(data,

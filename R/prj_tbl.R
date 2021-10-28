@@ -152,6 +152,7 @@ evaluate_columns <- function(.col_exprs, .data, .enclos) {
 #' @param i A starting index to suffix `row_` columns with
 #'
 #' @return A tibble
+#' @keywords internal
 list_to_dataframe <- function(x, i = 0) {
   if (all(vapply(x, vctrs::vec_is_list, logical(1)))) {
     out <- do.call(

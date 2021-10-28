@@ -68,7 +68,7 @@ my_tbl <- mtcars %>%
   ) %>%
   prj_tbl_summarise() %>% 
   # Tag columns to display
-  prj_shadow_if(is_col_freq(.), c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
+  prj_shadow(everything(), .shadow = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
   # Pass through to `gt` for formatting
   prj_gt() %>% 
   gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 

@@ -7,8 +7,7 @@
 #' display.
 #'
 #' The `shadow` attribute of each column can be set via the `.cols` argument of
-#' `prj_project()` or by using the `prj_shadow_if()` and `prj_shadow_at()` helper
-#' functions.
+#' `prj_project()` or by using the `prj_shadow()` helper function.
 #'
 #' The `projection` output will also come attached with metadata which keeps
 #' track of which columns in the output belong to which columns in the input.
@@ -17,7 +16,8 @@
 #' @param .cols A named list. Each name should  be the name of a column in
 #'   `.data`; each value should be a named character vector containing glue-like
 #'   specifications for the output columns.
-#' @param .digits A number representing the number of digits to round each numeric value to.
+#' @param .digits A number representing the number of digits to round each
+#'   numeric value to. If `NULL` no rounding will be performed
 #' @param rowgroup_col The name of a column in `.data` to group rows by; if
 #'   `NULL` no grouping will be used.
 #' @param rowname_col The name of a column in `.data` to take as the row labels;
@@ -72,12 +72,14 @@ prj_project <- function(.data, .cols = list(), .digits = getOption("prj_digits")
 
 # Helpers ----------------------------------------------------------------------
 
-prj_cast_shadow <- function(.data, .digits) {
+prj_cast_shadow <- function(.data, .digits = NULL) {
   out <- mapply(function (col_i, name_i) {
     if (is_col_row(col_i)) {
       out <- list(col_i)
-    } else {
+    } else if (!is.null(.digits)) {
       out <- glue_each_in(col_shadow(col_i), col_i, .transformer = round_transformer(.digits))
+    } else {
+      out <- glue_each_in(col_shadow(col_i), col_i)
     }
 
     if (length(out) > 1) {

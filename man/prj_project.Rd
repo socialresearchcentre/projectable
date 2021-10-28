@@ -26,7 +26,8 @@ prj_flex(.data, .cols = list(), .digits = getOption("prj_digits"))
 \code{.data}; each value should be a named character vector containing glue-like
 specifications for the output columns.}
 
-\item{.digits}{A number representing the number of digits to round each numeric value to.}
+\item{.digits}{A number representing the number of digits to round each
+numeric value to. If \code{NULL} no rounding will be performed}
 
 \item{rowgroup_col}{The name of a column in \code{.data} to group rows by; if
 \code{NULL} no grouping will be used.}
@@ -48,8 +49,7 @@ display.
 }
 \details{
 The \code{shadow} attribute of each column can be set via the \code{.cols} argument of
-\code{prj_project()} or by using the \code{prj_shadow_if()} and \code{prj_shadow_at()} helper
-functions.
+\code{prj_project()} or by using the \code{prj_shadow()} helper function.
 
 The \code{projection} output will also come attached with metadata which keeps
 track of which columns in the output belong to which columns in the input.

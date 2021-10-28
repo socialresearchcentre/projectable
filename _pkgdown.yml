@@ -5,9 +5,7 @@ development:
 reference:
 - title: Create and interface with projectable columns
   contents:
-  - '`col_binomial`'
-  - '`col_freq`'
-  - '`col_row`'
+  - starts_with('col_')
   - '`face_value`'
   - '`is_col`'
   - '`new_col`'
@@ -18,4 +16,4 @@ reference:
 - title: Project metadata-rich table-like objects
   contents:
   - '`prj_project`'
-  - '`prj_shadow_all`'
+  - '`prj_shadow`'

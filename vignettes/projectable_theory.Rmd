@@ -142,14 +142,14 @@ prjtbl <- mtcars %>%
 
 # Proportions on their own
 out <- prjtbl %>% 
-  prj_shadow_if(is_col(.), "{signif(p, 2)}") %>% 
+  prj_shadow(everything(), .shadow = "{signif(p, 2)}") %>% 
   prj_project()
 
 knitr::kable(out)
 
 # Proportions along with raw counts
 out <- prjtbl %>% 
-  prj_shadow_if(is_col(.), "{signif(p, 2)} ({n})") %>% 
+  prj_shadow(everything(), .shadow = "{signif(p, 2)} ({n})") %>% 
   prj_project()
 
 

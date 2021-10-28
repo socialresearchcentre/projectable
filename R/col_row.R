@@ -23,7 +23,7 @@
 #'     Auto = col_freq(am %in% 0, am %in% 0:1)
 #'   ) %>%
 #'   # We don't have to worry about applying a special shadow to the `col_row`
-#'   prj_shadow_all("{signif(p, 2)} ({n})") %>%
+#'   prj_shadow(everything(), .shadow = "{signif(p, 2)} ({n})") %>%
 #'   prj_gt(rowgroup_col = NULL, rowname_col = NULL)
 #'
 col_row <- function(x = character()) {

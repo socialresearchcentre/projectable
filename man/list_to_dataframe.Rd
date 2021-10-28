@@ -20,3 +20,4 @@ together row-wise. The names of the innermost list become the column names,
 and proceeding outwards the names of successive lists are stored within
 columns of the output tibble starting as \code{row_i}, then \code{row_i+1}, etc.
 }
+\keyword{internal}
