@@ -1,3 +1,6 @@
+# projectable 0.0.3
+* Fix bug in `col_binomial()` that was turning FPC off.
+
 # projectable 0.0.2
 
 * Implement `new_col` function to allow users to make their own `col` objects (#16).
