@@ -65,7 +65,7 @@ col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, populati
       conf = 1-ci_error[i],
       summarized = TRUE,
       phat = n[i]/N[i],
-      fpc = population[i] == Inf,
+      fpc = population[i] != Inf,
       n = N[i],
       N = population[i],
       method = method
