@@ -89,8 +89,8 @@ col_binomial <- function(n = integer(), N = integer(), ci_error = 0.05, populati
       population = population,
       ci_error = ci_error,
       p = ci_est$p,
-      ci_lower = ci_est$ci_lower,
-      ci_upper = ci_est$ci_upper,
+      ci_lower = ifelse(ci_est$ci_lower < 0, 0, ci_est$ci_lower),
+      ci_upper = ifelse(ci_est$ci_upper > 1, 1, ci_est$ci_upper),
       note = ci_est$head
     )
   )
