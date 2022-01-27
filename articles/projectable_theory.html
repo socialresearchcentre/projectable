@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/socialresearchcentre/projectable/">
+  <a href="https://github.com/socialresearchcentre/projectable/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,7 +87,7 @@
       <h1 data-toc-skip>The theory behind projectable</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/socialresearchcentre/projectable/blob/master/vignettes/projectable_theory.Rmd"><code>vignettes/projectable_theory.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/socialresearchcentre/projectable/blob/HEAD/vignettes/projectable_theory.Rmd" class="external-link"><code>vignettes/projectable_theory.Rmd</code></a></small>
       <div class="hidden name"><code>projectable_theory.Rmd</code></div>
 
     </div>
@@ -101,32 +97,32 @@
 <p>When producing summary tables, it is very common to include multiple columns which relay the same (or very similar) information in different formats. Take, for instance, a simple frequency cross-tabulation: one will very often include not only the (row, column or cell) proportion but the raw and/or base counts too. Thus, one might do something like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Proportions on their own</span>
-<span class="va">mytab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">am</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/ftable.html">ftable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">signif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">mytab</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">mytab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">am</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/ftable.html" class="external-link">ftable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html" class="external-link">prop.table</a></span><span class="op">(</span><span class="va">mytab</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> 
 <span class="co">#&gt;       4    6    8</span>
 <span class="co">#&gt;                  </span>
 <span class="co">#&gt; 0  0.27 0.57 0.86</span>
 <span class="co">#&gt; 1  0.73 0.43 0.14</span>
 
 <span class="co"># Proportions along with the raw counts</span>
-<span class="va">mytab</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">mytab</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">signif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">mytab</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, 
+<span class="va">mytab</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mytab</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html" class="external-link">prop.table</a></span><span class="op">(</span><span class="va">mytab</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, 
   <span class="st">" ("</span>, <span class="va">mytab</span>, <span class="st">")"</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/ftable.html">ftable</a></span><span class="op">(</span><span class="va">mytab</span><span class="op">)</span>  
+<span class="fu"><a href="https://rdrr.io/r/stats/ftable.html" class="external-link">ftable</a></span><span class="op">(</span><span class="va">mytab</span><span class="op">)</span>  
 <span class="co">#&gt;            4         6         8</span>
 <span class="co">#&gt;                                 </span>
 <span class="co">#&gt; 0  0.27 (3)  0.57 (4)  0.86 (12)</span>
 <span class="co">#&gt; 1  0.73 (8)  0.43 (3)  0.14 (2)</span></code></pre></div>
 <p>It makes sense to think of a table like the second one above as displaying a primary statistic (a proportion) along with ancillary metadata (a raw count). This is, fundamentally, how <code>projectable</code> approaches summary tables in general. In the world of <code>projectable</code>, there is a very tight relationship between a summary table which shows proportions only and one which shows proportions along with raw and/or base counts: they are <strong>projections</strong> of one and the same metadata-rich table-like object. What follows is intended to explain what that means.</p>
-<div id="the-projectable_col-class" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-projectable_col-class" class="anchor"></a>The <code>projectable_col</code> class</h2>
+<div class="section level2">
+<h2 id="the-projectable_col-class">The <code>projectable_col</code> class<a class="anchor" aria-label="anchor" href="#the-projectable_col-class"></a>
+</h2>
 <p>At the ground level, <code>projectable</code> implements a range of <code>projectable_col</code> vectors which each store a primary statistic (like a proportion) alongside supplementary pieces of metadata (like raw and base counts). These are the building blocks for summary tables.</p>
 <p>To create a <code>projectable_col</code>, we use the <code>col_*()</code> functions like <code><a href="../reference/col_freq.html">col_freq()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://socialresearchcentre.github.io/projectable">projectable</a></span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, summarised <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://socialresearchcentre.github.io/projectable" class="external-link">projectable</a></span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, summarised <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
 <span class="va">x</span>
 <span class="co">#&gt; &lt;col_freq[5]&gt;</span>
 <span class="co">#&gt; [1] 1.00 0.50 0.33 0.25 0.20</span></code></pre></div>
@@ -136,7 +132,7 @@
 <p>The hidden dimensionality of a <code>projectable_col</code> becomes obvious when we ‘flatten it out’ by turning it into a dataframe that is as wide as the <code>projectable_col</code> is deep:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/is_col.html">prj_project_col</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">n</th>
@@ -172,9 +168,9 @@
 </tbody>
 </table>
 </div>
-<div id="metadata-rich-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#metadata-rich-tables" class="anchor"></a>Metadata-rich tables</h2>
+<div class="section level2">
+<h2 id="metadata-rich-tables">Metadata-rich tables<a class="anchor" aria-label="anchor" href="#metadata-rich-tables"></a>
+</h2>
 <p>When we combine multiple <code>projectable_col</code> vectors, we get an object that can be thought of as occupying three dimensions: it has rows, columns, and depth. Behind the face value of each of its <code>projectable_col</code> columns are additional pieces of metadata.</p>
 <p><img src="figures/theory-unfold_tbl_cols.png" width="50%" style="display: block; margin: auto;"></p>
 <p>And, just as we could ‘flatten’ a single <code>projectable_col</code> out into a dataframe, we can ‘flatten’ a dataframe that is made up of <code>projectable_col</code> vectors out into a wider dataframe made up of ordinary vectors.</p>
@@ -182,24 +178,24 @@
 <p>We just need to stipulate how to map the elements of each <code>projectable_col</code> onto the columns of the output dataframe:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create a `col_binomial` of length 5</span>
-<span class="va">b_trials</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">/</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="va">n_successes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">b_trials</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="va">n_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">b_trials</span>, <span class="va">length</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">b_trials</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">/</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="va">n_successes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">b_trials</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">n_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">b_trials</span>, <span class="va">length</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/col_binomial.html">col_binomial</a></span><span class="op">(</span><span class="va">n_successes</span>, <span class="va">n_sample</span>, summarised <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># Combine it with the `col_freq` from earlier:</span>
-<span class="va">my_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>my_freq <span class="op">=</span> <span class="va">x</span>, my_binomial <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
+<span class="va">my_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>my_freq <span class="op">=</span> <span class="va">x</span>, my_binomial <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
 
-<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="va">my_tbl</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="va">my_tbl</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   <span class="co"># Map the proportion of `my_freq` onto a `my_freq.proportion` column, </span>
   <span class="co"># and the counts onto a `my_freq.counts` column:</span>
-  my_freq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span>, counts <span class="op">=</span> <span class="st">"{n} / {N}"</span><span class="op">)</span>, 
+  my_freq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span>, counts <span class="op">=</span> <span class="st">"{n} / {N}"</span><span class="op">)</span>, 
   <span class="co"># Map the probability of `my_binomial` onto a `my_binomial.probability` column, </span>
   <span class="co"># and the confidence interval onto a `my_binomial.ci` column:</span>
-  my_binomial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>probability <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span>, ci <span class="op">=</span> <span class="st">"{signif(ci_lower, 2)}-{signif(ci_upper, 2)}"</span><span class="op">)</span> 
+  my_binomial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>probability <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span>, ci <span class="op">=</span> <span class="st">"{signif(ci_lower, 2)}-{signif(ci_upper, 2)}"</span><span class="op">)</span> 
 <span class="op">)</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">my_freq.proportion</th>
@@ -217,8 +213,8 @@
 <tr class="even">
 <td align="left">0.5</td>
 <td align="left">1 / 2</td>
-<td align="left">0.46</td>
-<td align="left">0.43-0.49</td>
+<td align="left">0.5</td>
+<td align="left">0.47-0.53</td>
 </tr>
 <tr class="odd">
 <td align="left">0.33</td>
@@ -235,26 +231,26 @@
 <tr class="odd">
 <td align="left">0.2</td>
 <td align="left">1 / 5</td>
-<td align="left">0.2</td>
-<td align="left">0.18-0.23</td>
+<td align="left">0.18</td>
+<td align="left">0.16-0.21</td>
 </tr>
 </tbody>
 </table>
 <p>What we’re doing here – mapping a quasi-three-dimensional object onto a two-dimensional one – is very similar to the mathematical operation of <strong>projection</strong>. We can think of the dataframe produced by <code><a href="../reference/prj_project.html">prj_project()</a></code> as being the <strong>shadow</strong> of the metadata-rich object passed into that function.</p>
 <p>Coming full circle, we can now understand what it means for the two tables we started with to be projections of the same underlying object:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">prjtbl</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">)</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>Transmission <span class="op">=</span> <span class="va">am</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="va">prjtbl</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">)</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>Transmission <span class="op">=</span> <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Proportions on their own</span>
-<span class="va">out</span> <span class="op">&lt;-</span> <span class="va">prjtbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="va">prjtbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -283,12 +279,12 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Proportions along with raw counts</span>
-<span class="va">out</span> <span class="op">&lt;-</span> <span class="va">prjtbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="va">prjtbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span><span class="op">)</span>
 
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -328,11 +324,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kinto Behr.</p>
+  <p></p>
+<p>Developed by Kinto Behr.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -340,6 +338,8 @@
 
   
 
+
+  
 
   </body>
 </html>

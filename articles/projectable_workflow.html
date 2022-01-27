@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/socialresearchcentre/projectable/">
+  <a href="https://github.com/socialresearchcentre/projectable/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,7 +87,7 @@
       <h1 data-toc-skip>The projectable workflow</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/socialresearchcentre/projectable/blob/master/vignettes/projectable_workflow.Rmd"><code>vignettes/projectable_workflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/socialresearchcentre/projectable/blob/HEAD/vignettes/projectable_workflow.Rmd" class="external-link"><code>vignettes/projectable_workflow.Rmd</code></a></small>
       <div class="hidden name"><code>projectable_workflow.Rmd</code></div>
 
     </div>
@@ -101,8 +97,8 @@
 <p>This vignette steps through a typical <code>projectable</code> workflow, taking us from a simple dataframe via a metadata-rich table constructed using the <code>prj_tbl_*()</code> functions through to a projection of that table in <code>gt</code> format.</p>
 <p>The <code>projectable</code> package was designed to gell with <code>gt</code> and the wider <code>tidyverse</code>, so – although it is by no means necessary – we will use <code>dplyr</code> verbs throughout.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://socialresearchcentre.github.io/projectable">projectable</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://socialresearchcentre.github.io/projectable" class="external-link">projectable</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -111,28 +107,28 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/">gt</a></span><span class="op">)</span></code></pre></div>
-<div id="setting-the-table" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setting-the-table" class="anchor"></a>Setting the table</h2>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/" class="external-link">gt</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="setting-the-table">Setting the table<a class="anchor" aria-label="anchor" href="#setting-the-table"></a>
+</h2>
 <p>The first step in the <code>projectable</code> workflow involves transforming an ordinary dataframe into a metadata-rich table-like object that is fit for projection. We term this ‘setting the table’ and we perform it using the <code>prj_tbl_*()</code> functions along with <code>col_*()</code> helpers.</p>
 <p>Thus, to generate a frequency cross tabulation out of the <code>mtcars</code> dataset with rows corresponding to the number of cylinders and the transmission types, and columns corresponding to the engine shape, we write:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">crs_tab</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="co"># Specify the rows of the prj table</span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
     Cylinders <span class="op">=</span> <span class="va">cyl</span>,
     Transmission <span class="op">=</span> <span class="va">am</span>,
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># Specify the columns of the prj table</span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span>
-    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,
-    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>,
+    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Notice that the rows sum to one</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">crs_tab</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">crs_tab</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -174,21 +170,21 @@
 </tbody>
 </table>
 <p>Behind the scenes, <code><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise()</a></code> loops over the row and column expressions it is provided. Each column expression provided via <code><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols()</a></code> is evaluated over <code>.data</code> filtered down to each row expression provided via <code><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows()</a></code>.</p>
-<p>In our example, <code><a href="../reference/col_freq.html">col_freq(...)</a></code> is evaluated over <code>mtcars</code> filtered to each unique value in <code>mtcars$cyl</code>, and then over <code>mtcars</code> filtered to each unique value in <code>mtcars$am</code>.</p>
+<p>In our example, <code>col_freq(...)</code> is evaluated over <code>mtcars</code> filtered to each unique value in <code>mtcars$cyl</code>, and then over <code>mtcars</code> filtered to each unique value in <code>mtcars$am</code>.</p>
 <p>There are helper functions which make specifying the columns slightly less verbose. Thus, an equivalent way to write the above is:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab_simple</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">crs_tab_simple</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="co"># Specify the rows of the prj table</span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
     Cylinders <span class="op">=</span> <span class="va">cyl</span>,
     Transmission <span class="op">=</span> <span class="va">am</span>,
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># Specify the columns of the prj table</span>
-  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="st">"row"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="st">"row"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Notice that the rows sum to one</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">crs_tab_simple</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">crs_tab_simple</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -231,21 +227,21 @@
 </table>
 <p>If we wanted to calculate the base for each frequency, not row-by-row, but over the whole column we would have to explicitly instruct R, when it is evaluating <code>N</code>, not to look for <code>vs</code> within the filtered version of <code>mtcars</code>, but in <code>mtcars</code> overall. Thus we would write</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab_col</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">crs_tab_col</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
     Cylinders <span class="op">=</span> <span class="va">cyl</span>,
     Transmission <span class="op">=</span> <span class="va">am</span>,
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span>
-    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">vs</span> <span class="op">%in%</span> <span class="fl">1</span><span class="op">)</span>, 
-    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span><span class="op">)</span>, 
+    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "col")) %&gt;%</span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Notice that, for each mutually exclusive and collectively exhaustive set of rows,</span>
 <span class="co"># the columns sum to one</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">crs_tab_col</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">crs_tab_col</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -289,21 +285,21 @@
 <p>And if we wanted to calculate the base for each frequency, not over the whole column, but over the whole table, then we would write:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Calculate frequency cell-by-cell</span>
-<span class="va">crs_tab_overall</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span> 
+<span class="va">crs_tab_overall</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
     Cylinders <span class="op">=</span> <span class="va">cyl</span>,
     Transmission <span class="op">=</span> <span class="va">am</span>,
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span>
-    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, 
-    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op">%in%</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+    `V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span>, N <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>, 
+    `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="../reference/col_freq.html">col_freq</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span>, N <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "cell")) %&gt;%</span>
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Notice that, for each mutually exclusive and collectively exhaustive set of rows,</span>
 <span class="co"># the cells sum to one</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">crs_tab_overall</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">crs_tab_overall</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">row_spanner</th>
@@ -346,24 +342,24 @@
 </table>
 <p>Once we have finished setting the table, what we should have is a table-like object with <code>projectable_col</code>s. In addition to a face value, each of these <code>projectable_col</code>s will have a set of metadata associated with it: a <code>col_freq</code>, for instance, contains <code>n</code> and <code>N</code> metadata alongside a <code>p</code> (proportion) face value.</p>
 </div>
-<div id="casting-a-shadow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#casting-a-shadow" class="anchor"></a>Casting a shadow</h2>
+<div class="section level2">
+<h2 id="casting-a-shadow">Casting a shadow<a class="anchor" aria-label="anchor" href="#casting-a-shadow"></a>
+</h2>
 <p>When it comes to displaying this metadata-rich table-like object, we have a range of options.</p>
 <p>In some circumstances, we may want to display only the face values of each <code>projectable_col</code>, in which case we can simply print the table as we have done above.</p>
 <p>However, in many cases, we will also want to be able to display the associated metadata. Thus, there might be times when we want to display not only the proportions but the associated <code>n</code> and <code>N</code> too.</p>
 <p>This is where the <code><a href="../reference/prj_project.html">prj_project()</a></code> function comes in: we use it to ‘unfold’ each <code>projectable_col</code> into whichever of its constituent elements we would like to display. We do this by passing through a named list of glue-like character vectors where each name corresponds to a column in the table passed through as <code>.data</code>. Each element in the character vector will be pulled out into a column in the output.</p>
 <p>So, for instance, to display the proportion alongside the count in one column and the base in another column for the <code>V-Shaped</code> and <code>Not V-shaped</code> columns we created, we write:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab_display</span> <span class="op">&lt;-</span> <span class="va">crs_tab</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">crs_tab_display</span> <span class="op">&lt;-</span> <span class="va">crs_tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_project.html">prj_project</a></span><span class="op">(</span>
-    .cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-      `V-Shaped` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span>,
-      `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span>
+    .cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+      `V-Shaped` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span>,
+      `Not V-Shaped` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span>
     <span class="op">)</span>
   <span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">crs_tab_display</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">crs_tab_display</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="13%">
@@ -427,9 +423,8 @@
 <p>We thus arrive at another ‘flat’ dataframe: a dataframe whose columns are simple atomic vectors. But with one caveat, the dataframe as a whole comes associated with metadata which keeps track of which columns in the output (what we call the <code>projection</code>) belong to which columns in the input (the metadata rich table).</p>
 <p>The significance of this metadata will become clear in the next section.</p>
 </div>
-<div id="shaping-with-gt" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shaping-with-gt" class="anchor"></a>Shaping with <code>gt</code>
+<div class="section level2">
+<h2 id="shaping-with-gt">Shaping with <code>gt</code><a class="anchor" aria-label="anchor" href="#shaping-with-gt"></a>
 </h2>
 <p>At this stage, the substance of what we want to display is already there. But its not in a form that’s fit for general consumption.</p>
 <p>For one thing, while the columns in the <code>projection</code> give some indication of their provenance by way of their names, it would be good to make the connection between input and output columns much more overt.</p>
@@ -437,17 +432,17 @@
 <p>The bad news is that <code>projectable</code> can’t do really any of this. The good news is that it doesn’t need to.</p>
 <p>Instead of implementing any formatting functions, <code>projectable</code> implements a hand-off function, <code><a href="../reference/prj_project.html">prj_gt()</a></code>, which initialises a <code>gt</code> table object:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab_gt</span> <span class="op">&lt;-</span> <span class="va">crs_tab</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is_col_freq</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">crs_tab_gt</span> <span class="op">&lt;-</span> <span class="va">crs_tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_shadow.html">prj_shadow</a></span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is_col_freq</span><span class="op">)</span>, .shadow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Frequency <span class="op">=</span> <span class="st">"{signif(p, 2)} ({n})"</span>, Sample <span class="op">=</span> <span class="st">"{N}"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_project.html">prj_gt</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">crs_tab_gt</span></code></pre></div>
-<div id="jjiaimrmbu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lptegmfpof" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#jjiaimrmbu .gt_table {
+#lptegmfpof .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -472,7 +467,7 @@
   border-left-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_heading {
+#lptegmfpof .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -484,7 +479,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_title {
+#lptegmfpof .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -494,7 +489,7 @@
   border-bottom-width: 0;
 }
 
-#jjiaimrmbu .gt_subtitle {
+#lptegmfpof .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -504,13 +499,13 @@
   border-top-width: 0;
 }
 
-#jjiaimrmbu .gt_bottom_border {
+#lptegmfpof .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_col_headings {
+#lptegmfpof .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -525,7 +520,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_col_heading {
+#lptegmfpof .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -545,7 +540,7 @@
   overflow-x: hidden;
 }
 
-#jjiaimrmbu .gt_column_spanner_outer {
+#lptegmfpof .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -557,15 +552,15 @@
   padding-right: 4px;
 }
 
-#jjiaimrmbu .gt_column_spanner_outer:first-child {
+#lptegmfpof .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jjiaimrmbu .gt_column_spanner_outer:last-child {
+#lptegmfpof .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jjiaimrmbu .gt_column_spanner {
+#lptegmfpof .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -577,7 +572,7 @@
   width: 100%;
 }
 
-#jjiaimrmbu .gt_group_heading {
+#lptegmfpof .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -599,7 +594,7 @@
   vertical-align: middle;
 }
 
-#jjiaimrmbu .gt_empty_group_heading {
+#lptegmfpof .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -614,15 +609,15 @@
   vertical-align: middle;
 }
 
-#jjiaimrmbu .gt_from_md > :first-child {
+#lptegmfpof .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jjiaimrmbu .gt_from_md > :last-child {
+#lptegmfpof .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jjiaimrmbu .gt_row {
+#lptegmfpof .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -641,7 +636,7 @@
   overflow-x: hidden;
 }
 
-#jjiaimrmbu .gt_stub {
+#lptegmfpof .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -653,7 +648,7 @@
   padding-left: 12px;
 }
 
-#jjiaimrmbu .gt_summary_row {
+#lptegmfpof .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -663,7 +658,7 @@
   padding-right: 5px;
 }
 
-#jjiaimrmbu .gt_first_summary_row {
+#lptegmfpof .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -673,7 +668,7 @@
   border-top-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_grand_summary_row {
+#lptegmfpof .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -683,7 +678,7 @@
   padding-right: 5px;
 }
 
-#jjiaimrmbu .gt_first_grand_summary_row {
+#lptegmfpof .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -693,11 +688,11 @@
   border-top-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_striped {
+#lptegmfpof .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jjiaimrmbu .gt_table_body {
+#lptegmfpof .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -706,7 +701,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_footnotes {
+#lptegmfpof .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -720,13 +715,13 @@
   border-right-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_footnote {
+#lptegmfpof .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#jjiaimrmbu .gt_sourcenotes {
+#lptegmfpof .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -740,41 +735,41 @@
   border-right-color: #D3D3D3;
 }
 
-#jjiaimrmbu .gt_sourcenote {
+#lptegmfpof .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#jjiaimrmbu .gt_left {
+#lptegmfpof .gt_left {
   text-align: left;
 }
 
-#jjiaimrmbu .gt_center {
+#lptegmfpof .gt_center {
   text-align: center;
 }
 
-#jjiaimrmbu .gt_right {
+#lptegmfpof .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jjiaimrmbu .gt_font_normal {
+#lptegmfpof .gt_font_normal {
   font-weight: normal;
 }
 
-#jjiaimrmbu .gt_font_bold {
+#lptegmfpof .gt_font_bold {
   font-weight: bold;
 }
 
-#jjiaimrmbu .gt_font_italic {
+#lptegmfpof .gt_font_italic {
   font-style: italic;
 }
 
-#jjiaimrmbu .gt_super {
+#lptegmfpof .gt_super {
   font-size: 65%;
 }
 
-#jjiaimrmbu .gt_footnote_marks {
+#lptegmfpof .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -845,19 +840,19 @@
 </div>
 <p>It is then possible to leverage all of the functionality of <code>gt</code> to apply whatever formatting we want:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crs_tab_gt</span> <span class="op">%&gt;%</span> 
-  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Engine Shape vs Other Vehicle Characteristics"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_stubhead.html">tab_stubhead</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Vehicle Characteristics"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html">tab_options</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">crs_tab_gt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html" class="external-link">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Engine Shape vs Other Vehicle Characteristics"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_stubhead.html" class="external-link">tab_stubhead</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Vehicle Characteristics"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span>
     heading.background.color <span class="op">=</span> <span class="st">"#080808"</span>,
     row_group.background.color <span class="op">=</span> <span class="st">"#f0f0f0"</span>
   <span class="op">)</span></code></pre></div>
-<div id="orbxcwpabk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="wfmjysqfwi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#orbxcwpabk .gt_table {
+#wfmjysqfwi .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -882,7 +877,7 @@
   border-left-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_heading {
+#wfmjysqfwi .gt_heading {
   background-color: #080808;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -894,7 +889,7 @@
   border-right-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_title {
+#wfmjysqfwi .gt_title {
   color: #FFFFFF;
   font-size: 125%;
   font-weight: initial;
@@ -904,7 +899,7 @@
   border-bottom-width: 0;
 }
 
-#orbxcwpabk .gt_subtitle {
+#wfmjysqfwi .gt_subtitle {
   color: #FFFFFF;
   font-size: 85%;
   font-weight: initial;
@@ -914,13 +909,13 @@
   border-top-width: 0;
 }
 
-#orbxcwpabk .gt_bottom_border {
+#wfmjysqfwi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_col_headings {
+#wfmjysqfwi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -935,7 +930,7 @@
   border-right-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_col_heading {
+#wfmjysqfwi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -955,7 +950,7 @@
   overflow-x: hidden;
 }
 
-#orbxcwpabk .gt_column_spanner_outer {
+#wfmjysqfwi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -967,15 +962,15 @@
   padding-right: 4px;
 }
 
-#orbxcwpabk .gt_column_spanner_outer:first-child {
+#wfmjysqfwi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#orbxcwpabk .gt_column_spanner_outer:last-child {
+#wfmjysqfwi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#orbxcwpabk .gt_column_spanner {
+#wfmjysqfwi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -987,7 +982,7 @@
   width: 100%;
 }
 
-#orbxcwpabk .gt_group_heading {
+#wfmjysqfwi .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #F0F0F0;
@@ -1009,7 +1004,7 @@
   vertical-align: middle;
 }
 
-#orbxcwpabk .gt_empty_group_heading {
+#wfmjysqfwi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #F0F0F0;
@@ -1024,15 +1019,15 @@
   vertical-align: middle;
 }
 
-#orbxcwpabk .gt_from_md > :first-child {
+#wfmjysqfwi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#orbxcwpabk .gt_from_md > :last-child {
+#wfmjysqfwi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#orbxcwpabk .gt_row {
+#wfmjysqfwi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1051,7 +1046,7 @@
   overflow-x: hidden;
 }
 
-#orbxcwpabk .gt_stub {
+#wfmjysqfwi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1063,7 +1058,7 @@
   padding-left: 12px;
 }
 
-#orbxcwpabk .gt_summary_row {
+#wfmjysqfwi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1073,7 +1068,7 @@
   padding-right: 5px;
 }
 
-#orbxcwpabk .gt_first_summary_row {
+#wfmjysqfwi .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1083,7 +1078,7 @@
   border-top-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_grand_summary_row {
+#wfmjysqfwi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1093,7 +1088,7 @@
   padding-right: 5px;
 }
 
-#orbxcwpabk .gt_first_grand_summary_row {
+#wfmjysqfwi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1103,11 +1098,11 @@
   border-top-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_striped {
+#wfmjysqfwi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#orbxcwpabk .gt_table_body {
+#wfmjysqfwi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1116,7 +1111,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_footnotes {
+#wfmjysqfwi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1130,13 +1125,13 @@
   border-right-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_footnote {
+#wfmjysqfwi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#orbxcwpabk .gt_sourcenotes {
+#wfmjysqfwi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1150,41 +1145,41 @@
   border-right-color: #D3D3D3;
 }
 
-#orbxcwpabk .gt_sourcenote {
+#wfmjysqfwi .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#orbxcwpabk .gt_left {
+#wfmjysqfwi .gt_left {
   text-align: left;
 }
 
-#orbxcwpabk .gt_center {
+#wfmjysqfwi .gt_center {
   text-align: center;
 }
 
-#orbxcwpabk .gt_right {
+#wfmjysqfwi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#orbxcwpabk .gt_font_normal {
+#wfmjysqfwi .gt_font_normal {
   font-weight: normal;
 }
 
-#orbxcwpabk .gt_font_bold {
+#wfmjysqfwi .gt_font_bold {
   font-weight: bold;
 }
 
-#orbxcwpabk .gt_font_italic {
+#wfmjysqfwi .gt_font_italic {
   font-style: italic;
 }
 
-#orbxcwpabk .gt_super {
+#wfmjysqfwi .gt_super {
   font-size: 65%;
 }
 
-#orbxcwpabk .gt_footnote_marks {
+#wfmjysqfwi .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1270,11 +1265,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kinto Behr.</p>
+  <p></p>
+<p>Developed by Kinto Behr.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -1282,6 +1279,8 @@
 
   
 
+
+  
 
   </body>
 </html>
