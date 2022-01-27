@@ -1,3 +1,7 @@
+# projectable 0.0.5
+
+* Fix bug in `col_binomial()` that prevented it from accepting `NA` as an argument to `n` or `N`.
+
 # projectable 0.0.4
 
 * Limit confidence intervals in `col_binomial()` to the range [0, 1] (#27). Previously, it was possible to observe `ci_lower < 0` or `ci_upper > 1` when computing confidence intervals with a finite population correction. However, such values are not sensible. Now, `col_binomial()` will force such values to 0 or 1.

@@ -261,6 +261,12 @@ testthat::test_that("col_binomial: summarised/unsummarised equivalence", {
   )
 })
 
+testthat::test_that("col_binomial can handle NAs", {
+  x <- prj_project_col(col_binomial(NA_real_, 10, summarised = T))
+  expect_identical(x$n, NA_integer_)
+  expect_identical(x$N, 10L)
+})
+
 
 # prj_project_col ---------------------------------------------------------
 testthat::test_that("prj_project_col", {
