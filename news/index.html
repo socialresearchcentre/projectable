@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -63,6 +63,10 @@
       <small>Source: <a href="https://github.com/socialresearchcentre/projectable/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.5" id="projectable-005">projectable 0.0.5<a class="anchor" aria-label="anchor" href="#projectable-005"></a></h2>
+<ul><li>Fix bug in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> that prevented it from accepting <code>NA</code> as an argument to <code>n</code> or <code>N</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4" id="projectable-004">projectable 0.0.4<a class="anchor" aria-label="anchor" href="#projectable-004"></a></h2>
 <ul><li>Limit confidence intervals in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> to the range [0, 1] (<a href="https://github.com/socialresearchcentre/projectable/issues/27" class="external-link">#27</a>). Previously, it was possible to observe <code>ci_lower &lt; 0</code> or <code>ci_upper &gt; 1</code> when computing confidence intervals with a finite population correction. However, such values are not sensible. Now, <code><a href="../reference/col_binomial.html">col_binomial()</a></code> will force such values to 0 or 1.</li>
