@@ -187,6 +187,12 @@ prj_gt <-
            rowgroup_col = "row_spanner",
            rowname_col = "rows",
            ...) {
+    if (!requireNamespace("gt", quietly = TRUE)) {
+      stop(
+        "Package \"gt\" needed for this function to work.",
+        "Please install it.",
+        call. = FALSE)
+    }
 
   # Project table
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
@@ -230,6 +236,13 @@ prj_gt <-
 #' @export
 #' @rdname prj_project
 prj_flex <- function(.data, .cols = list(), .digits = getOption("prj_digits")) {
+  if (!requireNamespace("flextable", quietly = TRUE)) {
+    stop(
+      "Package \"flextable\" needed for this function to work.",
+      "Please install it.",
+      call. = FALSE)
+  }
+
   # Project table
   if (any(duplicated(names(.cols)))) stop("all names in `.cols` must be unique")
   projection <- add_shadows(.data ,.cols)
