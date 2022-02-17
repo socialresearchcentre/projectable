@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
       </span>
     </div>
 
@@ -64,21 +64,26 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.6" id="projectable-006">projectable 0.0.6<a class="anchor" aria-label="anchor" href="#projectable-006"></a></h2>
+<ul><li><p>Deprecated <code>spec_col_freq()</code>. This function was implemented in a fairly unsafe way. It is being dropped without deprecation since it is purely a convenience function, the usefulness of which is limited anyway.</p></li>
+<li><p><code><a href="../reference/prj_project.html">prj_gt()</a></code> and <code><a href="../reference/prj_project.html">prj_flex()</a></code> now attempt to add <code>gt</code> and <code>flextable</code> (respectively) to the path and throw an error if this cannot be done.</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5" id="projectable-005">projectable 0.0.5<a class="anchor" aria-label="anchor" href="#projectable-005"></a></h2>
-<ul><li>Fix bug in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> that prevented it from accepting <code>NA</code> as an argument to <code>n</code> or <code>N</code>.</li>
+<ul><li>Fixed bug in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> that prevented it from accepting <code>NA</code> as an argument to <code>n</code> or <code>N</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4" id="projectable-004">projectable 0.0.4<a class="anchor" aria-label="anchor" href="#projectable-004"></a></h2>
-<ul><li>Limit confidence intervals in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> to the range [0, 1] (<a href="https://github.com/socialresearchcentre/projectable/issues/27" class="external-link">#27</a>). Previously, it was possible to observe <code>ci_lower &lt; 0</code> or <code>ci_upper &gt; 1</code> when computing confidence intervals with a finite population correction. However, such values are not sensible. Now, <code><a href="../reference/col_binomial.html">col_binomial()</a></code> will force such values to 0 or 1.</li>
+<ul><li>Limited confidence intervals in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> to the range [0, 1] (<a href="https://github.com/socialresearchcentre/projectable/issues/27" class="external-link">#27</a>). Previously, it was possible to observe <code>ci_lower &lt; 0</code> or <code>ci_upper &gt; 1</code> when computing confidence intervals with a finite population correction. However, such values are not sensible. Now, <code><a href="../reference/col_binomial.html">col_binomial()</a></code> will force such values to 0 or 1.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.3" id="projectable-003">projectable 0.0.3<a class="anchor" aria-label="anchor" href="#projectable-003"></a></h2>
-<ul><li>Fix bug in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> that was turning FPC off.</li>
+<ul><li>Fixed bug in <code><a href="../reference/col_binomial.html">col_binomial()</a></code> that was turning FPC off.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.2" id="projectable-002">projectable 0.0.2<a class="anchor" aria-label="anchor" href="#projectable-002"></a></h2>
-<ul><li>Implement <code>new_col</code> function to allow users to make their own <code>col</code> objects (<a href="https://github.com/socialresearchcentre/projectable/issues/16" class="external-link">#16</a>).</li>
-<li>Add rounding to projections (<a href="https://github.com/socialresearchcentre/projectable/issues/11" class="external-link">#11</a>).</li>
+<ul><li>Implemented <code>new_col</code> function to allow users to make their own <code>col</code> objects (<a href="https://github.com/socialresearchcentre/projectable/issues/16" class="external-link">#16</a>).</li>
+<li>Added rounding to projections (<a href="https://github.com/socialresearchcentre/projectable/issues/11" class="external-link">#11</a>).</li>
 <li>Add <code>weight</code> argument to <code>col_freq</code> to allow for weighted frequencies.</li>
 <li>Implemented <code>prj_flextable()</code> for projecting as a <code>flextable</code> object (<a href="https://github.com/socialresearchcentre/projectable/issues/12" class="external-link">#12</a>).</li>
 <li>Implemented a <code>col_row</code> class and associated <code><a href="../reference/col_row.html">col_row()</a></code> function to allow special handling of dataframe columns representing row labels. (<a href="https://github.com/socialresearchcentre/projectable/issues/14" class="external-link">#14</a>).</li>

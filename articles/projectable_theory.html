@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
       </span>
     </div>
 
@@ -213,26 +213,26 @@
 <tr class="even">
 <td align="left">0.5</td>
 <td align="left">1 / 2</td>
-<td align="left">0.51</td>
-<td align="left">0.48-0.54</td>
+<td align="left">0.5</td>
+<td align="left">0.47-0.53</td>
 </tr>
 <tr class="odd">
 <td align="left">0.33</td>
 <td align="left">1 / 3</td>
-<td align="left">0.34</td>
-<td align="left">0.32-0.37</td>
+<td align="left">0.35</td>
+<td align="left">0.32-0.38</td>
 </tr>
 <tr class="even">
 <td align="left">0.25</td>
 <td align="left">1 / 4</td>
-<td align="left">0.25</td>
+<td align="left">0.26</td>
 <td align="left">0.23-0.28</td>
 </tr>
 <tr class="odd">
 <td align="left">0.2</td>
 <td align="left">1 / 5</td>
-<td align="left">0.18</td>
-<td align="left">0.16-0.2</td>
+<td align="left">0.21</td>
+<td align="left">0.19-0.24</td>
 </tr>
 </tbody>
 </table>
@@ -240,8 +240,12 @@
 <p>Coming full circle, we can now understand what it means for the two tables we started with to be projections of the same underlying object:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+
+<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"col_freq(cyl %in% {c(4, 6, 8)}, cyl %in% 4:8)"</span><span class="op">)</span>
+<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/parse_expr.html" class="external-link">parse_exprs</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">)</span>, <span class="st">"Cylinders"</span><span class="op">)</span><span class="op">)</span>
+
 <span class="va">prjtbl</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">)</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>Transmission <span class="op">=</span> <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_summarise</a></span><span class="op">(</span><span class="op">)</span>
 
@@ -255,24 +259,24 @@
 <thead><tr class="header">
 <th align="left">row_spanner</th>
 <th align="left">rows</th>
-<th align="left">cyl.4</th>
-<th align="left">cyl.6</th>
-<th align="left">cyl.8</th>
+<th align="left">4 Cylinders</th>
+<th align="left">6 Cylinders</th>
+<th align="left">8 Cylinders</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Transmission</td>
 <td align="left">0</td>
-<td align="left">0.27</td>
-<td align="left">0.57</td>
-<td align="left">0.86</td>
+<td align="left">0.16</td>
+<td align="left">0.21</td>
+<td align="left">0.63</td>
 </tr>
 <tr class="even">
 <td align="left">Transmission</td>
 <td align="left">1</td>
-<td align="left">0.73</td>
-<td align="left">0.43</td>
-<td align="left">0.14</td>
+<td align="left">0.62</td>
+<td align="left">0.23</td>
+<td align="left">0.15</td>
 </tr>
 </tbody>
 </table>
@@ -289,24 +293,24 @@
 <thead><tr class="header">
 <th align="left">row_spanner</th>
 <th align="left">rows</th>
-<th align="left">cyl.4</th>
-<th align="left">cyl.6</th>
-<th align="left">cyl.8</th>
+<th align="left">4 Cylinders</th>
+<th align="left">6 Cylinders</th>
+<th align="left">8 Cylinders</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Transmission</td>
 <td align="left">0</td>
-<td align="left">0.27 (3)</td>
-<td align="left">0.57 (4)</td>
-<td align="left">0.86 (12)</td>
+<td align="left">0.16 (3)</td>
+<td align="left">0.21 (4)</td>
+<td align="left">0.63 (12)</td>
 </tr>
 <tr class="even">
 <td align="left">Transmission</td>
 <td align="left">1</td>
-<td align="left">0.73 (8)</td>
-<td align="left">0.43 (3)</td>
-<td align="left">0.14 (2)</td>
+<td align="left">0.62 (8)</td>
+<td align="left">0.23 (3)</td>
+<td align="left">0.15 (2)</td>
 </tr>
 </tbody>
 </table>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
       </span>
     </div>
 
@@ -104,11 +104,15 @@
 <code class="sourceCode R"><span class="va">col_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span>
 
 
-<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="kw">function</span><span class="op">(</span><span class="va">cvar</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">col_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">cvar</span>, <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[[</span><span class="va">cvar</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.cvar</span><span class="op">)</span> <span class="op">{</span>
+  
+  <span class="co"># Create column expressions</span>
+  <span class="va">.cvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[[</span><span class="va">.cvar</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"col_freq({.cvar} %in% {.cvals}, {.cvar} %in% .cvals)"</span><span class="op">)</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/parse_expr.html" class="external-link">parse_exprs</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"{.cvar}: {.cvals}"</span><span class="op">)</span><span class="op">)</span>
 
   <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">col_spec</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
       Transmission <span class="op">=</span> <span class="va">am</span>,
       `Engine Shape` <span class="op">=</span> <span class="va">vs</span>
@@ -121,7 +125,7 @@
 <span class="va">my_tbls</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="co">#&gt;   row_spanner  rows      cyl.4     cyl.6    cyl.8    </span>
+<span class="co">#&gt;   row_spanner  rows      `cyl: 4`  `cyl: 6` `cyl: 8` </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>   </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Transmission 0         0.16 (3)  0.21 (4) 0.63 (12)</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Transmission 1         0.62 (8)  0.23 (3) 0.15 (2) </span>
@@ -130,11 +134,11 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="co">#&gt;   row_spanner  rows      gear.3    gear.4    gear.5  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Transmission 0         0.79 (15) 0.21 (4)  0 (0)   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Transmission 1         0 (0)     0.62 (8)  0.38 (5)</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Engine Shape 0         0.67 (12) 0.11 (2)  0.22 (4)</span>
+<span class="co">#&gt;   row_spanner  rows      `gear: 3` `gear: 4` `gear: 5`</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;col_row&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Transmission 0         0.79 (15) 0.21 (4)  0 (0)    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Transmission 1         0 (0)     0.62 (8)  0.38 (5) </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Engine Shape 0         0.67 (12) 0.11 (2)  0.22 (4) </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Engine Shape 1         0.21 (3)  0.71 (10) 0.07 (1)</span></code></pre></div>
 <p>At the price of being a bit more verbose, we can gain finer-grained control over the shape of the output. We can, for instance, omit automatic cars:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -143,12 +147,13 @@
   gear <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`Three Gears` <span class="op">=</span> <span class="fl">3</span>, `Four Gears` <span class="op">=</span> <span class="fl">4</span>, `Five Gears` <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="va">val_labels</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cvar</span>, <span class="va">cval</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">col_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">cvar</span>, <span class="va">cval</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_spec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cval</span><span class="op">)</span>
-  
+<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="va">val_labels</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.cvar</span>, <span class="va">.cvals</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"col_freq({.cvar} %in% {.cvals}, {.cvar} %in% .cvals)"</span><span class="op">)</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/parse_expr.html" class="external-link">parse_exprs</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.cvals</span><span class="op">)</span>
+
   <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">col_spec</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
       Transmission <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Manual <span class="op">=</span> <span class="va">am</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span><span class="op">)</span>,
       `Engine Shape` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
@@ -184,12 +189,13 @@
   gear <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`Three Gears` <span class="op">=</span> <span class="fl">3</span>, `Four Gears` <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="va">val_labels</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cvar</span>, <span class="va">cval</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">col_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spec_col_freq.html">spec_col_freq</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">cvar</span>, .vals <span class="op">=</span> <span class="va">cval</span>, <span class="st">"col"</span>, .base <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[[</span><span class="va">cvar</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">col_spec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cval</span><span class="op">)</span>
+<span class="va">my_tbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">col_vars</span>, <span class="va">val_labels</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.cvar</span>, <span class="va">.cvals</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"col_freq({.cvar} %in% {.cvals}, .data${.cvar} %in% {.cvals})"</span><span class="op">)</span>
+  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/parse_expr.html" class="external-link">parse_exprs</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.cvals</span><span class="op">)</span>
 
   <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">col_spec</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+    <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_cols</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">cols</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
     <span class="fu"><a href="../reference/prj_tbl_summarise.html">prj_tbl_rows</a></span><span class="op">(</span>
       Transmission <span class="op">=</span> <span class="va">am</span>,
       `Engine Shape` <span class="op">=</span> <span class="va">vs</span>

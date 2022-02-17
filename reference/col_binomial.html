@@ -18,7 +18,7 @@ Inf a finite population correction will be applied."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">projectable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@ across to calculate the number of successes and trials respectively</p></dd>
 <span class="r-in"><span class="va">b_trials</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">col_binomial</span><span class="op">(</span><span class="va">b_trials</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;col_binomial[1]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Store pre-calculated summary statistics for a binomial distribution</span></span>
 <span class="r-in"><span class="va">b_trials</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
@@ -126,7 +126,7 @@ across to calculate the number of successes and trials respectively</p></dd>
 <span class="r-in"><span class="va">n_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">b_trials</span>, <span class="va">length</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">col_binomial</span><span class="op">(</span><span class="va">n_successes</span>, <span class="va">n_sample</span>, summarised <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;col_binomial[5]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.47 0.50 0.49 0.49 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.53 0.50 0.49 0.52 0.49</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
