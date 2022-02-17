@@ -135,8 +135,12 @@ started with to be projections of the same underlying object:
 
 ```{r message = FALSE, warning = FALSE}
 library(dplyr)
+
+cols <- glue::glue("col_freq(cyl %in% {c(4, 6, 8)}, cyl %in% 4:8)")
+cols <- rlang::parse_exprs(cols) %>% rlang::set_names(paste(c(4, 6, 8), "Cylinders"))
+
 prjtbl <- mtcars %>% 
-  prj_tbl_cols(!!!spec_col_freq(cyl, c(4, 6, 8), "col")) %>% 
+  prj_tbl_cols(!!!cols) %>% 
   prj_tbl_rows(Transmission = am) %>% 
   prj_tbl_summarise()
 

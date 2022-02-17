@@ -27,6 +27,9 @@ Build a summary table with \code{prj_tbl_summarise()} as per column and row
 specifications provided via \code{prj_tbl_cols()} and \code{prj_table_rows()}
 respectively.
 }
+\details{
+See \code{vignette("projectable_workflow")} for usage details.
+}
 \examples{
 # Create a table made up of `projectable_col`s
 my_tbl <- prj_tbl_rows(

@@ -4,8 +4,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/socialresearchcentre/projectable/workflows/R-CMD-check/badge.svg)](https://github.com/socialresearchcentre/projectable/actions)
+[![R-CMD-check](https://github.com/socialresearchcentre/projectable/workflows/R-CMD-check/badge.svg)](https://github.com/socialresearchcentre/projectable/actions)
 <!-- badges: end -->
 
 # projectable <a href='https://github.com/socialresearchcentre/projectable'><img src='man/figures/projectable_hex.png' align="right" height="120" /></a>
@@ -38,13 +37,14 @@ devtools::install_github("socialresearchcentre/projectable")
 The `projectable` package implements a set of interlocking functions
 which are designed to ingest a simple dataframe, perform calculations
 upon it to generate a metadata-rich table like object, and reshape that
-object back into a ‘flat’ dataframe to be formatted using the `gt`
-package.
+object back into a ‘flat’ dataframe to be formatted using `gt` or
+`flextable`.
 
 ``` r
 library(projectable)
 library(dplyr)
 library(gt)
+library(flextable)
 
 my_tbl <- mtcars %>%
   # Create metadata-rich summary table according to a column and row specification
@@ -58,7 +58,10 @@ my_tbl <- mtcars %>%
   ) %>%
   prj_tbl_summarise() %>% 
   # Tag columns to display
-  prj_shadow(everything(), .shadow = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) %>% 
+  prj_shadow(everything(), .shadow = c(Frequency = "{signif(p, 2)} ({n})", Sample = "{N}")) 
+
+
+my_gt <- my_tbl %>% 
   # Pass through to `gt` for formatting
   prj_gt() %>% 
   gt::tab_header(title = "Engine Shape vs Other Vehicle Characteristics") %>% 
@@ -69,4 +72,14 @@ my_tbl <- mtcars %>%
   )
 ```
 
-<img src="man/figures/README-my_tbl.png" width="75%" style="display: block; margin: auto;" />
+<img src="man/figures/README-my_gt.png" width="75%" style="display: block; margin: auto;" />
+
+``` r
+my_flex <- my_tbl %>% 
+  # Pass through to `flextable` for formatting
+  prj_flex() %>% 
+  flextable::theme_tron_legacy() %>%
+  flextable::add_header_lines("Engine Shape vs Other Vehicle Characteristics")
+```
+
+<img src="man/figures/README-my_flex.png" width="75%" style="display: block; margin: auto;" />
