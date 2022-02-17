@@ -4,8 +4,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/socialresearchcentre/projectable/workflows/R-CMD-check/badge.svg)](https://github.com/socialresearchcentre/projectable/actions)
+[![R-CMD-check](https://github.com/socialresearchcentre/projectable/workflows/R-CMD-check/badge.svg)](https://github.com/socialresearchcentre/projectable/actions)
 <!-- badges: end -->
 
 # projectable <a href='https://github.com/socialresearchcentre/projectable'><img src='man/figures/projectable_hex.png' align="right" height="120" /></a>
