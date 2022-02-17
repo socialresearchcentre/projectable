@@ -64,24 +64,6 @@ In our example, `col_freq(...)` is evaluated over `mtcars` filtered to each
 unique value in `mtcars$cyl`, and then over `mtcars` filtered to each unique 
 value in `mtcars$am`. 
 
-There are helper functions which make specifying the columns slightly less verbose. 
-Thus, an equivalent way to write the above is:
-
-```{r}
-crs_tab_simple <- mtcars %>% 
-  # Specify the rows of the prj table
-  prj_tbl_rows(
-    Cylinders = cyl,
-    Transmission = am,
-  ) %>%
-  # Specify the columns of the prj table
-  prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "row")) %>%
-  prj_tbl_summarise()
-
-# Notice that the rows sum to one
-knitr::kable(crs_tab_simple)
-```
-
 If we wanted to calculate the base for each frequency, not row-by-row, but 
 over the whole column we would have to explicitly instruct R, when it is evaluating
 `N`, not to look for `vs` within the filtered version of `mtcars`, but in 
@@ -97,7 +79,6 @@ crs_tab_col <- mtcars %>%
     `V-Shaped` = col_freq(n = vs %in% 1, N = .data$vs %in% 1), 
     `Not V-Shaped` = col_freq(n = vs %in% 0, N = .data$vs %in% 0)
   ) %>%
-  # Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "col")) %>%
   prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,
@@ -120,7 +101,6 @@ crs_tab_overall <- mtcars %>%
     `V-Shaped` = col_freq(n = vs %in% 1, N = mtcars$vs %in% 0:1), 
     `Not V-Shaped` = col_freq(n = vs %in% 0, N = mtcars$vs %in% 0:1)
   ) %>%
-  # Equivalently: prj_tbl_cols(!!!spec_col_freq(vs, 0:1, "cell")) %>%
   prj_tbl_summarise()
 
 # Notice that, for each mutually exclusive and collectively exhaustive set of rows,

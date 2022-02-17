@@ -36,11 +36,15 @@ characteristics, we could write:
 col_vars <- c("cyl", "gear")
 
 
-my_tbls <- lapply(col_vars, function(cvar) {
-  col_spec <- spec_col_freq(!!cvar, sort(unique(mtcars[[cvar]])))
+my_tbls <- lapply(col_vars, function(.cvar) {
+  
+  # Create column expressions
+  .cvals <- sort(unique(mtcars[[.cvar]]))
+  cols <- glue::glue("col_freq({.cvar} %in% {.cvals}, {.cvar} %in% .cvals)")
+  cols <- rlang::parse_exprs(cols) %>% rlang::set_names(glue::glue("{.cvar}: {.cvals}"))
 
   mtcars %>% 
-    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_cols(!!!cols) %>% 
     prj_tbl_rows(
       Transmission = am,
       `Engine Shape` = vs
@@ -62,12 +66,13 @@ val_labels <- list(
   gear = c(`Three Gears` = 3, `Four Gears` = 4, `Five Gears` = 5)
 )
 
-my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
-  col_spec <- spec_col_freq(!!cvar, cval)
-  names(col_spec) <- names(cval)
-  
+my_tbls <- mapply(col_vars, val_labels, FUN = function(.cvar, .cvals) {
+  cols <- glue::glue("col_freq({.cvar} %in% {.cvals}, {.cvar} %in% .cvals)")
+  cols <- rlang::parse_exprs(cols)
+  names(cols) <- names(.cvals)
+
   mtcars %>% 
-    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_cols(!!!cols) %>% 
     prj_tbl_rows(
       Transmission = list(Manual = am %in% 1),
       `Engine Shape` = list(
@@ -92,12 +97,13 @@ val_labels <- list(
   gear = c(`Three Gears` = 3, `Four Gears` = 4)
 )
 
-my_tbls <- mapply(col_vars, val_labels, FUN = function(cvar, cval) {
-  col_spec <- spec_col_freq(!!cvar, .vals = cval, "col", .base = unique(mtcars[[cvar]]))
-  names(col_spec) <- names(cval)
+my_tbls <- mapply(col_vars, val_labels, FUN = function(.cvar, .cvals) {
+  cols <- glue::glue("col_freq({.cvar} %in% {.cvals}, .data${.cvar} %in% {.cvals})")
+  cols <- rlang::parse_exprs(cols)
+  names(cols) <- names(.cvals)
 
   mtcars %>% 
-    prj_tbl_cols(!!!col_spec) %>% 
+    prj_tbl_cols(!!!cols) %>% 
     prj_tbl_rows(
       Transmission = am,
       `Engine Shape` = vs

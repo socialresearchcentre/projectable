@@ -51,6 +51,8 @@ is_prj_tbl <- function(x) {
 #' specifications provided via `prj_tbl_cols()` and `prj_table_rows()`
 #' respectively.
 #'
+#' See `vignette("projectable_workflow")` for usage details.
+#'
 #' @param .data A dataframe.
 #' @param ... A column or row specification. Row specifications may be supplied
 #' as symbols/expressions or lists of symbols/expressions. Column specifications
