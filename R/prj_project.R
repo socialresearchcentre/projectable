@@ -82,7 +82,7 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
       out <- glue_each_in(col_shadow(col_i), col_i)
     }
 
-    if (length(out) > 1) {
+    if (length(out) > 1 | (!is_col_row(col_i) & !is.null(names(out)))) {
       out <- do.call(vctrs::vec_cbind, out)
     } else if (length(out) == 1){
       out <- data.frame(out[[1]], stringsAsFactors = FALSE)
@@ -113,8 +113,10 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
   names(col_spanners) <- NULL
 
   col_names <- paste(col_spanners, col_labels, sep = ".")
-  col_names[is.na(col_spanners)] <- col_labels[is.na(col_spanners)]
+  col_names[is.na(col_spanners) | col_spanners == col_labels] <- col_labels[is.na(col_spanners) | col_spanners == col_labels]
   names(col_names) <- NULL
+
+
 
   # Output
   out <- do.call(cbind, out)
