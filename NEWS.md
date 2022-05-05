@@ -1,5 +1,7 @@
 # projectable (development version)
 
+* Enhancing `prj_cast_shadow()` to allow the user to specify a label in the shadow definition, e.g., `n = "{dec_dig3(100*p, 2)}"`, will make give the label a title of "n". If the shadow is unnamed, then, there won't be a spanner row in the formatted table.
+
 # projectable 0.0.6
 
 * Deprecated `spec_col_freq()`. This function was implemented in a fairly unsafe way. It is being dropped without deprecation since it is purely a convenience function, the usefulness of which is limited anyway.
