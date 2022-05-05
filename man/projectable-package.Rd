@@ -6,7 +6,8 @@
 \alias{projectable-package}
 \title{projectable: Metadata-Rich Tables}
 \description{
-Produce table-like objects made up of special metadata-rich column vectors, and project them into two dimensions.
+Produce table-like objects made up of special metadata-rich
+    column vectors, and project them into two dimensions.
 }
 \seealso{
 Useful links:
