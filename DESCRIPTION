@@ -22,13 +22,13 @@ Imports:
     glue,
     stats,
     rlang,
-    tidyselect
+    tidyselect, 
+    dplyr
 Suggests: 
     testthat,
     gt,
     knitr,
     rmarkdown,
-    dplyr,
     flextable
 Encoding: UTF-8
 LazyData: true
