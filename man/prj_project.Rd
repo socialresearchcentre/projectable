@@ -96,7 +96,7 @@ prj_project(my_tbl, list(
   `Not V-shaped` = c(`\%` = "{signif(p, 2)} ({n})", `n` = "{n}")
 ))
 
-A mix of some multiple renamed columns, and not renamed columns
+# A mix of some multiple renamed columns, and not renamed columns
 prj_project(
   my_tbl, list(
     `V-Shaped` = c("{signif(p, 2)} ({n})"),
