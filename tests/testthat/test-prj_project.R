@@ -153,3 +153,52 @@ testthat::test_that("prj_flex", {
   )
 })
 
+
+testthat::test_that("Handling duplicate column names", {
+
+
+
+   dat <- prj_tbl_rows(mtcars,
+      Cylinders = cyl,
+      Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
+    )
+
+   dat <- prj_tbl_summarise(
+     prj_tbl_cols(dat,
+                  `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+                  `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+     ))
+
+   testthat::expect_warning(
+
+     testthat::expect_true(
+       all(
+         names(
+           prj_project(
+             dat, list(
+               `V-Shaped` = c(p = "{signif(p, 2)} ({n})"),
+               `Not V-shaped` = c(p = "{signif(p, 2)} ({n})")
+             )
+           )
+         )[3:4] == c("p1", "p2")
+       )
+     )
+
+   )
+
+   # A mix of multiple columns, and a single column
+
+   all(
+     names(
+       prj_project(
+         dat, list(
+           `V-Shaped` = c("{signif(p, 2)} ({n})"),
+           `Not V-shaped` = c(p = "{signif(p, 2)} ({n})", n = "{n}")
+         )
+       )
+     )[3:5] == c("V-Shaped", "Not V-shaped.p", "Not V-shaped.n")
+   )
+
+
+})
+
