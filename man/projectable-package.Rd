@@ -21,6 +21,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Kinto Behr \email{kinto.behr@srcentre.com.au}
 
+Authors:
+\itemize{
+  \item Paddy Tobias \email{paddy.tobias@srcentre.com.au}
+}
+
 Other contributors:
 \itemize{
   \item The Social Research Centre [copyright holder]
