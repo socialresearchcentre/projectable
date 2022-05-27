@@ -23,6 +23,10 @@ tbl %>%
   
 ```
 
+
+* Moving public functions `dec_dig3()`, `public_num()` and `public_ci()` from srcreporting into projectable
+
+
 # projectable 0.0.6
 
 * Deprecated `spec_col_freq()`. This function was implemented in a fairly unsafe way. It is being dropped without deprecation since it is purely a convenience function, the usefulness of which is limited anyway.
