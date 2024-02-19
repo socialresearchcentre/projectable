@@ -156,7 +156,8 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
 
   # Renaming duplicated column names
   if (any(duplicated(names(out)))) {
-    warning("\nColumn name duplicated: `", names(out)[duplicated(names(out))], "`\nResolving by incrementing...")
+    warning("\nColumn name duplicated: `", names(out)[duplicated(names(out))],
+            "`\nResolving by incrementing...", call. = FALSE)
 
     which_dups <- which(names(out) == names(out)[duplicated(names(out))])
     rename_dups <- paste0(names(out)[which(names(out) == names(out)[duplicated(names(out))])],
