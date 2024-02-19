@@ -21,7 +21,7 @@ Imports:
     stats,
     rlang,
     tidyselect, 
-    dplyr
+    srcutils
 Suggests: 
     testthat,
     gt,
