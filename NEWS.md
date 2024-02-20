@@ -1,3 +1,28 @@
+# projectable (development version)
+
+* Enhancing `prj_cast_shadow()` to allow the user to specify a label in the shadow definition, e.g., `n = "{dec_dig3(100*p, 2)}"`, will give the label a title of "n". If the shadow is unnamed, then, there won't be a spanner row in the formatted table. Where column names are duplicated, then a warning will be thrown and handled internally by incrementing the column names.
+
+```
+
+tbl <- mtcars %>% 
+  prj_tbl_rows(
+    Cylinders = cyl,
+    Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
+    ) %>% 
+  prj_tbl_cols(
+    `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+    `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+    ) %>% 
+  prj_tbl_summarise()
+  
+tbl %>% 
+  prj_project(list(
+    `V-Shaped` = c(p = "{signif(p, 2)} ({n})"),
+    `Not V-shaped` = c(p = "{signif(p, 2)} ({n})")
+  ))
+  
+```
+
 # projectable 0.0.6
 
 * Deprecated `spec_col_freq()`. This function was implemented in a fairly unsafe way. It is being dropped without deprecation since it is purely a convenience function, the usefulness of which is limited anyway.

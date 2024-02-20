@@ -67,6 +67,85 @@ testthat::test_that("prj_project metadata", {
   )
 })
 
+
+testthat::test_that("prj_project handling duplicate column names", {
+
+
+
+  dat <- prj_tbl_rows(mtcars,
+                      Cylinders = cyl,
+                      Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
+  )
+
+  dat <- prj_tbl_summarise(
+    prj_tbl_cols(dat,
+                 `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+                 `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+    ))
+
+  testthat::expect_warning(
+
+    testthat::expect_true(
+      all(
+        names(
+          prj_project(
+            dat, list(
+              `V-Shaped` = c(p = "{signif(p, 2)} ({n})"),
+              `Not V-shaped` = c(p = "{signif(p, 2)} ({n})")
+            )
+          )
+        )[3:4] == c("p1", "p2")
+      )
+    )
+
+  )
+
+  # A mix of multiple columns, and a single column
+
+  all(
+    names(
+      prj_project(
+        dat, list(
+          `V-Shaped` = c("{signif(p, 2)} ({n})"),
+          `Not V-shaped` = c(p = "{signif(p, 2)} ({n})", n = "{n}")
+        )
+      )
+    )[3:5] == c("V-Shaped", "Not V-shaped.p", "Not V-shaped.n")
+  )
+
+
+})
+
+
+test_that("prj_project formatting retained", {
+
+  options("prj_digits" = NULL)
+
+  dat <- prj_tbl_rows(mtcars,
+                      Cylinders = cyl,
+                      Transmission = list(Automatic = am %in% 0, Manual = am %in% 1),
+  )
+
+  dat <- prj_tbl_summarise(
+    prj_tbl_cols(dat,
+                 `V-Shaped` = col_freq(n = vs %in% 1, N = vs %in% 0:1),
+                 `Not V-shaped` = col_freq(n = vs %in% 0, N = vs %in% 0:1)
+    ))
+
+
+  dat <- prj_project(
+    dat, list(
+      `V-Shaped` = c(p = "{dec_dig3(p, 2)}")
+    )
+  )
+
+  expect_equal(dat[dat$row_spanner == "Cylinders" & dat$rows == 8, 3][[1]], "0.00")
+
+
+
+})
+
+
 # proje_gt ----------------------------------------------------------------
 y <- prj_tbl_rows(mtcars, cyl)
 y <- prj_tbl_cols(y, v = col_freq(vs %in% 1, vs %in% 0:1))
@@ -152,4 +231,7 @@ testthat::test_that("prj_flex", {
     "z"
   )
 })
+
+
+
 

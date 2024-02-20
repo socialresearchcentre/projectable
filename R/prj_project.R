@@ -49,6 +49,35 @@
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
 #'
+#' # With renamed columns
+#' prj_project(my_tbl, list(
+#'   `V-Shaped` = c(`V-Shaped %` = "{signif(p, 2)} ({n})"),
+#'   `Not V-shaped` = c(`Not V-Shaped %` = "{signif(p, 2)} ({n})")
+#' ))
+#'
+#' # With same renamed columns
+#' ## Due to duplicate `%` as column names, these will be incremented
+#' prj_project(my_tbl, list(
+#'   `V-Shaped` = c(`%` = "{signif(p, 2)} ({n})"),
+#'   `Not V-shaped` = c(`%` = "{signif(p, 2)} ({n})")
+#' ))
+#'
+#'
+#' # With multiple renamed columns
+#' prj_project(my_tbl, list(
+#'   `V-Shaped` = c(`%` = "{signif(p, 2)} ({n})", `n` = "{n}"),
+#'   `Not V-shaped` = c(`%` = "{signif(p, 2)} ({n})", `n` = "{n}")
+#' ))
+#'
+#' # A mix of some multiple renamed columns, and not renamed columns
+#' prj_project(
+#'   my_tbl, list(
+#'     `V-Shaped` = c("{signif(p, 2)} ({n})"),
+#'     `Not V-shaped` = c(p = "{signif(p, 2)} ({n})", n = "{n}")
+#'   )
+#' )
+#'
+#'
 #' # Produce a `gt` display object
 #' out <- prj_gt(my_tbl, list(
 #'   `V-Shaped` = "{signif(p, 2)} ({n})",
@@ -60,6 +89,7 @@
 #'   `V-Shaped` = "{signif(p, 2)} ({n})",
 #'   `Not V-shaped` = "{signif(p, 2)} ({n})"
 #' ))
+#'
 #'
 #' @name prj_project
 # Project table ----------------------------------------------------------------
@@ -82,7 +112,7 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
       out <- glue_each_in(col_shadow(col_i), col_i)
     }
 
-    if (length(out) > 1) {
+    if (length(out) > 1 | (!is_col_row(col_i) & !is.null(names(out)))) {
       out <- do.call(vctrs::vec_cbind, out)
     } else if (length(out) == 1){
       out <- data.frame(out[[1]], stringsAsFactors = FALSE)
@@ -106,6 +136,8 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
   if(is.null(col_labels)) col_labels <- character(0)
   names(col_labels) <- NULL
 
+
+
   col_spanners <- unlist(lapply(names(out), function (x) {
     rep(x, ncol(out[[x]]))
   }))
@@ -113,11 +145,32 @@ prj_cast_shadow <- function(.data, .digits = NULL) {
   names(col_spanners) <- NULL
 
   col_names <- paste(col_spanners, col_labels, sep = ".")
-  col_names[is.na(col_spanners)] <- col_labels[is.na(col_spanners)]
+
+  col_names[is.na(col_spanners) | col_spanners == col_labels] <- col_labels[is.na(col_spanners) | col_spanners == col_labels]
   names(col_names) <- NULL
+
+
 
   # Output
   out <- do.call(cbind, out)
+
+  # Renaming duplicated column names
+  if (any(duplicated(names(out)))) {
+    warning("\nColumn name duplicated: `", names(out)[duplicated(names(out))],
+            "`\nResolving by incrementing...", call. = FALSE)
+
+    which_dups <- which(names(out) == names(out)[duplicated(names(out))])
+    rename_dups <- paste0(names(out)[which(names(out) == names(out)[duplicated(names(out))])],
+                          seq_len(length(which(names(out) == names(out)[duplicated(names(out))]))))
+
+
+    col_labels[which_dups] <- rename_dups
+
+    mapply(function(elem, i) {
+      names(out)[elem] <<- rename_dups[i]
+    }, which_dups, seq_len(length(which_dups)))
+
+  }
 
   validate_projection(
     new_projection(

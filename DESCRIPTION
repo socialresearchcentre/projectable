@@ -1,13 +1,11 @@
 Package: projectable
 Title: Metadata-Rich Tables
-Version: 0.0.6
-Authors@R: 
-    c(person(given = "Kinto",
-             family = "Behr",
-             role = c("aut", "cre"),
-             email = "kinto.behr@srcentre.com.au"),
-      person(given = "The Social Research Centre",
-             role = "cph"))
+Version: 0.0.7
+Authors@R: c(
+      person(given = "Kinto", family = "Behr", role = c("aut", "cre"), email = "kinto.behr@srcentre.com.au"),
+      person("Paddy", "Tobias", , "paddy.tobias@srcentre.com.au", role = "aut"),
+      person(given = "The Social Research Centre", role = "cph")
+      )
 Description: Produce table-like objects made up of special metadata-rich
     column vectors, and project them into two dimensions.
 License: GPL-3
@@ -22,16 +20,16 @@ Imports:
     glue,
     stats,
     rlang,
-    tidyselect
+    tidyselect, 
+    srcutils
 Suggests: 
     testthat,
     gt,
     knitr,
     rmarkdown,
-    dplyr,
     flextable
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr

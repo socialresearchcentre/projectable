@@ -76,6 +76,35 @@ prj_project(my_tbl, list(
   `Not V-shaped` = "{signif(p, 2)} ({n})"
 ))
 
+# With renamed columns
+prj_project(my_tbl, list(
+  `V-Shaped` = c(`V-Shaped \%` = "{signif(p, 2)} ({n})"),
+  `Not V-shaped` = c(`Not V-Shaped \%` = "{signif(p, 2)} ({n})")
+))
+
+# With same renamed columns
+## Due to duplicate `\%` as column names, these will be incremented
+prj_project(my_tbl, list(
+  `V-Shaped` = c(`\%` = "{signif(p, 2)} ({n})"),
+  `Not V-shaped` = c(`\%` = "{signif(p, 2)} ({n})")
+))
+
+
+# With multiple renamed columns
+prj_project(my_tbl, list(
+  `V-Shaped` = c(`\%` = "{signif(p, 2)} ({n})", `n` = "{n}"),
+  `Not V-shaped` = c(`\%` = "{signif(p, 2)} ({n})", `n` = "{n}")
+))
+
+# A mix of some multiple renamed columns, and not renamed columns
+prj_project(
+  my_tbl, list(
+    `V-Shaped` = c("{signif(p, 2)} ({n})"),
+    `Not V-shaped` = c(p = "{signif(p, 2)} ({n})", n = "{n}")
+  )
+)
+
+
 # Produce a `gt` display object
 out <- prj_gt(my_tbl, list(
   `V-Shaped` = "{signif(p, 2)} ({n})",
@@ -87,5 +116,6 @@ out <- prj_flex(my_tbl, list(
   `V-Shaped` = "{signif(p, 2)} ({n})",
   `Not V-shaped` = "{signif(p, 2)} ({n})"
 ))
+
 
 }
