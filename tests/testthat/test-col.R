@@ -262,9 +262,99 @@ testthat::test_that("col_binomial: summarised/unsummarised equivalence", {
 })
 
 testthat::test_that("col_binomial can handle NAs", {
-  x <- prj_project_col(col_binomial(NA_real_, 10, summarised = T))
+  x <- prj_project_col(col_binomial(NA_real_, 10, summarised = TRUE))
   expect_identical(x$n, NA_integer_)
   expect_identical(x$N, 10L)
+})
+
+# col_binomial_vec --------------------------------------------------------
+
+testthat::test_that("col_binomial_vec: basic usage", {
+  # Test with 0-1 vector with missing data
+  x <- c(0, 1, 1, 0, NA, 1, 0, 1)
+  result <- col_binomial_vec(x)
+  
+  # Check class
+  testthat::expect_s3_class(result, "projectable_col_binomial")
+  testthat::expect_s3_class(result, "projectable_col")
+  
+  # Check calculations: 4 successes out of 7 non-NA values
+  projected <- prj_project_col(result)
+  testthat::expect_identical(projected$n, 4L)
+  testthat::expect_identical(projected$N, 7L)
+  testthat::expect_equal(projected$p, 4/7, tolerance = 0.01)
+})
+
+testthat::test_that("col_binomial_vec: custom range", {
+  # Test with 1-2 range
+  y <- c(1, 2, 2, 1, NA, 2, 1, 2)
+  result <- col_binomial_vec(y, success_value = 2, range = c(1, 2))
+  
+  projected <- prj_project_col(result)
+  # 4 successes (2s) out of 7 non-NA values
+  testthat::expect_identical(projected$n, 4L)
+  testthat::expect_identical(projected$N, 7L)
+})
+
+testthat::test_that("col_binomial_vec: values outside range excluded", {
+  # Test that values outside range are excluded
+  z <- c(0, 1, 1, 2, 3, 1, 0, 1)
+  result <- col_binomial_vec(z, success_value = 1, range = c(0, 1))
+  
+  projected <- prj_project_col(result)
+  # Only 0s and 1s in range: 0,1,1,1,0,1 = 4 successes out of 6 values
+  testthat::expect_identical(projected$n, 4L)
+  testthat::expect_identical(projected$N, 6L)
+})
+
+testthat::test_that("col_binomial_vec: multiple success values", {
+  # Test with multiple success values
+  z <- c(1, 2, 3, 4, 5, NA, 2, 3)
+  result <- col_binomial_vec(z, success_value = c(2, 3), range = c(1, 5))
+  
+  projected <- prj_project_col(result)
+  # Success values 2 and 3 appear 4 times out of 7 non-NA values
+  testthat::expect_identical(projected$n, 4L)
+  testthat::expect_identical(projected$N, 7L)
+})
+
+testthat::test_that("col_binomial_vec: NULL range includes all", {
+  # Test with NULL range (include all non-NA values)
+  w <- c(1, 5, 10, NA, 5, 1, 5)
+  result <- col_binomial_vec(w, success_value = 5, range = NULL)
+  
+  projected <- prj_project_col(result)
+  # 3 successes (5s) out of 6 non-NA values
+  testthat::expect_identical(projected$n, 3L)
+  testthat::expect_identical(projected$N, 6L)
+})
+
+testthat::test_that("col_binomial_vec: all NA handling", {
+  # Test with all NA values
+  all_na <- c(NA, NA, NA)
+  result <- col_binomial_vec(all_na)
+  
+  projected <- prj_project_col(result)
+  testthat::expect_identical(projected$n, 0L)
+  testthat::expect_identical(projected$N, 0L)
+})
+
+testthat::test_that("col_binomial_vec: error on invalid range", {
+  # Test that invalid range produces error
+  x <- c(0, 1, 1, 0)
+  testthat::expect_error(
+    col_binomial_vec(x, range = c(0, 1, 2)),
+    "`range` must be a vector of length 2 or NULL"
+  )
+})
+
+testthat::test_that("col_binomial_vec: parameters passed through", {
+  # Test that ci_error and other parameters are passed through
+  x <- c(0, 1, 1, 0, 1, 1, 0, 1)
+  result <- col_binomial_vec(x, ci_error = 0.01)
+  
+  projected <- prj_project_col(result)
+  testthat::expect_identical(projected$ci_error, 0.01)
 })
 
 
