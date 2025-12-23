@@ -180,3 +180,75 @@ vec_ptype2.projectable_col_binomial.projectable_col_binomial <- function(x, y, .
 vec_proxy_compare.projectable_col_binomial <- function(x, ...) {
   vec_proxy_compare.projectable_col(x, ...)
 }
+
+# Wrapper function for vector input --------------------------------------------
+
+#' Calculate binomial proportions from a vector
+#'
+#' A wrapper function for `col_binomial()` that takes a single vector and
+#' automatically calculates the number of successes and trials. This is
+#' particularly useful when working with data that contains missing values.
+#'
+#' @param x A numeric or integer vector containing the data. Can include NA values.
+#' @param success_value The value(s) that count as "success". Can be a single value
+#'   or a vector of values. Default is 1.
+#' @param range The range of values to include in the calculation. Values outside
+#'   this range are excluded (treated as NA). Default is c(0, 1). Set to NULL to
+#'   include all non-NA values.
+#' @param ci_error A numeric vector, the error to be used for calculating
+#'   confidence intervals. Default is 0.05.
+#' @param population A numeric vector, the number of individuals in the
+#'   population to be used for calculating confidence intervals. Default is Inf.
+#' @param method The name of a method to be passed through to `asbio::ci.p()` for
+#'   parameter estimation. The default is "agresti.coull", but other options
+#'   include "asymptotic", "score", "LR" and "exact". See `asbio::ci.p()` for details.
+#'
+#' @return An S3 vector of class `projectable_col_binomial`
+#' @export
+#'
+#' @examples
+#' # Calculate proportion of 1s in a 0-1 vector with missing data
+#' x <- c(0, 1, 1, 0, NA, 1, 0, 1)
+#' col_binomial_vec(x)
+#'
+#' # Calculate proportion of 2s in a 1-2 vector
+#' y <- c(1, 2, 2, 1, NA, 2, 1, 2)
+#' col_binomial_vec(y, success_value = 2, range = c(1, 2))
+#'
+#' # Calculate proportion with multiple success values
+#' z <- c(1, 2, 3, 4, 5, NA, 2, 3)
+#' col_binomial_vec(z, success_value = c(2, 3), range = c(1, 5))
+#'
+col_binomial_vec <- function(x,
+                              success_value = 1,
+                              range = c(0, 1),
+                              ci_error = 0.05,
+                              population = Inf,
+                              method = "agresti.coull") {
+  
+  # Filter to specified range if provided
+  if (!is.null(range)) {
+    if (length(range) != 2) {
+      stop("`range` must be a vector of length 2 or NULL", call. = FALSE)
+    }
+    x_filtered <- ifelse(x >= range[1] & x <= range[2], x, NA)
+  } else {
+    x_filtered <- x
+  }
+  
+  # Calculate trials (non-NA values in the filtered range)
+  N <- sum(!is.na(x_filtered))
+  
+  # Calculate successes (values matching success_value)
+  n <- sum(x_filtered %in% success_value, na.rm = TRUE)
+  
+  # Call col_binomial with summarised data
+  col_binomial(
+    n = n,
+    N = N,
+    ci_error = ci_error,
+    population = population,
+    method = method,
+    summarised = TRUE
+  )
+}
