@@ -231,7 +231,7 @@ col_binomial_vec <- function(x,
     if (length(range) != 2) {
       stop("`range` must be a vector of length 2 or NULL", call. = FALSE)
     }
-    x_filtered <- ifelse(x >= range[1] & x <= range[2], x, NA)
+    x_filtered <- ifelse(!is.na(x) & x >= range[1] & x <= range[2], x, NA)
   } else {
     x_filtered <- x
   }

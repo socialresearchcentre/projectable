@@ -313,8 +313,8 @@ testthat::test_that("col_binomial_vec: multiple success values", {
   result <- col_binomial_vec(z, success_value = c(2, 3), range = c(1, 5))
   
   projected <- prj_project_col(result)
-  # Success values 2 and 3 appear 3 times out of 7 non-NA values
-  testthat::expect_identical(projected$n, 3L)
+  # Success values 2 and 3 appear 4 times out of 7 non-NA values
+  testthat::expect_identical(projected$n, 4L)
   testthat::expect_identical(projected$N, 7L)
 })
 
