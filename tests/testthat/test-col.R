@@ -387,3 +387,115 @@ testthat::test_that("prj_project_col", {
   )
 })
 
+
+# col_binomial_unpack -----------------------------------------------------
+
+testthat::test_that("col_binomial_unpack: basic vector output", {
+  # Create a binomial proportion
+  b_trials <- c(1, 1, 0, 1, 0, 1, 1, 0, 1, 1)
+  result <- col_binomial(b_trials)
+  
+  # Test default vector output
+  unpacked <- col_binomial_unpack(result)
+  
+  # Should return a numeric vector
+  testthat::expect_type(unpacked, "double")
+  testthat::expect_length(unpacked, 1)
+  
+  # Should equal the p value
+  expected_p <- vctrs::field(result, "p")
+  testthat::expect_identical(unpacked, expected_p)
+})
+
+testthat::test_that("col_binomial_unpack: dataframe output with defaults", {
+  # Create a binomial proportion
+  result <- col_binomial(7, 10, summarised = TRUE)
+  
+  # Test dataframe output with default fields
+  unpacked <- col_binomial_unpack(result, output = "dataframe")
+  
+  # Should return a tibble
+  testthat::expect_s3_class(unpacked, "tbl_df")
+  
+  # Should have default fields: p, ci_lower, ci_upper
+  testthat::expect_identical(names(unpacked), c("p", "ci_lower", "ci_upper"))
+  
+  # Values should match the original
+  testthat::expect_identical(unpacked$p, vctrs::field(result, "p"))
+  testthat::expect_identical(unpacked$ci_lower, vctrs::field(result, "ci_lower"))
+  testthat::expect_identical(unpacked$ci_upper, vctrs::field(result, "ci_upper"))
+})
+
+testthat::test_that("col_binomial_unpack: dataframe output with custom fields", {
+  # Create a binomial proportion
+  result <- col_binomial(7, 10, summarised = TRUE)
+  
+  # Test dataframe output with custom fields
+  unpacked <- col_binomial_unpack(result, output = "dataframe", fields = c("p", "n", "N"))
+  
+  # Should return a tibble with requested fields
+  testthat::expect_s3_class(unpacked, "tbl_df")
+  testthat::expect_identical(names(unpacked), c("p", "n", "N"))
+  
+  # Values should match the original
+  testthat::expect_identical(unpacked$p, vctrs::field(result, "p"))
+  testthat::expect_identical(unpacked$n, vctrs::field(result, "n"))
+  testthat::expect_identical(unpacked$N, vctrs::field(result, "N"))
+})
+
+testthat::test_that("col_binomial_unpack: all available fields", {
+  # Create a binomial proportion with all parameters
+  result <- col_binomial(5, 20, ci_error = 0.01, population = 100, summarised = TRUE)
+  
+  # Test with all available fields
+  all_fields <- c("n", "N", "population", "ci_error", "p", "ci_lower", "ci_upper", "note")
+  unpacked <- col_binomial_unpack(result, output = "dataframe", fields = all_fields)
+  
+  # Should have all fields
+  testthat::expect_identical(names(unpacked), all_fields)
+  
+  # Check a few values
+  testthat::expect_identical(unpacked$n, vctrs::field(result, "n"))
+  testthat::expect_identical(unpacked$population, vctrs::field(result, "population"))
+  testthat::expect_identical(unpacked$ci_error, vctrs::field(result, "ci_error"))
+})
+
+testthat::test_that("col_binomial_unpack: error on invalid input", {
+  # Should error if input is not a col_binomial
+  testthat::expect_error(
+    col_binomial_unpack(1:10),
+    "must be a projectable_col_binomial"
+  )
+  
+  testthat::expect_error(
+    col_binomial_unpack(col_freq(1, 2, summarised = TRUE)),
+    "must be a projectable_col_binomial"
+  )
+})
+
+testthat::test_that("col_binomial_unpack: error on invalid fields", {
+  result <- col_binomial(7, 10, summarised = TRUE)
+  
+  # Should error on invalid field names
+  testthat::expect_error(
+    col_binomial_unpack(result, output = "dataframe", fields = c("p", "invalid_field")),
+    "Invalid field"
+  )
+})
+
+testthat::test_that("col_binomial_unpack: works with col_binomial_vec", {
+  # Test integration with col_binomial_vec
+  x <- c(0, 1, 1, 0, NA, 1, 0, 1)
+  result <- col_binomial_vec(x)
+  
+  # Should work with vector output
+  unpacked_vector <- col_binomial_unpack(result)
+  testthat::expect_type(unpacked_vector, "double")
+  testthat::expect_length(unpacked_vector, 1)
+  
+  # Should work with dataframe output
+  unpacked_df <- col_binomial_unpack(result, output = "dataframe")
+  testthat::expect_s3_class(unpacked_df, "tbl_df")
+  testthat::expect_true(all(c("p", "ci_lower", "ci_upper") %in% names(unpacked_df)))
+})
+
