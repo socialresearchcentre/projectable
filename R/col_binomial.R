@@ -255,3 +255,79 @@ col_binomial_vec <- function(x,
     summarised = TRUE
   )
 }
+
+#' Unpack a col_binomial object into a vector or dataframe
+#'
+#' This function converts the output of `col_binomial()` into either a numeric
+#' vector (default) or a dataframe, depending on user preference. When returning
+#' a dataframe, you can specify which fields to include, such as confidence
+#' intervals.
+#'
+#' @param x A `projectable_col_binomial` object created by `col_binomial()`
+#' @param output Character string specifying the output format. Either "vector"
+#'   (default) or "dataframe".
+#' @param fields Character vector specifying which fields to include when
+#'   `output = "dataframe"`. Options include "p", "n", "N", "ci_lower",
+#'   "ci_upper", "ci_error", "population", and "note". Default is
+#'   `c("p", "ci_lower", "ci_upper")`.
+#'
+#' @return Either a numeric vector (when `output = "vector"`) containing the
+#'   point estimates, or a dataframe (when `output = "dataframe"`) containing
+#'   the requested fields.
+#' @export
+#'
+#' @examples
+#' # Create a binomial proportion
+#' b_trials <- stats::rbinom(1000, 1, 0.5)
+#' result <- col_binomial(b_trials)
+#'
+#' # Extract as vector (default)
+#' col_binomial_unpack(result)
+#'
+#' # Extract as dataframe with confidence intervals
+#' col_binomial_unpack(result, output = "dataframe")
+#'
+#' # Extract as dataframe with custom fields
+#' col_binomial_unpack(result, output = "dataframe", fields = c("p", "n", "N"))
+#'
+col_binomial_unpack <- function(x,
+                                output = c("vector", "dataframe"),
+                                fields = c("p", "ci_lower", "ci_upper")) {
+  # Check input
+  if (!is_col_binomial(x)) {
+    stop("`x` must be a projectable_col_binomial object", call. = FALSE)
+  }
+  
+  # Match output argument
+  output <- match.arg(output)
+  
+  # Return vector by default
+  if (output == "vector") {
+    return(vctrs::field(x, "p"))
+  }
+  
+  # Return dataframe with requested fields
+  if (output == "dataframe") {
+    # Available fields in col_binomial
+    available_fields <- c("n", "N", "population", "ci_error", "p", "ci_lower", "ci_upper", "note")
+    
+    # Check that requested fields are valid
+    invalid_fields <- setdiff(fields, available_fields)
+    if (length(invalid_fields) > 0) {
+      stop(
+        "Invalid field(s): ", paste(invalid_fields, collapse = ", "), 
+        ". Available fields are: ", paste(available_fields, collapse = ", "),
+        call. = FALSE
+      )
+    }
+    
+    # Extract requested fields
+    result <- lapply(fields, function(field) {
+      vctrs::field(x, field)
+    })
+    names(result) <- fields
+    
+    # Convert to dataframe
+    return(tibble::as_tibble(result))
+  }
+}
